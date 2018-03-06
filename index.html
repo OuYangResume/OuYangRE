@@ -175,6 +175,16 @@
 
 
 
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?29b7a92ce75134efed8432f33b8a2547";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
 
 
 
@@ -419,42 +429,17 @@
 
       
         
-          
-            <h1 id="第一篇测试文章"><a href="#第一篇测试文章" class="headerlink" title="第一篇测试文章"></a>第一篇测试文章</h1><h3 id="1-是吗？"><a href="#1-是吗？" class="headerlink" title="1. 是吗？"></a>1. 是吗？</h3><ul>
+          <h1 id="第一篇测试文章"><a href="#第一篇测试文章" class="headerlink" title="第一篇测试文章"></a>第一篇测试文章</h1><h3 id="1-是吗？"><a href="#1-是吗？" class="headerlink" title="1. 是吗？"></a>1. 是吗？</h3><ul>
 <li>记录用markdownPad2富文本编辑器编写第一篇文章。</li>
 <li>我觉得还ok。</li>
 </ul>
-<h3 id="2-顺便记录markdown语法的学习过程"><a href="#2-顺便记录markdown语法的学习过程" class="headerlink" title="2. 顺便记录markdown语法的学习过程"></a>2. 顺便记录markdown语法的学习过程</h3><ol>
-<li><strong>列表</strong><ul>
-<li>无序列表使用<em>或者+或者-（注意</em>后面加空格）</li>
-<li>有序列表使用数字加.</li>
-</ul>
-</li>
-<li><strong>标题</strong><ul>
-<li>使用#的个数代表等级数</li>
-</ul>
-</li>
-<li><strong>引用</strong><blockquote>
-<h3 id="这是一段引用"><a href="#这是一段引用" class="headerlink" title="这是一段引用"></a>这是一段引用</h3><blockquote>
-<h3 id="二级引用"><a href="#二级引用" class="headerlink" title="二级引用"></a><strong>二级引用</strong></h3><h3 id="块状引用"><a href="#块状引用" class="headerlink" title="块状引用"></a>块状引用</h3></blockquote>
-<pre><code>块状引用。符号&gt;后面有五个空格.
-&gt;一级引用
-&gt;&gt;二级引用
-</code></pre><ol>
-<li>这个是引用加列表</li>
-<li>引用加列表</li>
-</ol>
-</blockquote>
-</li>
-<li><strong>强调</strong>   <ul>
-<li><strong>加粗文本</strong>或者<strong>这样</strong></li>
-<li><em>斜体</em></li>
-<li>删除</li>
-</ul>
-</li>
-</ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/06/第一篇测试文章/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -614,50 +599,24 @@
 
       
         
-          
-            <h2 id="第二篇文章"><a href="#第二篇文章" class="headerlink" title="第二篇文章"></a>第二篇文章</h2><hr>
-<ol>
-<li><p><strong>图片与连接</strong></p>
-<ul>
+          <ol>
+<li><strong>图片与连接</strong><ul>
 <li>语法格式<blockquote>
 <pre><code>图片：![]()  ![图片文本（可忽略)](图片地址）
 链接：[]()   [链接文本]（链接地址）
 </code></pre></blockquote>
 </li>
-<li>链接又分为行内，参考，自动<ul>
-<li>行内链接：<a href="https://ouyangresume.github.io/" target="_blank" rel="noopener">文章地址</a></li>
-<li>参考链接：<a href="https://ouyangresume.github.io/" target="_blank" rel="noopener">文章地址</a>，其中url为链接标记，可置于文中任意位置。</li>
-<li>自动链接：<a href="https://ouyangresume.github.io" target="_blank" rel="noopener">https://ouyangresume.github.io</a></li>
-</ul>
-</li>
-<li>图片也有行内和自动。用法差不多<ul>
-<li>这是图片：<img src="https://connorlin.github.io/images/avatar.jpg" alt=""></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>代码</strong></p>
-<ul>
-<li>行内代码用`标识<blockquote>
-<p>这个是行内代码<code>python manage.py runserver</code></p>
-</blockquote>
-</li>
-<li>代码块用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;    ```  java </span><br><span class="line">    // 注意java前面有空格</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;  </span><br><span class="line">        super.onCreate(savedInstanceState);  </span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p><strong>分割线</strong></p>
-<ul>
-<li>一行中用三个***或者___</li>
-</ul>
-</li>
-<li><strong>换行</strong><br>这是一行后面加两个空格加<br>回车</li>
-<li><strong>脚注</strong><ul>
-<li>使用[^]来定义脚注。<br>这是一个脚注<a href="eg">^1</a></li>
+<li>链接又分为行内，参考，自动</li>
 </ul>
 </li>
 </ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/06/markdown进阶/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -795,18 +754,14 @@
 
       
         
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
+          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/05/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
