@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[hexo-next的魔法糖]]></title>
+    <url>%2F2018%2F03%2F07%2Fhexo-next%E7%9A%84%E9%AD%94%E6%B3%95%E7%B3%96%2F</url>
+    <content type="text"><![CDATA[文章插入图片 在站点配置文件_config.yml中的post_asset_folder:这个选项设置为true。 在hexo目录下执行 npm install hexo-asset-image --save,这是下载安装一个可以上传本地图片的插件。 运行hexo new &quot;xxx&quot;来生成文章时，在/source/_posts文件夹中生成一个同名的文件夹。 最后在xxx.md中想引入图片时，先把图片复制到这个xxx文件夹中，然后按照markwown的格式引入图片：！[替代文字](xxx/图片名.png)。 hexo-next添加自定义页面 在hexo目录下创建你想要生成的页面 hexo new page &quot;aboutme&quot;。 修改主题配置_config.yml文件中的 menu和menu_icons,如下图其中address-card是在font-Awesome图库图标的名称。 修改主题下的netx/languages/zh-Hans.yml文件中的menu。 运行hexo -s效果图。 设置站点配置文件_config.yml中的skip_render添加aboutme/**,这样就意味着根目录下的source/aboutme文件夹中的内容不会被转化成html。而是直接copy到public文件夹。]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[第一篇测试文章]]></title>
     <url>%2F2018%2F03%2F06%2F%E7%AC%AC%E4%B8%80%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0%2F</url>
     <content type="text"><![CDATA[第一篇测试文章1. 是吗？ 记录用markdownPad2富文本编辑器编写第一篇文章。 我觉得还ok。 2. 顺便记录markdown语法的学习过程 列表 无序列表使用或者+或者-（注意后面加空格） 有序列表使用数字加. 标题 使用#的个数代表等级数 引用 这是一段引用 二级引用块状引用 块状引用。符号&gt;后面有五个空格. &gt;一级引用 &gt;&gt;二级引用 这个是引用加列表 引用加列表 强调 加粗文本或者这样 斜体 删除]]></content>
