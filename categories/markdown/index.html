@@ -10,6 +10,21 @@
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
 <meta name="theme-color" content="#222">
 
 
@@ -495,19 +510,23 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">OuYang</span>
+  <span class="user" itemprop="copyrightHolder">OuYang</span>
 
   
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>-->
 
 
 
@@ -538,89 +557,6 @@
     
 
   </div>
-
-<!-- custom analytics part create by xiamo -->
-<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-<script>AV.initialize("nRhgx6rQY4BBWbmWGnc4ftDE-gzGzoHsz", "yciTpXUYAqqMCPXM3dzOvEaX");</script>
-<script>
-function showTime(Counter) {
-	var query = new AV.Query(Counter);
-	$(".leancloud_visitors").each(function() {
-		var url = $(this).attr("id").trim();
-		query.equalTo("url", url);
-		query.find({
-			success: function(results) {
-				if (results.length == 0) {
-					var content = '0 ' + $(document.getElementById(url)).text();
-					$(document.getElementById(url)).text(content);
-					return;
-				}
-				for (var i = 0; i < results.length; i++) {
-					var object = results[i];
-					var content = object.get('time') + ' ' + $(document.getElementById(url)).text();
-					$(document.getElementById(url)).text(content);
-				}
-			},
-			error: function(object, error) {
-				console.log("Error: " + error.code + " " + error.message);
-			}
-		});
-
-	});
-}
-
-function addCount(Counter) {
-	var Counter = AV.Object.extend("Counter");
-	url = $(".leancloud_visitors").attr('id').trim();
-	title = $(".leancloud_visitors").attr('data-flag-title').trim();
-	var query = new AV.Query(Counter);
-	query.equalTo("url", url);
-	query.find({
-		success: function(results) {
-			if (results.length > 0) {
-				var counter = results[0];
-				counter.fetchWhenSave(true);
-				counter.increment("time");
-				counter.save(null, {
-					success: function(counter) {
-						var content =  counter.get('time') + ' ' + $(document.getElementById(url)).text();
-						$(document.getElementById(url)).text(content);
-					},
-					error: function(counter, error) {
-						console.log('Failed to save Visitor num, with error message: ' + error.message);
-					}
-				});
-			} else {
-				var newcounter = new Counter();
-				newcounter.set("title", title);
-				newcounter.set("url", url);
-				newcounter.set("time", 1);
-				newcounter.save(null, {
-					success: function(newcounter) {
-					    console.log("newcounter.get('time')="+newcounter.get('time'));
-						var content = newcounter.get('time') + ' ' + $(document.getElementById(url)).text();
-						$(document.getElementById(url)).text(content);
-					},
-					error: function(newcounter, error) {
-						console.log('Failed to create');
-					}
-				});
-			}
-		},
-		error: function(error) {
-			console.log('Error:' + error.code + " " + error.message);
-		}
-	});
-}
-$(function() {
-	var Counter = AV.Object.extend("Counter");
-	if ($('.leancloud_visitors').length == 1) {
-		addCount(Counter);
-	} else if ($('.post-title-link').length > 1) {
-		showTime(Counter);
-	}
-}); 
-</script>
 
   
 
@@ -1086,113 +1022,6 @@ $(function() {
   
 
   
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("nRhgx6rQY4BBWbmWGnc4ftDE-gzGzoHsz", "yciTpXUYAqqMCPXM3dzOvEaX");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
 
   
 
@@ -1208,5 +1037,8 @@ $(function() {
   
       <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
 </body>
 </html>
