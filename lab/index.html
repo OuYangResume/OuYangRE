@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的简历</title>
-    <link rel="icon" href="img/favicon.png">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:8090/leaflet/leaflet.css">
+    <script type="text/javascript" src="http://localhost:8090/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src='http://localhost:8090/leaflet/leaflet.ChineseTmsProviders.js'></script>
 </head>
 
 <body>
@@ -50,8 +52,8 @@
                                         <span class="social fa fa-phone" title="手机号码"></span>+86 13135667053</a>
                                 </li>
                                 <li>
-                                    <a href="" title="家庭住址">
-                                        <span class="social fa fa-map-marker"></span>江西省宜春市万载县</a>
+                                    <a href="#map" title="家庭住址" id="showMap">
+                                        <span class="social fa fa-map-marker"></span>查看地图</a>
                                 </li>
                             </ul>
                         </div>
@@ -231,6 +233,9 @@
                     </a>
                 </button>
             </div>
+            <div class="col-sm-12" id="map">
+                <div id="closeMap" title="关闭地图">X</div>
+            </div>
         </div>
         <!--container end-->
         <footer class="text-center">
@@ -332,6 +337,30 @@
                 ]
             }
         })
+    </script>
+    <script>
+
+        var layer=L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
+        });
+        var map = L.map("map", {
+            center: [31.59, 120.29], //设置中心地图是纬度。经度
+            zoom: 10,
+            layers:[layer]
+        });
+
+            var oShowMap = document.getElementById("showMap");
+            var oCloseMap = document.getElementById("closeMap");
+
+            var oMap = document.getElementById("map");
+            oShowMap.onclick = function () {
+                oMap.style.display = "block";
+            };
+            oCloseMap.onclick=function(){
+                oMap.style.display = "none";
+            }
     </script>
 </body>
 

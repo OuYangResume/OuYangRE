@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的简历</title>
+    <link rel="icon" href="img/favicon.png">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/ionicons/4.0.0-18/collection/icon/icon.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js"></script>
+    <script src="https://cdn.bootcss.com/esri-leaflet/2.1.3/esri-leaflet.js"></script>
+    <script src="https://cdn.bootcss.com/esri-leaflet-geocoder/2.2.9/esri-leaflet-geocoder.js"></script>
+    <link href="https://cdn.bootcss.com/esri-leaflet-geocoder/2.2.9/esri-leaflet-geocoder.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link href="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+<div id="app">
+    <div class="container">
+        <!-- ===========================
+    HEADER
+    ============================ -->
+        <div id="header" class="row">
+            <div class="col-sm-2">
+                <img class="propic" src="img/ghn.jpg" alt="">
+            </div>
+            <!-- photo end-->
+
+            <div class="col-sm-10">
+                <div class="cv-title">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <h1>{{personal.name}}</h1>
+                        </div>
+                    </div>
+                    <h2>求职意向:{{personal.jobHutter}}</h2>
+                </div>
+                <!-- Title end-->
+
+                <!-- ===========================
+            基本情况
+            ============================ -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="http://www.birdgis.com/" title="个人网站">
+                                    <span class="social fa fa-home"></span>http://www.birdgis.com/</a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="social fa fa-phone" title="手机号码"></span>+86 18770913143</a>
+                            </li>
+                            <li>
+                                <a href="" title="家庭住址">
+                                    <span class="social fa fa-map-marker"></span>江西省赣州市石城县</a> &nbsp; <a href="#map" id="showMap">地图</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- social 1st col end-->
+
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="" title="QQ号码">
+                                    <span class="social fa fa-qq"></span>673598118</a>
+                            </li>
+                            <li>
+                                <a href="https://www.github.com/cenergy" title="Github">
+                                    <span class="social fa fa-github"></span>Cenergy</a>
+                            </li>
+                            <!-- <li><a href=""><span class="social fa fa-linkedin"></span>Linkedin</a>
+                        </li> -->
+                        </ul>
+                    </div>
+                    <!-- social 2nd col end-->
+
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li class="weixin" onmouseover="this.className = 'weixin on';" onmouseout="this.className = 'weixin';">
+                                <a href="javascript:void(0)" title="微信">
+                                    <span class="social fa fa-wechat"></span>Go</a>
+                                <div class="weixin_nr">
+                                    微信扫一扫
+                                    <div class="arrow"></div>
+                                    <img src="img/weixin.jpg" width="130" height="130" />
+                                </div>
+                            </li>
+                            <li>
+                                <a href="" title="邮箱地址">
+                                    <span class="social fa fa-envelope-o"></span>cenergy@foxmail.com</a>
+                            </li>
+                            <!-- <li><a href=""><span class="social fa fa-instagram"></span>Instagram</a>
+                        </li> -->
+                        </ul>
+                    </div>
+                    <!-- social 3rd col end-->
+                </div>
+                <!-- header social end-->
+            </div>
+            <!-- header right end-->
+        </div>
+        <!-- header end-->
+
+        <hr class="firsthr">
+
+        <!-- ===========================
+    左边部分
+    ============================ -->
+        <div class="col-md-8 mainleft">
+            <div id="statement" class="row mobmid">
+                <div class="col-sm-1">
+                    <span class="secicon fa fa-user"></span>
+                </div>
+                <!--icon end-->
+
+                <div class="col-sm-11">
+                    <h3>个人介绍</h3>
+                    <p>{{personal.introduce}}</p>
+
+                </div>
+                <!--info end-->
+            </div>
+            <!--personal statement end-->
+            <hr>
+
+            <div id="education" class="row mobmid">
+                <div class="col-sm-1">
+                    <span class="secicon fa fa-graduation-cap"></span>
+                </div>
+                <!--icon end-->
+
+                <div class="col-sm-11">
+                    <h3>教育经历</h3>
+                    <div v-for="education in educations">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h4>{{education.name}}</h4>
+                                <p class="sub">
+                                    <a href="">{{education.property=="university"?"专业:"+education.position:"职位:"+education.position}}</a>
+                                </p>
+                                <p>{{education.introduce}}</p>
+                            </div>
+                            <div class="year col-md-3">
+                                <p>{{education.time}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <!-- ===========================
+        工作经历
+        ============================ -->
+            <div id="job" class="row mobmid">
+                <div class="col-sm-1">
+                    <span class="secicon fa fa-briefcase"></span>
+                </div>
+                <!--icon end-->
+
+                <div class="col-sm-11">
+                    <h3>工作经历</h3>
+                    <div v-for="job in jobExp">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h4>{{job.company}}</h4>
+                                <p class="sub">
+                                    <a href="">职位:{{job.position}}</a>
+                                </p>
+                                <p>{{job.describe}}</p>
+                            </div>
+                            <div class="year col-md-3">
+                                <p>{{job.time}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mainright">
+            <div class="row">
+                <div class="col-sm-1 col-md-2 mobmid">
+                    <span class="secicon fa fa-magic"></span>
+                </div>
+                <!--icon end-->
+
+                <div class="col-sm-11 col-md-10">
+                    <h3 class="mobmid">技能</h3>
+                    <div v-for="skill in skills">
+                        <p>{{skill.name}}</p>
+                        <div class="progress progress-striped">
+                            <div class="progress-bar" v-bind:class="skill.class" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                 :style="skill.styleObject">
+                            </div>
+                        </div>
+                        <!--skill end-->
+                    </div>
+                </div>
+                <!--info end-->
+            </div>
+            <!--tech skills end-->
+            <hr>
+            <div class="row mobmid">
+                <div class="col-sm-1 col-md-2">
+                    <span class="secicon fa fa-trophy"></span>
+                </div>
+                <!--icon end-->
+                <div class="col-sm-11 col-md-10 ">
+                    <h3>获奖情况</h3>
+                    <div class="award" v-for="award in awards">
+                        <h4>{{award.name}}</h4>
+                        <p class="sub">
+                            <a href="">{{award.time}}</a>
+                        </p>
+                        <p>{{award.describe}}</p>
+                    </div>
+                </div>
+                <!--awards end-->
+            </div>
+        </div>
+        <!--right end-->
+        <div class="btn-group-vertical fixed-btn">
+            <button type="button" class="btn btn-default">
+                <a href="#" title="回到顶部">
+                    <span class="social fa fa-2x fa-arrow-up" style="margin-right:0px"></span>
+                </a>
+            </button>
+            <button type="button" class="btn btn-default">
+                <a href="http://www.birdgis.com/" title="回到首页">
+                    <span class="social fa fa-2x fa-home" style="margin-right:0px"></span>
+                </a>
+            </button>
+        </div>
+        <div class="col-sm-12" id="map">
+            <div id="closeMap" title="关闭地图">X</div>
+        </div>
+    </div>
+    <!--container end-->
+    <footer class="text-center">
+        <p>power by 海之能</p>
+    </footer>
+</div>
+<!-- <div class="blackToFirst">
+    <div class="bts" title="回到顶部">
+        <a href="#"></a>
+    </div>
+    <div class="btf" title="回到首页">
+        <a href="http://www.birdgis.com"></a>
+    </div>
+</div> -->
+<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            personal: {
+                styleObject: {
+                    "background-color": "#" + (~~(Math.random() * (1 << 24))).toString(16),
+                    height: "1px",
+                    border: "none",
+                },
+                name: "龚海能",
+                jobHutter: "软件开发工程师",
+                introduce: "本人吃苦耐劳，工作认真，能很快适应新环境，处事冷静，学习能力较强，对自己要求严格，条理性强，善于整理，具有良好的团队精神和较强的组织能力，具有扎实的专业知识和较强的实务操作技能，能熟练地运用专业软件，熟练各类办公软件，拥有《全国信息化工程师》、《全国计算机二级证》等证书。"+"热爱GIS，愿意为GIS事业奋斗终身。自我的评价就是自学，自律能力强，追求的是学无止境，止于至善。"
+            },
+            educations: [{
+                property: "university",
+                name: "江西农业大学",
+                position: "地理信息科学",
+                time: "2013-2017",
+                introduce: "在校期间学习了高等数学、数据结构、线性代数、AutoCAD、3Ds Max、C#,JAVA、C++、HTML、CSS、JavaScript、地理学、地图学、计算机科学与技术、遥感技术、数据库技术、地理信息系统原理、测量学、地理信息系统设计与应用、地理信息系统二次开发等等,对ArcGIS,WebGIS的二次开发,对GIS软件操作比较熟悉,无论是MapGIS,QGIS还是ArcGIS。自学Python和数据库的相关操作,还有数据可视化。还跟着老师做过奉新配土施肥的项目,更加深入的了解了各种插值的用法与区别。毕业设计做的《江西省土壤环境信息系统》,是基于Openlayers，PostGIS，GeoServer，Djaogo，Echart，OpenCV等等技术的一个系统"
+            },
+                {
+                    property: "internship",
+                    name: "广州奥格智能有限公司",
+                    position: "软件测试工程师",
+                    time: "2016-2017",
+                    introduce: "这是实习期，在该公司做的是测试工作，测试的是赣州崇义不动产项目登记的软件平台。"
+                }
+            ],
+            jobExp: [{
+                name: "firstJob",
+                position: "软件开发工程师",
+                company: "武汉珞珈德毅股份有限公司",
+                time: "2017-2018",
+                describe: "在该公司，做过新疆房产项目，由于是国家电网项目，使用Uap开发，我主要负者是三维GIS和Echart数据可视化的方面，三维GIS之前使用公司平台的东西，后来改用开源Cesium的框架，结合模型和影像，效果较好。" +
+                "还有辅助招投标系统，使用开源的OpenLayers，GeoServer，PostGIS数据库完成二维地图的部分。在天门不动产数据整合项目用Python写小工具，为他们解决PDF转图片的问题，也为他们用VBA写宏来解决Excel批量处理的问题。" +
+                "在此期间，还熟练的学习并运用了Node的Express等框架，并结合使用Vue，最后还用Electron将其打包成桌面可运行程序。 "
+            }],
+            awards: [{
+                name: "三等奖学金",
+                time: "2014-2017",
+                describe: "多次获得该等奖学金"
+            },
+                {
+                    name: "二等奖学金",
+                    time: "2015/6",
+                    describe: "曾获得过一次该奖学金"
+                },
+                {
+                    name: "运动会长跑第四",
+                    time: "2014/11",
+                    describe: "在大学的运动会上的长跑项目获得了第四名。"
+                }
+            ],
+            skills: [{
+                name: "Python",
+                class: "progress-bar-success",
+                styleObject: {
+                    width: "60%",
+                    color: 'blue',
+                }
+            },
+                {
+                    name: "ArcGIS",
+                    class: "progress-bar-info",
+                    styleObject: {
+                        width: "65%"
+                    }
+                },
+                {
+                    name: "JavaScript",
+                    class: "progress-bar-warning",
+                    styleObject: {
+                        width: "70%"
+                    }
+                },
+                {
+                    name: "C#",
+                    class: "progress-bar-danger",
+                    styleObject: {
+                        width: "40%",
+                    }
+                }
+            ]
+        }
+    })
+</script>
+<script>
+    function mapMain() {
+        var map = new L.Map('map', {
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            }
+        });
+        map.setView([26.211934100791698, 116.29251065746944], 9);
+        customBaselayer = L.esri.tiledMapLayer({
+            url: "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"
+        }).addTo(map);
+        var homeMarker = L.AwesomeMarkers.icon({
+            icon: 'coffee',
+            markerColor: 'blue'
+        });
+        L.marker([26.211934100791698, 116.29251065746944], {
+            icon: homeMarker
+        }).addTo(map)
+                .bindPopup('这是我的家乡')
+                .openPopup();
+       /* var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+        var results = L.layerGroup().addTo(map);
+        searchControl.on('results', function (data) {
+            results.clearLayers();
+            for (var i = data.results.length - 1; i >= 0; i--) {
+                results.addLayer(L.marker(data.results[i].latlng));
+            }
+        });*/
+    }
+    // mapMain()
+    var oShowMap = document.getElementById("showMap");
+    var oCloseMap = document.getElementById("closeMap");
+
+    var oMap = document.getElementById("map");
+    oShowMap.onclick = function () {
+        oMap.style.display = "block";
+        mapMain()
+    }
+    oCloseMap.onclick=function(){
+        oMap.style.display = "none";
+    }
+</script>
+</body>
+
+</html>

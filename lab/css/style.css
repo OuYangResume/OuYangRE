@@ -5,7 +5,7 @@
 body {
     background: #f4f4f4;
     color: #757575;
-    font-family: "Î¢ÈíÑÅºÚ",'Alegreya Sans', sans-serif;
+    font-family: "Î¢ï¿½ï¿½ï¿½Åºï¿½",'Alegreya Sans', sans-serif;
     letter-spacing: 2px;
     padding-bottom: 60px;
 }
@@ -193,4 +193,28 @@ footer a {
 }
 .fa:hover{
     color: rgb(2, 252, 127);
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    display: none;
+    position: relative;
+}
+#closeMap{
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    position: absolute;
+    z-index: 9999;
+    right: 0px;
+    top:0px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    background: #f1f1f1;
+}
+#closeMap:hover{
+    background: gray;
+    color: red;
 }
