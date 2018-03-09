@@ -9,9 +9,14 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost:8090/leaflet/leaflet.css">
-    <script type="text/javascript" src="http://localhost:8090/leaflet/leaflet.js"></script>
-    <script type="text/javascript" src='http://localhost:8090/leaflet/leaflet.ChineseTmsProviders.js'></script>
+    <link href="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js"></script>
+    <link href="https://cdn.bootcss.com/ionicons/4.0.0-18/collection/icon/icon.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link href="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.js"></script>
+
 </head>
 
 <body>
@@ -239,7 +244,7 @@
         </div>
         <!--container end-->
         <footer class="text-center">
-            <p>power by 海之能</p>
+            <p>power by <a href="http://www.birdgis.com/">birdgis</a></p>
         </footer>
     </div>
     <!-- <div class="blackToFirst">
@@ -340,17 +345,36 @@
     </script>
     <script>
 
-        var layer=L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-            maxZoom: 18,
-            id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
-        });
-        var map = L.map("map", {
-            center: [31.59, 120.29], //设置中心地图是纬度。经度
-            zoom: 10,
-            layers:[layer]
-        });
-
+        function mapMain() {
+            var layer=L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
+            });
+            var map = L.map("map", {
+                center: [30.424926, 114.459428], //设置中心地图是纬度。经度
+                zoom: 10,
+                layers:[layer],
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                }
+            });
+            var homeMarker = L.AwesomeMarkers.icon({
+                prefix: 'fa',
+                icon: 'home',
+                markerColor: 'blue',
+                iconColor: 'white'
+            });
+            var redMarker = L.AwesomeMarkers.icon({
+                prefix: 'fa',
+                icon: 'phone',
+                markerColor: 'green',
+                iconColor: 'white'
+            });
+            L.marker([28.193484, 114.155064], {icon: homeMarker}).addTo(map).bindPopup("<b>这是我的家乡</b>");//立即打开弹窗;
+            L.marker([30.424926, 114.459428], {icon: redMarker}).addTo(map).bindPopup("<b>当前工作地址<br>联系我：13135667053</b>").openPopup();//立即打开弹窗;
+        }
             var oShowMap = document.getElementById("showMap");
             var oCloseMap = document.getElementById("closeMap");
 
@@ -358,6 +382,7 @@
             oShowMap.onclick = function () {
                 oMap.style.display = "block";
                 oMap.style.height = "300px";
+                mapMain();
             };
             oCloseMap.onclick=function(){
                 oMap.style.display = "none";

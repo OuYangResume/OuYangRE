@@ -358,22 +358,24 @@
             url: "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer"
         }).addTo(map);
         var homeMarker = L.AwesomeMarkers.icon({
-            icon: 'coffee',
-            markerColor: 'blue'
+            prefix: 'fa',
+            icon: 'home',
+            markerColor: 'blue',
+            iconColor: 'white'
         });
         L.marker([26.211934100791698, 116.29251065746944], {
             icon: homeMarker
         }).addTo(map)
                 .bindPopup('这是我的家乡')
                 .openPopup();
-       /* var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+        var searchControl = L.esri.Geocoding.geosearch().addTo(map);
         var results = L.layerGroup().addTo(map);
         searchControl.on('results', function (data) {
             results.clearLayers();
             for (var i = data.results.length - 1; i >= 0; i--) {
                 results.addLayer(L.marker(data.results[i].latlng));
             }
-        });*/
+        });
     }
     // mapMain()
     var oShowMap = document.getElementById("showMap");
