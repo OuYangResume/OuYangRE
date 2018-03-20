@@ -3,7 +3,13 @@
   <entry>
     <title><![CDATA[常见正则表达式校验]]></title>
     <url>%2F2018%2F03%2F20%2F%E5%B8%B8%E8%A7%81%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[RegExp是什么? RegExp 是正则表达式（Regular expression）的缩写，作用是对字符串执行模式匹配。 通常用于格式验证、正则替换、查找子串等 各种编程语言的正则表达式基本相同，不同的语言可能会有一些细小的差别 推荐一个在线验证的工具https://regex101.com RegExp 对象方法test()test() 方法检索字符串中是否存在指定的值。返回值是 true 或 false。1234567891011//判断是不是QQ号//首位不能是0//必须是5-11位数的数字var str = '812634676';var regexp = /^[1-9][0-9]&#123;4,10&#125;$/gim;if (regexp.test(str))&#123; alert('is');&#125;else&#123; alert('no');&#125; exec()exec() 方法检索字符串中的指定值。返回值是被找到的值。如果没有发现匹配，则返回 null。1234567var patt1 = new RegExp('e');console.log(patt1.exec('some text'));//OUTPUT:evar patt2 =new RegExp('ee');console.log(patt2.exec('some text'));//OUTPUT:null compile()compile() 既可以改变检索模式，也可以添加或删除第二个参数。12345var patt1=new RegExp("e");document.write(patt1.test("The best things in life are free")); // true// 改变了检索模式patt1.compile("eee");document.write(patt1.test("The best things in life are free")); // false 支持正则表达式的String对象的方法search 检索与正则表达式相匹配的值。123var str = "Visit W3School!";console.log(str.search(/W3School/))// OUTPUT:6]]></content>
+      <categories>
+        <category>blog</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[hexo-next的魔法糖]]></title>
