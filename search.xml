@@ -1,65 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[OGC标准]]></title>
-    <url>%2F2018%2F03%2F23%2FOGC%E6%A0%87%E5%87%86%2F</url>
-    <content type="text"><![CDATA[一：OGC与OGC标准制定与空间信息，基于位置服务相关的标准文档，按照这些文档开放服务的接口，空间数据存储的编码，空间操作的方法。OGC官网 二：SFS -简单的要素标准 几何对象模型几何对象（点，线，面和多点，多线，多面）和对象的一系列操作。 WKT描述几何对象WKT可以通过文本来描述几何对象。12345Point(10 10) //点LineString(10 10,20 20,30 40) //3个节点的线Polygon((10 10,10 20,20 20,10 10))//只有一个环的多边形MultiPoint((10 10),(20 20))//多点 MultiLineString多线 多面也类似 WKB 描述几何对象wkb通过序列化的字节对象来描述几何对象 WKT描述空间参考wkt除了可以描述几何对象也可以描述空间对象。对于地理坐标系，比如最常见的WGS84坐标系，wkt是描述如下：12345678GEOGCS[ "GCS_WGS_1984", DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]], PRIMEM["Greenwich",0.0], UNIT["Degree",0.0174532925199433] AUTHORITY["EPSG",4326]] “GEOGCS”表明”[]”中描述的是一个地理坐标系统。该坐标系统名称为”GCS_WGS_1984”;采用的大地基准面为“D_WGS_1984”，该基准面近似椭球体的长轴为6378137.0米、扁率为298.257223563；以格林威治0度经线为起始经线；地图单位为度，该单位的转换因子[2] 为0. 0174532925199433（π/180）；该坐标系统在EPSG[3] 中的编码为“4326”。 对于投影坐标系，WGS84 Web Mercator（Auxiliary Sphere）坐标系统，WKT描述：12345678910111213141516171819PROJCS[ "WGS_1984_Web_Mercator_Auxiliary_Sphere", GEOGCS [ "GCS_WGS_1984", DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]], PRIMEM["Greenwich",0.0], UNIT["Degree",0.0174532925199433] ],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",0.0],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0],AUTHORITY["EPSG",3857]] “PROJCS”代表这是一个投影坐标系。投影坐标系中必然会包括一个地理坐标系，这里的地理坐标系就是“GCS_WGS_1984”，这个地理坐标系的定义和上面的类似。下面紧跟着的是投影的相关参数，“Mercator_Auxiliary_Sphere”是采用投影的名称，这个投影坐标系以0度经线为中央经线进行投影；坐标系的单位为米（显然，转换因子就为1.0），而该坐标系的EPSG编码为“3857”。 三：GML- 地理标记语言]]></content>
+<search> 
+  
+    
+    <entry>
+      <title>OGC标准</title>
+      <link href="/2018/03/23/OGC%E6%A0%87%E5%87%86/"/>
+      <content type="html"><![CDATA[<h1 id="一：OGC与OGC标准"><a href="#一：OGC与OGC标准" class="headerlink" title="一：OGC与OGC标准"></a>一：OGC与OGC标准</h1><p>制定与空间信息，基于位置服务相关的标准文档，按照这些文档开放服务的接口，空间数据存储的编码，空间操作的方法。<a href="http://www.opengeospatial.org/" target="_blank" rel="noopener">OGC官网</a></p><h1 id="二：SFS-简单的要素标准"><a href="#二：SFS-简单的要素标准" class="headerlink" title="二：SFS -简单的要素标准"></a>二：SFS -简单的要素标准</h1> <a id="more"></a><h2 id="几何对象模型"><a href="#几何对象模型" class="headerlink" title="几何对象模型"></a>几何对象模型</h2><p>几何对象（点，线，面和多点，多线，多面）和对象的一系列操作。</p><h2 id="WKT描述几何对象"><a href="#WKT描述几何对象" class="headerlink" title="WKT描述几何对象"></a>WKT描述几何对象</h2><p>WKT可以通过文本来描述几何对象。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Point(10 10) //点</span><br><span class="line">LineString(10 10,20 20,30 40) //3个节点的线</span><br><span class="line">Polygon((10 10,10 20,20 20,10 10))//只有一个环的多边形</span><br><span class="line">MultiPoint((10 10),(20 20))//多点 </span><br><span class="line">MultiLineString多线 多面也类似</span><br></pre></td></tr></table></figure></p><h2 id="WKB-描述几何对象"><a href="#WKB-描述几何对象" class="headerlink" title="WKB 描述几何对象"></a>WKB 描述几何对象</h2><p>wkb通过序列化的字节对象来描述几何对象</p><h2 id="WKT描述空间参考"><a href="#WKT描述空间参考" class="headerlink" title="WKT描述空间参考"></a>WKT描述空间参考</h2><p>wkt除了可以描述几何对象也可以描述空间对象。<br>对于<strong>地理坐标系</strong>，比如最常见的WGS84坐标系，wkt是描述如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GEOGCS</span><br><span class="line">[</span><br><span class="line"><span class="string">"GCS_WGS_1984"</span>,</span><br><span class="line">DATUM[<span class="string">"D_WGS_1984"</span>,SPHEROID[<span class="string">"WGS_1984"</span>,<span class="number">6378137.0</span>,<span class="number">298.257223563</span>]],</span><br><span class="line">PRIMEM[<span class="string">"Greenwich"</span>,<span class="number">0.0</span>],</span><br><span class="line">UNIT[<span class="string">"Degree"</span>,<span class="number">0.0174532925199433</span>]</span><br><span class="line">AUTHORITY[<span class="string">"EPSG"</span>,<span class="number">4326</span>]</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p><p>“GEOGCS”表明”[]”中描述的是一个地理坐标系统。该坐标系统名称为”GCS_WGS_1984”;采用的大地基准面为“D_WGS_1984”，该基准面近似椭球体的长轴为6378137.0米、扁率为298.257223563；以格林威治0度经线为起始经线；地图单位为度，该单位的转换因子[2] 为0. 0174532925199433（π/180）；该坐标系统在EPSG[3] 中的编码为“4326”。</p><p>对于<strong>投影坐标系</strong>，WGS84 Web Mercator（Auxiliary Sphere）坐标系统，WKT描述：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PROJCS</span><br><span class="line">[</span><br><span class="line"><span class="string">"WGS_1984_Web_Mercator_Auxiliary_Sphere"</span>,</span><br><span class="line">GEOGCS</span><br><span class="line">[</span><br><span class="line"><span class="string">"GCS_WGS_1984"</span>,</span><br><span class="line">DATUM[<span class="string">"D_WGS_1984"</span>,SPHEROID[<span class="string">"WGS_1984"</span>,<span class="number">6378137.0</span>,<span class="number">298.257223563</span>]],</span><br><span class="line">PRIMEM[<span class="string">"Greenwich"</span>,<span class="number">0.0</span>],</span><br><span class="line">UNIT[<span class="string">"Degree"</span>,<span class="number">0.0174532925199433</span>]</span><br><span class="line">],</span><br><span class="line">PROJECTION[<span class="string">"Mercator_Auxiliary_Sphere"</span>],</span><br><span class="line">PARAMETER[<span class="string">"False_Easting"</span>,<span class="number">0.0</span>],</span><br><span class="line">PARAMETER[<span class="string">"False_Northing"</span>,<span class="number">0.0</span>],</span><br><span class="line">PARAMETER[<span class="string">"Central_Meridian"</span>,<span class="number">0.0</span>],</span><br><span class="line">PARAMETER[<span class="string">"Standard_Parallel_1"</span>,<span class="number">0.0</span>],</span><br><span class="line">PARAMETER[<span class="string">"Auxiliary_Sphere_Type"</span>,<span class="number">0.0</span>],</span><br><span class="line">UNIT[<span class="string">"Meter"</span>,<span class="number">1.0</span>],</span><br><span class="line">AUTHORITY[<span class="string">"EPSG"</span>,<span class="number">3857</span>]</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p><p>“PROJCS”代表这是一个投影坐标系。投影坐标系中必然会包括一个地理坐标系，这里的地理坐标系就是“GCS_WGS_1984”，这个地理坐标系的定义和上面的类似。下面紧跟着的是投影的相关参数，“Mercator_Auxiliary_Sphere”是采用投影的名称，这个投影坐标系以0度经线为中央经线进行投影；坐标系的单位为米（显然，转换因子就为1.0），而该坐标系的EPSG编码为“3857”。</p><hr><h1 id="三：GML-地理标记语言"><a href="#三：GML-地理标记语言" class="headerlink" title="三：GML- 地理标记语言"></a>三：GML- 地理标记语言</h1><p>GML是一种基于XML的地理要素描述语言，主要是在不同的软件或系统间交换空间数据。比如WFS要素web服务就使用gml作为输入输出格式。</p><h1 id="四：SLD-图层样式描述"><a href="#四：SLD-图层样式描述" class="headerlink" title="四：SLD -图层样式描述"></a>四：SLD -图层样式描述</h1><p>一个地图不仅包含数据源组成，还需要对数据进行符号化和渲染，sld就是描述地图图层样式的标准，一般用于wms地图web服务。</p><h1 id="五：KML"><a href="#五：KML" class="headerlink" title="五：KML"></a>五：KML</h1><p>主要用于地理数据的可视化，不仅包括地理数据的描述，还包括数据的符号化方式，用户视角的控制等信息。</p><h1 id="六：OWS-OGC-WEB服务通用标准"><a href="#六：OWS-OGC-WEB服务通用标准" class="headerlink" title="六：OWS-OGC WEB服务通用标准"></a>六：OWS-OGC WEB服务通用标准</h1><p>OWS描述web服务通用的接口规范，包括请求和响应的内容，请求的参数和编码等。</p><h2 id="WFS-要素web服务"><a href="#WFS-要素web服务" class="headerlink" title="WFS -要素web服务"></a>WFS -要素web服务</h2><h2 id="WMS-地图web服务"><a href="#WMS-地图web服务" class="headerlink" title="WMS -地图web服务"></a>WMS -地图web服务</h2><h2 id="WCS-栅格web服务"><a href="#WCS-栅格web服务" class="headerlink" title="WCS -栅格web服务"></a>WCS -栅格web服务</h2><h2 id="WMTS-地图切片服务"><a href="#WMTS-地图切片服务" class="headerlink" title="WMTS -地图切片服务"></a>WMTS -地图切片服务</h2><h1 id="OGD标准介绍-pdf"><a href="#OGD标准介绍-pdf" class="headerlink" title="OGD标准介绍.pdf"></a>OGD标准介绍.pdf</h1><p>链接：<a href="https://pan.baidu.com/s/1abhZc-Wsrk1RbEqGpFb8pw" target="_blank" rel="noopener">https://pan.baidu.com/s/1abhZc-Wsrk1RbEqGpFb8pw</a>密码：dei6</p>]]></content>
+      
       <categories>
-        <category>GIS</category>
+          
+          <category> GIS </category>
+          
       </categories>
-      <tags>
-        <tag>技术</tag>
-        <tag>GIS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[常见正则表达式校验]]></title>
-    <url>%2F2018%2F03%2F20%2F%E5%B8%B8%E8%A7%81%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C%2F</url>
-    <content type="text"><![CDATA[RegExp是什么? RegExp 是正则表达式（Regular expression）的缩写，作用是对字符串执行模式匹配。 通常用于格式验证、正则替换、查找子串等 各种编程语言的正则表达式基本相同，不同的语言可能会有一些细小的差别 推荐一个在线验证的工具https://regex101.com RegExp 对象方法test()test() 方法检索字符串中是否存在指定的值。返回值是 true 或 false。1234567891011//判断是不是QQ号//首位不能是0//必须是5-11位数的数字var str = '812634676';var regexp = /^[1-9][0-9]&#123;4,10&#125;$/gim;if (regexp.test(str))&#123; alert('is');&#125;else&#123; alert('no');&#125; exec()exec() 方法检索字符串中的指定值。返回值是被找到的值。如果没有发现匹配，则返回 null。1234567var patt1 = new RegExp('e');console.log(patt1.exec('some text'));//OUTPUT:evar patt2 =new RegExp('ee');console.log(patt2.exec('some text'));//OUTPUT:null compile()compile() 既可以改变检索模式，也可以添加或删除第二个参数。12345var patt1=new RegExp("e");document.write(patt1.test("The best things in life are free")); // true// 改变了检索模式patt1.compile("eee");document.write(patt1.test("The best things in life are free")); // false 支持正则表达式的String对象的方法search 检索与正则表达式相匹配的值。123var str = "Visit W3School!";console.log(str.search(/W3School/))// OUTPUT:6 replace替换与正则表达式匹配的子串。123var str = "Visit Microsoft!";console.log(str.replace(/Microsoft/,"W3School"));// OUTPUT:Visit W3School! 1234567891011121314151617181920212223242526// 找重复项最多的字符个数var str = 'g21ss4aeba_ersb43sgnnsssstht6sss60snnsj8resw0_ss'// split : 将字符串转化为数组// sort : 对数组排序，ASCII// join : 将数组转化为字符串var str_new = str.split('').sort.join('');console.log(str_new);//OUTPUT:"0012344668__aabbeeegghjnnnnrrssssssssssssssssttw"var regexp = /(\w)\1+/g;var index = 0;var value = '';str_new.replace(regexp,function($0,$1)&#123; if (index &lt; $0.length)&#123; index = $0.length; value = $1; &#125;&#125;);document.write('重复项最多的字符是：' + value + '，个数是：' + index)// OUTPUT:重复项最多的字符是：s，个数是：16 match找到一个或多个正则表达式的匹配。123var str = "1 plus 2 equal 3"console.log(str.match(/\d+/g))// OUTPUT : 1,2,3 split把字符串分割为字符串数组。123var str = " How are you doing today?"document.write(str.split(/\s+/));// OUTPUT:How,are,you,doing,today? 经验： 检验格式（邮箱格式、IP格式）是否正确，用test() 抓取信息（如所有手机号），用exec()、match() 替换敏感词汇，用replace() 常见的正则表达式校验]]></content>
+      
+      
+        <tags>
+            
+            <tag> 技术 </tag>
+            
+            <tag> GIS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>常见正则表达式校验</title>
+      <link href="/2018/03/20/%E5%B8%B8%E8%A7%81%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%A1%E9%AA%8C/"/>
+      <content type="html"><![CDATA[<h1 id="RegExp是什么"><a href="#RegExp是什么" class="headerlink" title="RegExp是什么?"></a>RegExp是什么?</h1><ul><li>RegExp 是正则表达式（Regular expression）的缩写，作用是对字符串执行模式匹配。</li><li>通常用于格式验证、正则替换、查找子串等</li><li>各种编程语言的正则表达式基本相同，不同的语言可能会有一些细小的差别</li><li>推荐一个在线验证的工具<a href="https://regex101.com" target="_blank" rel="noopener">https://regex101.com</a> <a id="more"></a></li></ul><hr><h1 id="RegExp-对象方法"><a href="#RegExp-对象方法" class="headerlink" title="RegExp 对象方法"></a>RegExp 对象方法</h1><h2 id="test"><a href="#test" class="headerlink" title="test()"></a>test()</h2><p><code>test()</code> 方法检索字符串中是否存在指定的值。返回值是 true 或 false。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断是不是QQ号</span></span><br><span class="line"><span class="comment">//首位不能是0</span></span><br><span class="line"><span class="comment">//必须是5-11位数的数字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'812634676'</span>;</span><br><span class="line"><span class="keyword">var</span> regexp = <span class="regexp">/^[1-9][0-9]&#123;4,10&#125;$/gim</span>;</span><br><span class="line"><span class="keyword">if</span> (regexp.test(str))&#123;</span><br><span class="line">alert(<span class="string">'is'</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">alert(<span class="string">'no'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h2 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h2><p><code>exec()</code> 方法检索字符串中的指定值。返回值是被找到的值。如果没有发现匹配，则返回 null。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'e'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(patt1.exec(<span class="string">'some text'</span>));</span><br><span class="line"><span class="comment">//OUTPUT:e</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> patt2 =<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'ee'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(patt2.exec(<span class="string">'some text'</span>));</span><br><span class="line"><span class="comment">//OUTPUT:null</span></span><br></pre></td></tr></table></figure></p><h2 id="compile"><a href="#compile" class="headerlink" title="compile()"></a>compile()</h2><p><code>compile()</code> 既可以改变检索模式，也可以添加或删除第二个参数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1=<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"e"</span>);</span><br><span class="line"><span class="built_in">document</span>.write(patt1.test(<span class="string">"The best things in life are free"</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 改变了检索模式</span></span><br><span class="line">patt1.compile(<span class="string">"eee"</span>);</span><br><span class="line"><span class="built_in">document</span>.write(patt1.test(<span class="string">"The best things in life are free"</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure></p><hr><h1 id="支持正则表达式的String对象的方法"><a href="#支持正则表达式的String对象的方法" class="headerlink" title="支持正则表达式的String对象的方法"></a>支持正则表达式的String对象的方法</h1><h2 id="search-检索与正则表达式相匹配的值。"><a href="#search-检索与正则表达式相匹配的值。" class="headerlink" title="search 检索与正则表达式相匹配的值。"></a>search 检索与正则表达式相匹配的值。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"Visit W3School!"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.search(<span class="regexp">/W3School/</span>))</span><br><span class="line"><span class="comment">// OUTPUT:6</span></span><br></pre></td></tr></table></figure><h2 id="replace替换与正则表达式匹配的子串。"><a href="#replace替换与正则表达式匹配的子串。" class="headerlink" title="replace替换与正则表达式匹配的子串。"></a>replace替换与正则表达式匹配的子串。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"Visit Microsoft!"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.replace(<span class="regexp">/Microsoft/</span>,<span class="string">"W3School"</span>));</span><br><span class="line"><span class="comment">// OUTPUT:Visit W3School!</span></span><br></pre></td></tr></table></figure><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 找重复项最多的字符个数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'g21ss4aeba_ersb43sgnnsssstht6sss60snnsj8resw0_ss'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// split : 将字符串转化为数组</span></span><br><span class="line"><span class="comment">// sort : 对数组排序，ASCII</span></span><br><span class="line"><span class="comment">// join : 将数组转化为字符串</span></span><br><span class="line"><span class="keyword">var</span> str_new = str.split(<span class="string">''</span>).sort.join(<span class="string">''</span>);</span><br><span class="line"><span class="built_in">console</span>.log(str_new);</span><br><span class="line"><span class="comment">//OUTPUT:"0012344668__aabbeeegghjnnnnrrssssssssssssssssttw"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> regexp = <span class="regexp">/(\w)\1+/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> index = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> value = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">str_new.replace(regexp,<span class="function"><span class="keyword">function</span>(<span class="params">$<span class="number">0</span>,$<span class="number">1</span></span>)</span>&#123;</span><br><span class="line"><span class="keyword">if</span> (index &lt; $<span class="number">0.</span>length)&#123;</span><br><span class="line">index = $<span class="number">0.</span>length;</span><br><span class="line">value = $<span class="number">1</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.write(<span class="string">'重复项最多的字符是：'</span> + value + <span class="string">'，个数是：'</span> + index)</span><br><span class="line"></span><br><span class="line"><span class="comment">// OUTPUT:重复项最多的字符是：s，个数是：16</span></span><br></pre></td></tr></table></figure><h1 id="match找到一个或多个正则表达式的匹配。"><a href="#match找到一个或多个正则表达式的匹配。" class="headerlink" title="match找到一个或多个正则表达式的匹配。"></a>match找到一个或多个正则表达式的匹配。</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"1 plus 2 equal 3"</span></span><br><span class="line"><span class="built_in">console</span>.log(str.match(<span class="regexp">/\d+/g</span>))</span><br><span class="line"><span class="comment">// OUTPUT : 1,2,3</span></span><br></pre></td></tr></table></figure><h1 id="split把字符串分割为字符串数组。"><a href="#split把字符串分割为字符串数组。" class="headerlink" title="split把字符串分割为字符串数组。"></a>split把字符串分割为字符串数组。</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">" How are you doing today?"</span></span><br><span class="line"><span class="built_in">document</span>.write(str.split(<span class="regexp">/\s+/</span>));</span><br><span class="line"><span class="comment">// OUTPUT:How,are,you,doing,today?</span></span><br></pre></td></tr></table></figure><blockquote><p>经验：</p><ol><li>检验格式（邮箱格式、IP格式）是否正确，用test()</li><li>抓取信息（如所有手机号），用exec()、match() </li><li>替换敏感词汇，用replace()</li></ol></blockquote><h1 id="常见的正则表达式校验"><a href="#常见的正则表达式校验" class="headerlink" title="常见的正则表达式校验"></a>常见的正则表达式校验</h1>]]></content>
+      
       <categories>
-        <category>blog</category>
+          
+          <category> blog </category>
+          
       </categories>
-      <tags>
-        <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[hexo-next的魔法糖]]></title>
-    <url>%2F2018%2F03%2F07%2Fhexo-next%E7%9A%84%E9%AD%94%E6%B3%95%E7%B3%96%2F</url>
-    <content type="text"><![CDATA[文章插入图片 在站点配置文件_config.yml中的post_asset_folder:这个选项设置为true。 在hexo目录下执行 npm install hexo-asset-image --save,这是下载安装一个可以上传本地图片的插件。 运行hexo new &quot;xxx&quot;来生成文章时，在/source/_posts文件夹中生成一个同名的文件夹。 最后在xxx.md中想引入图片时，先把图片复制到这个xxx文件夹中，然后按照markwown的格式引入图片：！[替代文字](xxx/图片名.png)。 hexo-next添加自定义页面 在hexo目录下创建你想要生成的页面 hexo new page &quot;aboutme&quot;。 修改主题配置_config.yml文件中的 menu和menu_icons,如下图其中address-card是在font-Awesome图库图标的名称。 修改主题下的netx/languages/zh-Hans.yml文件中的menu。 运行hexo -s效果图。 设置站点配置文件_config.yml中的skip_render添加aboutme/**,这样就意味着根目录下的source/aboutme文件夹中的内容不会被转化成html。而是直接copy到public文件夹。 &lt;–更多美味糖果–&gt;]]></content>
+      
+      
+        <tags>
+            
+            <tag> 技术 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>hexo-next的魔法糖</title>
+      <link href="/2018/03/07/hexo-next%E7%9A%84%E9%AD%94%E6%B3%95%E7%B3%96/"/>
+      <content type="html"><![CDATA[<hr><h1 id="文章插入图片"><a href="#文章插入图片" class="headerlink" title="文章插入图片"></a>文章插入图片</h1><ol><li>在站点配置文件<code>_config.yml</code>中的<code>post_asset_folder:</code>这个选项设置为<code>true</code>。<br><img src="/2018/03/07/hexo-next的魔法糖/zdpz.png" alt=""><a id="more"></a></li><li>在hexo目录下执行 <code>npm install hexo-asset-image --save</code>,这是下载安装一个可以上传本地图片的插件。</li><li>运行<code>hexo new &quot;xxx&quot;</code>来生成文章时，在<code>/source/_posts</code>文件夹中生成一个同名的文件夹。<br><img src="/2018/03/07/hexo-next的魔法糖/wjj.png" alt=""></li><li>最后在<code>xxx.md</code>中想引入图片时，先把图片复制到这个xxx文件夹中，然后按照markwown的格式引入图片：<code>！[替代文字](xxx/图片名.png)</code>。</li></ol><hr><h1 id="hexo-next添加自定义页面"><a href="#hexo-next添加自定义页面" class="headerlink" title="hexo-next添加自定义页面"></a>hexo-next添加自定义页面</h1><ol><li>在hexo目录下创建你想要生成的页面    <code>hexo new page &quot;aboutme&quot;</code>。</li><li>修改主题配置<code>_config.yml</code>文件中的 <code>menu</code>和<code>menu_icons</code>,如下图<br><img src="/2018/03/07/hexo-next的魔法糖/menu.png" alt="eg"><br>其中<code>address-card</code>是在<code>font-Awesome</code>图库图标的名称。</li><li>修改主题下的<code>netx/languages/zh-Hans.yml</code>文件中的<code>menu</code>。<br><img src="/2018/03/07/hexo-next的魔法糖/aboutme.png" alt=""></li><li>运行<code>hexo -s</code>效果图。<br><img src="/2018/03/07/hexo-next的魔法糖/xgt.png" alt=""></li><li>设置站点配置文件<code>_config.yml</code>中的<code>skip_render</code>添加<code>aboutme/**</code>,这样就意味着根目录下的<code>source/aboutme</code>文件夹中的内容不会被转化成html。而是直接copy到<code>public</code>文件夹。</li></ol><hr><h1 id="lt-–更多美味糖果–-gt"><a href="#lt-–更多美味糖果–-gt" class="headerlink" title="&lt;–更多美味糖果–&gt;"></a>&lt;–<a href="http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html" target="_blank" rel="noopener">更多美味糖果</a>–&gt;</h1>]]></content>
+      
       <categories>
-        <category>hexo</category>
+          
+          <category> hexo </category>
+          
       </categories>
-      <tags>
-        <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[第一篇测试文章]]></title>
-    <url>%2F2018%2F03%2F06%2F%E7%AC%AC%E4%B8%80%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0%2F</url>
-    <content type="text"><![CDATA[第一篇测试文章1. 是吗？ 记录用markdownPad2富文本编辑器编写第一篇文章。 我觉得还ok。 2. 顺便记录markdown语法的学习过程 列表 无序列表使用或者+或者-（注意后面加空格） 有序列表使用数字加. 标题 使用#的个数代表等级数 引用 这是一段引用 二级引用块状引用 块状引用。符号&gt;后面有五个空格. &gt;一级引用 &gt;&gt;二级引用 这个是引用加列表 引用加列表 强调 加粗文本或者这样 斜体 删除]]></content>
+      
+      
+        <tags>
+            
+            <tag> 技术 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>第一篇测试文章</title>
+      <link href="/2018/03/06/%E7%AC%AC%E4%B8%80%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
+      <content type="html"><![CDATA[<h1 id="第一篇测试文章"><a href="#第一篇测试文章" class="headerlink" title="第一篇测试文章"></a>第一篇测试文章</h1><h3 id="1-是吗？"><a href="#1-是吗？" class="headerlink" title="1. 是吗？"></a>1. 是吗？</h3><ul><li>记录用markdownPad2富文本编辑器编写第一篇文章。</li><li>我觉得还ok。</li></ul><a id="more"></a><h3 id="2-顺便记录markdown语法的学习过程"><a href="#2-顺便记录markdown语法的学习过程" class="headerlink" title="2. 顺便记录markdown语法的学习过程"></a>2. 顺便记录markdown语法的学习过程</h3><ol><li><strong>列表</strong><ul><li>无序列表使用<em>或者+或者-（注意</em>后面加空格）</li><li>有序列表使用数字加.</li></ul></li><li><strong>标题</strong><ul><li>使用#的个数代表等级数</li></ul></li><li><strong>引用</strong><blockquote><h3 id="这是一段引用"><a href="#这是一段引用" class="headerlink" title="这是一段引用"></a>这是一段引用</h3><blockquote><h3 id="二级引用"><a href="#二级引用" class="headerlink" title="二级引用"></a><strong>二级引用</strong></h3><h3 id="块状引用"><a href="#块状引用" class="headerlink" title="块状引用"></a>块状引用</h3></blockquote><pre><code>块状引用。符号&gt;后面有五个空格.&gt;一级引用&gt;&gt;二级引用</code></pre><ol><li>这个是引用加列表</li><li>引用加列表</li></ol></blockquote></li><li><strong>强调</strong>   <ul><li><strong>加粗文本</strong>或者<strong>这样</strong></li><li><em>斜体</em></li><li>删除</li></ul></li></ol>]]></content>
+      
       <categories>
-        <category>blog</category>
+          
+          <category> blog </category>
+          
       </categories>
-      <tags>
-        <tag>博客，文章</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[markdown进阶]]></title>
-    <url>%2F2018%2F03%2F06%2Fmarkdown%E8%BF%9B%E9%98%B6%2F</url>
-    <content type="text"><![CDATA[图片与连接 语法格式 图片：![]() ![图片文本（可忽略)](图片地址） 链接：[]() [链接文本]（链接地址） 链接又分为行内，参考，自动 * 行内链接：[文章地址](https://ouyangresume.github.io/) * 参考链接：[文章地址][url]，其中url为链接标记，可置于文中任意位置。 * 自动链接：&lt;https://ouyangresume.github.io&gt; 图片也有行内和自动。用法差不多 这是图片： 代码 行内代码用`标识 这个是行内代码python manage.py runserver 代码块用123456&gt; ``` java // 注意java前面有空格 protected void onCreate(Bundle savedInstanceState) &#123; super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); &#125; 分割线 一行中用三个***或者___ 换行这是一行后面加两个空格加回车 脚注 使用[^]来定义脚注。这是一个脚注^1]]></content>
+      
+      
+        <tags>
+            
+            <tag> 博客，文章 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>markdown进阶</title>
+      <link href="/2018/03/06/markdown%E8%BF%9B%E9%98%B6/"/>
+      <content type="html"><![CDATA[<ol><li><strong>图片与连接</strong><ul><li>语法格式<blockquote><pre><code>图片：![]()  ![图片文本（可忽略)](图片地址）链接：[]()   [链接文本]（链接地址）</code></pre></blockquote></li><li>链接又分为行内，参考，自动</li></ul></li></ol><a id="more"></a><pre><code>* 行内链接：[文章地址](https://ouyangresume.github.io/)* 参考链接：[文章地址][url]，其中url为链接标记，可置于文中任意位置。* 自动链接：&lt;https://ouyangresume.github.io&gt;</code></pre><ul><li>图片也有行内和自动。用法差不多<ul><li>这是图片：<img src="https://connorlin.github.io/images/avatar.jpg" alt=""></li></ul></li></ul><ol><li><p><strong>代码</strong></p><ul><li>行内代码用`标识<blockquote><p>这个是行内代码<code>python manage.py runserver</code></p></blockquote></li><li>代码块用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;    ```  java </span><br><span class="line">    // 注意java前面有空格</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;  </span><br><span class="line">        super.onCreate(savedInstanceState);  </span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong>分割线</strong></p><ul><li>一行中用三个***或者___</li></ul></li><li><strong>换行</strong><br>这是一行后面加两个空格加<br>回车</li><li><strong>脚注</strong><ul><li>使用[^]来定义脚注。<br>这是一个脚注<a href="eg">^1</a></li></ul></li></ol>]]></content>
+      
       <categories>
-        <category>markdown</category>
+          
+          <category> markdown </category>
+          
       </categories>
-      <tags>
-        <tag>markdown</tag>
-        <tag>文章</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F03%2F05%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> markdown </tag>
+            
+            <tag> 文章 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2018/03/05/hello-world/"/>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><a id="more"></a><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+      
+      
+    </entry>
+    
+  
+  
 </search>
