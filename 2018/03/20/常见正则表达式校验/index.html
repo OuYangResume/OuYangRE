@@ -146,7 +146,7 @@
 <meta property="og:site_name" content="小小的诗">
 <meta property="og:description" content="RegExp是什么? RegExp 是正则表达式（Regular expression）的缩写，作用是对字符串执行模式匹配。 通常用于格式验证、正则替换、查找子串等 各种编程语言的正则表达式基本相同，不同的语言可能会有一些细小的差别 推荐一个在线验证的工具https://regex101.com">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T13:11:46.663Z">
+<meta property="og:updated_time" content="2018-03-26T02:35:23.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见正则表达式校验">
 <meta name="twitter:description" content="RegExp是什么? RegExp 是正则表达式（Regular expression）的缩写，作用是对字符串执行模式匹配。 通常用于格式验证、正则替换、查找子串等 各种编程语言的正则表达式基本相同，不同的语言可能会有一些细小的差别 推荐一个在线验证的工具https://regex101.com">
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  642
+                  1,081
                 </span>
               
 
@@ -455,7 +455,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  5
                 </span>
               
             </div>
@@ -484,6 +484,56 @@
 </li>
 </ul>
 <hr>
+<h1 id="量词"><a href="#量词" class="headerlink" title="量词"></a>量词</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">量词</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">n+</td>
+<td style="text-align:left">匹配任何包含至少一个 n 的字符串。同 {1,}</td>
+</tr>
+<tr>
+<td style="text-align:center">n*</td>
+<td style="text-align:left">匹配任何包含零个或多个 n 的字符串。同 {0,}</td>
+</tr>
+<tr>
+<td style="text-align:center">n?</td>
+<td style="text-align:left">匹配任何包含零个或一个 n 的字符串。同 {0,1}</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X}</td>
+<td style="text-align:left">匹配包含 X 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X,Y}</td>
+<td style="text-align:left">匹配包含 X 至 Y 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n{X,}</td>
+<td style="text-align:left">匹配包含至少 X 个 n 的序列的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">n$</td>
+<td style="text-align:left">匹配任何<strong>结尾</strong>为 n 的字符串。</td>
+</tr>
+<tr>
+<td style="text-align:center">^n</td>
+<td style="text-align:left">匹配任何<strong>开头</strong>为 n 的字符串。注意 /[^a] / 和 /^ [a]/是不一样的，前者是排除的，后者是代表首位。</td>
+</tr>
+<tr>
+<td style="text-align:center">(?=n)</td>
+<td style="text-align:left">匹配任何其后紧接指定字符串 n 的字符串。正向预查</td>
+</tr>
+<tr>
+<td style="text-align:center">(?!n)</td>
+<td style="text-align:left">匹配任何其后没有紧接指定字符串 n 的字符串。反向预查</td>
+</tr>
+</tbody>
+</table>
 <h1 id="RegExp-对象方法"><a href="#RegExp-对象方法" class="headerlink" title="RegExp 对象方法"></a>RegExp 对象方法</h1><h2 id="test"><a href="#test" class="headerlink" title="test()"></a>test()</h2><p><code>test()</code> 方法检索字符串中是否存在指定的值。返回值是 true 或 false。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断是不是QQ号</span></span><br><span class="line"><span class="comment">//首位不能是0</span></span><br><span class="line"><span class="comment">//必须是5-11位数的数字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'812634676'</span>;</span><br><span class="line"><span class="keyword">var</span> regexp = <span class="regexp">/^[1-9][0-9]&#123;4,10&#125;$/gim</span>;</span><br><span class="line"><span class="keyword">if</span> (regexp.test(str))&#123;</span><br><span class="line">	alert(<span class="string">'is'</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	alert(<span class="string">'no'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h2><p><code>exec()</code> 方法检索字符串中的指定值。返回值是被找到的值。如果没有发现匹配，则返回 null。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'e'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(patt1.exec(<span class="string">'some text'</span>));</span><br><span class="line"><span class="comment">//OUTPUT:e</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> patt2 =<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'ee'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(patt2.exec(<span class="string">'some text'</span>));</span><br><span class="line"><span class="comment">//OUTPUT:null</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="compile"><a href="#compile" class="headerlink" title="compile()"></a>compile()</h2><p><code>compile()</code> 既可以改变检索模式，也可以添加或删除第二个参数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> patt1=<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"e"</span>);</span><br><span class="line"><span class="built_in">document</span>.write(patt1.test(<span class="string">"The best things in life are free"</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 改变了检索模式</span></span><br><span class="line">patt1.compile(<span class="string">"eee"</span>);</span><br><span class="line"><span class="built_in">document</span>.write(patt1.test(<span class="string">"The best things in life are free"</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure></p>
@@ -491,8 +541,8 @@
 <h1 id="支持正则表达式的String对象的方法"><a href="#支持正则表达式的String对象的方法" class="headerlink" title="支持正则表达式的String对象的方法"></a>支持正则表达式的String对象的方法</h1><h2 id="search-检索与正则表达式相匹配的值。"><a href="#search-检索与正则表达式相匹配的值。" class="headerlink" title="search 检索与正则表达式相匹配的值。"></a>search 检索与正则表达式相匹配的值。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"Visit W3School!"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.search(<span class="regexp">/W3School/</span>))</span><br><span class="line"><span class="comment">// OUTPUT:6</span></span><br></pre></td></tr></table></figure>
 <h2 id="replace替换与正则表达式匹配的子串。"><a href="#replace替换与正则表达式匹配的子串。" class="headerlink" title="replace替换与正则表达式匹配的子串。"></a>replace替换与正则表达式匹配的子串。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"Visit Microsoft!"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.replace(<span class="regexp">/Microsoft/</span>,<span class="string">"W3School"</span>));</span><br><span class="line"><span class="comment">// OUTPUT:Visit W3School!</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 找重复项最多的字符个数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'g21ss4aeba_ersb43sgnnsssstht6sss60snnsj8resw0_ss'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// split : 将字符串转化为数组</span></span><br><span class="line"><span class="comment">// sort : 对数组排序，ASCII</span></span><br><span class="line"><span class="comment">// join : 将数组转化为字符串</span></span><br><span class="line"><span class="keyword">var</span> str_new = str.split(<span class="string">''</span>).sort.join(<span class="string">''</span>);</span><br><span class="line"><span class="built_in">console</span>.log(str_new);</span><br><span class="line"><span class="comment">//OUTPUT:"0012344668__aabbeeegghjnnnnrrssssssssssssssssttw"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> regexp = <span class="regexp">/(\w)\1+/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> index = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> value = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">str_new.replace(regexp,<span class="function"><span class="keyword">function</span>(<span class="params">$<span class="number">0</span>,$<span class="number">1</span></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (index &lt; $<span class="number">0.</span>length)&#123;</span><br><span class="line">		index = $<span class="number">0.</span>length;</span><br><span class="line">		value = $<span class="number">1</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.write(<span class="string">'重复项最多的字符是：'</span> + value + <span class="string">'，个数是：'</span> + index)</span><br><span class="line"></span><br><span class="line"><span class="comment">// OUTPUT:重复项最多的字符是：s，个数是：16</span></span><br></pre></td></tr></table></figure>
-<h1 id="match找到一个或多个正则表达式的匹配。"><a href="#match找到一个或多个正则表达式的匹配。" class="headerlink" title="match找到一个或多个正则表达式的匹配。"></a>match找到一个或多个正则表达式的匹配。</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"1 plus 2 equal 3"</span></span><br><span class="line"><span class="built_in">console</span>.log(str.match(<span class="regexp">/\d+/g</span>))</span><br><span class="line"><span class="comment">// OUTPUT : 1,2,3</span></span><br></pre></td></tr></table></figure>
-<h1 id="split把字符串分割为字符串数组。"><a href="#split把字符串分割为字符串数组。" class="headerlink" title="split把字符串分割为字符串数组。"></a>split把字符串分割为字符串数组。</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">" How are you doing today?"</span></span><br><span class="line"><span class="built_in">document</span>.write(str.split(<span class="regexp">/\s+/</span>));</span><br><span class="line"><span class="comment">// OUTPUT:How,are,you,doing,today?</span></span><br></pre></td></tr></table></figure>
+<h2 id="match找到一个或多个正则表达式的匹配。"><a href="#match找到一个或多个正则表达式的匹配。" class="headerlink" title="match找到一个或多个正则表达式的匹配。"></a>match找到一个或多个正则表达式的匹配。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"1 plus 2 equal 3"</span></span><br><span class="line"><span class="built_in">console</span>.log(str.match(<span class="regexp">/\d+/g</span>))</span><br><span class="line"><span class="comment">// OUTPUT : 1,2,3</span></span><br></pre></td></tr></table></figure>
+<h2 id="split把字符串分割为字符串数组。"><a href="#split把字符串分割为字符串数组。" class="headerlink" title="split把字符串分割为字符串数组。"></a>split把字符串分割为字符串数组。</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">" How are you doing today?"</span></span><br><span class="line"><span class="built_in">document</span>.write(str.split(<span class="regexp">/\s+/</span>));</span><br><span class="line"><span class="comment">// OUTPUT:How,are,you,doing,today?</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>经验：</p>
 <ol>
@@ -501,7 +551,10 @@
 <li>替换敏感词汇，用replace()</li>
 </ol>
 </blockquote>
-<h1 id="常见的正则表达式校验"><a href="#常见的正则表达式校验" class="headerlink" title="常见的正则表达式校验"></a>常见的正则表达式校验</h1>
+<h1 id="常见的正则表达式校验"><a href="#常见的正则表达式校验" class="headerlink" title="常见的正则表达式校验"></a>常见的正则表达式校验</h1><h2 id="校验数字的表达式"><a href="#校验数字的表达式" class="headerlink" title="校验数字的表达式"></a>校验数字的表达式</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.数字：^[0-9]*$</span><br><span class="line">2.n位的数字： ^\d&#123;n&#125;$</span><br><span class="line">3.至少n位的数字： ^\d&#123;n,&#125;$</span><br><span class="line">4.m-n位的数字：^\d&#123;m,n&#125;$</span><br><span class="line">5.零和非零开头的数字：^(0|[1-9][0-9]*)$</span><br><span class="line">6.非零开头的最多带两位小数的数字：^([1-9][0-9]*)+(.[0-9]&#123;1,2&#125;?)$</span><br><span class="line">7.带1-2位小数的正数或负数：^(\-)?\d+(\.\d&#123;1,2&#125;)?$</span><br><span class="line">8.正数，负数，和小数：^(\-|\+)?\d+(\.\d+)?$</span><br><span class="line">9.非零的正整数：^[1-9]/d*$ 或 ^\+?[1-9][0-9]*$</span><br></pre></td></tr></table></figure>
+<h2 id="校验字符的表达式"><a href="#校验字符的表达式" class="headerlink" title="校验字符的表达式"></a>校验字符的表达式</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 汉字:^[\u4e00-\u9fa5]&#123;0,&#125;$</span><br><span class="line">2. 英文和数字：^[A-Za-zz-9]+&amp; 或^[A-Za-z0-9]&#123;4,40&#125;$</span><br><span class="line">3. 长度为3-20的所有字符：^.&#123;3,20&#125;$</span><br><span class="line">4. 由26个英文字母组成的字符串:^[A-Za-z]+&amp;</span><br><span class="line">5. 禁止输入含有~的字符：[^~\x22]+</span><br></pre></td></tr></table></figure>
+<h2 id="特殊需求表达式"><a href="#特殊需求表达式" class="headerlink" title="特殊需求表达式"></a>特殊需求表达式</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.Email地址：^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -639,7 +692,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -716,7 +769,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RegExp是什么"><span class="nav-number">1.</span> <span class="nav-text">RegExp是什么?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RegExp-对象方法"><span class="nav-number">2.</span> <span class="nav-text">RegExp 对象方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#test"><span class="nav-number">2.1.</span> <span class="nav-text">test()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">2.2.</span> <span class="nav-text">exec()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compile"><span class="nav-number">2.3.</span> <span class="nav-text">compile()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持正则表达式的String对象的方法"><span class="nav-number">3.</span> <span class="nav-text">支持正则表达式的String对象的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#search-检索与正则表达式相匹配的值。"><span class="nav-number">3.1.</span> <span class="nav-text">search 检索与正则表达式相匹配的值。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#replace替换与正则表达式匹配的子串。"><span class="nav-number">3.2.</span> <span class="nav-text">replace替换与正则表达式匹配的子串。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#match找到一个或多个正则表达式的匹配。"><span class="nav-number">4.</span> <span class="nav-text">match找到一个或多个正则表达式的匹配。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#split把字符串分割为字符串数组。"><span class="nav-number">5.</span> <span class="nav-text">split把字符串分割为字符串数组。</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的正则表达式校验"><span class="nav-number">6.</span> <span class="nav-text">常见的正则表达式校验</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RegExp是什么"><span class="nav-number">1.</span> <span class="nav-text">RegExp是什么?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#量词"><span class="nav-number">2.</span> <span class="nav-text">量词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RegExp-对象方法"><span class="nav-number">3.</span> <span class="nav-text">RegExp 对象方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#test"><span class="nav-number">3.1.</span> <span class="nav-text">test()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exec"><span class="nav-number">3.2.</span> <span class="nav-text">exec()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compile"><span class="nav-number">3.3.</span> <span class="nav-text">compile()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持正则表达式的String对象的方法"><span class="nav-number">4.</span> <span class="nav-text">支持正则表达式的String对象的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#search-检索与正则表达式相匹配的值。"><span class="nav-number">4.1.</span> <span class="nav-text">search 检索与正则表达式相匹配的值。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#replace替换与正则表达式匹配的子串。"><span class="nav-number">4.2.</span> <span class="nav-text">replace替换与正则表达式匹配的子串。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#match找到一个或多个正则表达式的匹配。"><span class="nav-number">4.3.</span> <span class="nav-text">match找到一个或多个正则表达式的匹配。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#split把字符串分割为字符串数组。"><span class="nav-number">4.4.</span> <span class="nav-text">split把字符串分割为字符串数组。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的正则表达式校验"><span class="nav-number">5.</span> <span class="nav-text">常见的正则表达式校验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#校验数字的表达式"><span class="nav-number">5.1.</span> <span class="nav-text">校验数字的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#校验字符的表达式"><span class="nav-number">5.2.</span> <span class="nav-text">校验字符的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊需求表达式"><span class="nav-number">5.3.</span> <span class="nav-text">特殊需求表达式</span></a></li></ol></li></ol></div>
             
 
           </div>
