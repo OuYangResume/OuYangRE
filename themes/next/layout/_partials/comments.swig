@@ -16,6 +16,7 @@
            data-colorscheme="{{ theme.facebook_comments_plugin.scheme }}">
       </div>
     </div>
+	
 
   {% elseif theme.vkontakte_api.enable and theme.vkontakte_api.comments %}
     <div class="comments" id="comments">
@@ -65,6 +66,9 @@
   {% elseif theme.valine.appid and theme.valine.appkey %}
     <div class="comments" id="comments">
     </div>
+	{% elseif theme.gitalk.enable %}
+	<div id="gitalk-container"></div>
+	
   {% endif %}
-
+  
 {% endif %}

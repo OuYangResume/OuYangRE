@@ -253,14 +253,14 @@ post_wordcount:
 
 # Wechat Subscriber 微信赞赏
 wechat_subscriber:
-  enabled: true
+  enabled: false
   qcode: /images/wechat.jpg
   description: 坚持原创技术分享，你的支持将鼓励我继续创作!
 
 # Reward
-#reward_comment: Donate comment here
-#wechatpay: /images/wechatpay.jpg
-#alipay: /images/alipay.jpg
+reward_comment: 赞赏是最好的鼓励！
+wechatpay: /images/wechat.jpg
+alipay: /images/alipay.png
 #bitcoin: /images/bitcoin.png
 
 # Declare license on posts
@@ -374,6 +374,7 @@ han: false
 # Duoshuo ShortName
 #duoshuo_shortname:
 
+
 # Disqus
 disqus:
   enable: false
@@ -383,12 +384,25 @@ disqus:
 # Hypercomments
 #hypercomments_id:
 
+# Gitalk
+gitalk:
+  enable: true
+  ClientID: 97919dcb46c9715b5e53
+  ClientSecret: 02c29502b4f5c28dda23615b285bb08506e7c48e
+  repo: blog-comments
+  owner: OuYangResume
+  adminUser: OuYangResume
+  ID: location.pathname
+  labels: gitalk
+  perPage: 15
+  pagerDirection: last
+  createIssueManually: true
+  distractionFreeMode: false
 # changyan
 changyan:
   enable: false
   appid:
   appkey:
-
 
 # Valine.
 # You can get your appid and appkey from https://leancloud.cn
@@ -411,7 +425,7 @@ valine:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-livere_uid: MTAyMC8zNDU4Ni8xMTEyNA==
+# livere_uid: MTAyMC8zNDU4Ni8xMTEyNA==
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -501,10 +515,10 @@ needmoreshare2:
 # Make duoshuo show UA
 # user_id must NOT be null when admin_enable is true!
 # you can visit http://dev.duoshuo.com get duoshuo user id.
-duoshuo_info:
-  ua_enable: true
-  admin_enable: false
-  user_id: 0
+#duoshuo_info:
+ # ua_enable: false
+  #admin_enable: false
+  #user_id: 0
   #admin_nickname: Author
 
 # Post widgets & FB/VK comments settings.
