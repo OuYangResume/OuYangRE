@@ -187,4 +187,4 @@ tags: [arcgis api]
 <div  align="center"><img src="arcgis-api实现一些常用的功能/area.png" width = "500" height = "400" alt="测量面积" align=center />
 </div>
 
-### 
+### 动态轨迹
