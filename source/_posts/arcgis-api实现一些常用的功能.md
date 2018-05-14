@@ -188,3 +188,101 @@ tags: [arcgis api]
 </div>
 
 ### 动态轨迹
+原理也就是写一个定时器。一个点动态的沿着线从起点到线的终点。
+``` javascript
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态轨迹demo</title>
+    <link rel="stylesheet" type="text/css" href="http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" type="text/css" href="http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/esri/css/esri.css"/>
+    <script type="text/javascript" src="http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/init.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="map" style="height: 700px;width: 100%;"></div>
+<input type="button" id="openTool"   value="开启" />
+</body>
+<script>
+    require(["esri/map", "extLayers/gaodeLayer","extLayers/TDTLayer",
+        "esri/geometry/Polyline","esri/symbols/SimpleLineSymbol","esri/graphic","esri/layers/GraphicsLayer",
+        "esri/geometry/Point","esri/symbols/PictureMarkerSymbol","esri/SpatialReference"
+    ],function (Map,gaodeLayer,TDTLayer,Polyline,SimpleLineSymbol,Graphic,GraphicsLayer,Point,PictureMarkerSymbol,SpatialReference) {
+        var map=new Map("map",{
+            center:[112.6,30.5],
+            zoom:6,
+            slider:true,
+            nav:false,
+            logo:false
+        });
+
+        var gaodelayer=new gaodeLayer();
+        map.addLayer(gaodelayer);
+        var graphicsLayer1=new GraphicsLayer();//线图层
+        map.addLayer(graphicsLayer1);
+        var graphicsLayer=new GraphicsLayer();//动态点图层
+        map.addLayer(graphicsLayer);
+
+        var path={"point":[[113.68,34.53], [115.58,34.55], [113.57,30.58],[115.53,30.6]]};
+        var polyline = new Polyline(new SpatialReference({wkid:4326}));
+        polyline.addPath(path.point);
+        var sys=new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH,new esri.Color([0,255,0]),3);
+        var g=new Graphic(polyline,sys);
+        graphicsLayer1.add(g);
+
+        var point=new Point(path.point[0],new SpatialReference({wkid:4326}));
+        var picBaseUrl = "https://static.arcgis.com/images/Symbols/Shapes/";
+        var blue = new PictureMarkerSymbol(picBaseUrl + "BluePin1LargeB.png", 30, 30).setOffset(0, 15);
+        var graphic=new Graphic(point,blue);
+        graphicsLayer.add(graphic);
+        //根据坐标点进行移动
+        var points,moving;
+        var startNum,endNum;
+        document.getElementById("openTool").onclick=function(){
+            if(typeof(moving)!="undefined"){
+                clearInterval(moving); //清除移动
+            }
+            points = path.point;
+            graphic.geometry.x = points[0][0];
+            graphic.geometry.y = points[0][1];
+            graphicsLayer.redraw();
+            move(0,1);
+        };
+        function move(start,end) {
+            var x1=points[start][0];
+            var y1=points[start][1];
+            var x2=points[end][0];
+            var y2=points[end][1];
+            var p=(y2-y1)/(x2-x1);//斜率
+            var v=0.01; //距离
+            moving=setInterval(function () {
+                startNum=start;
+                endNum=end;
+                //分别计算 x,y轴方向速度
+                if(Math.abs(p)==Number.POSITIVE_INFINITY){//p为无穷大
+                    graphic.geometry.y+=v;
+                }
+                else {
+                    if (x2<x1){
+                        graphic.geometry.x-=(1/Math.sqrt(1+p*p))*v;
+                        graphic.geometry.y-=(p/Math.sqrt(1+p*p))*v;
+                    }else {
+                        graphic.geometry.x+=(1/Math.sqrt(1+p*p))*v;
+                        graphic.geometry.y+=(p/Math.sqrt(1+p*p))*v;
+                    }
+                }
+                graphicsLayer.redraw();
+                if (Math.abs(graphic.geometry.x - x2) <=0.01 && Math.abs(graphic.geometry.y - y2) <=0.01) {
+                    clearInterval(moving);
+                    startNum=start++;
+                    endNum=end++;
+                    if (end < points.length)
+                        move(start, end);
+                }
+            },50);
+        }
+    })
+</script>
+</html>
+```
