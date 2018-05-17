@@ -7,4 +7,4 @@
 {% include 'gitment.swig' %}
 {% include 'valine.swig' %}
 {% include 'gitalk.swig' %}
-.gt-container a{border-bottom: none;}
+
