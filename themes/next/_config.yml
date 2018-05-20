@@ -384,20 +384,6 @@ disqus:
 # Hypercomments
 #hypercomments_id:
 
-# Gitalk
-gitalk:
-  enable: true
-  ClientID: 97919dcb46c9715b5e53
-  ClientSecret: 02c29502b4f5c28dda23615b285bb08506e7c48e
-  repo: blog-comments
-  owner: OuYangResume
-  adminUser: OuYangResume
-  ID: location.pathname
-  labels: gitalk
-  perPage: 15
-  pagerDirection: last
-  createIssueManually: true
-  distractionFreeMode: false
 # changyan
 changyan:
   enable: false
@@ -843,3 +829,12 @@ images: images
 version: 5.1.4
 
 since: 2017
+
+gitalk:
+  enable: true
+  githubID: OuYangResume     
+  repo: OuYangResume.github.io 
+  ClientID: 76bfb3ebd7b98d89f89e
+  ClientSecret: 1b8613f6f4ec3f1f67446e72e6cecb034ac9765d
+  adminUser: 15180191339@139.com
+  distractionFreeMode: true
