@@ -27,3 +27,8 @@ ___
 5. 设置站点配置文件`_config.yml`中的`skip_render`添加`aboutme/**`,这样就意味着根目录下的`source/aboutme`文件夹中的内容不会被转化成html。而是直接copy到`public`文件夹。
 ___
 ## <--[更多美味糖果](http://shenzekun.cn/hexo%E7%9A%84next%E4%B8%BB%E9%A2%98%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B.html)-->
+
+___更新线20180603___
+
+必须记录一下白忙活一天的状态了。具体原因是hexo clean会清除public下的所有文件。
+修改应该source文件下的文件。然后再执行hexo g 生成public。
