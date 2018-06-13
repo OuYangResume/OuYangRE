@@ -68,7 +68,7 @@
     </div>
 	
 	{% elseif theme.gitalk.enable %}
-	<div id="container"></div>
+	<div id="gitalk-container"></div>
 	
   {% endif %}
 

@@ -376,11 +376,11 @@ han: false
 
 gitalk:
   enable: true
-  githubID: OuYangResume	 
-  repo: OuYangResume.github.io
-  ClientID: fc37446fb7994fbe5304
-  ClientSecret: 213560f964876da2ed17788ef68349640b49ea12
-  adminUser: OuYangResume
+  githubID: ouyangresume 
+  repo: ouyangresume.github.io  
+  ClientID: d7f36d4bff6d831c801e
+  ClientSecret: 965774f9d89b02a96c300dfbc14b257855233cc9
+  adminUser: ouyangresume 
   distractionFreeMode: true
 # Disqus
 disqus:
