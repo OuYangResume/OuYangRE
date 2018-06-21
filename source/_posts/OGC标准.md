@@ -2,7 +2,7 @@
 title: OGC标准
 date: 2018-03-23 16:39:11
 categories: GIS
-tags: [技术,GIS]
+tags: GIS
 
 ---
 ## 一：OGC与OGC标准

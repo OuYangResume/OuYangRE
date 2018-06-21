@@ -1,7 +1,7 @@
 ---
 title: SpringBoot 定时发送邮件
 date: 2018-06-06 14:33:44
-categories: Java
+categories: java
 tags: [SpringBoot]
 
 ---

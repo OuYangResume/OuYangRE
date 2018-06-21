@@ -1,8 +1,8 @@
 ---
 title: ubuntu安装geoserver
 date: 2018-06-15 16:18:26
-categories: gis
-tags: [gis]
+categories: GIS
+tags: GIS
 
 ---
 ### 下载geoserver
