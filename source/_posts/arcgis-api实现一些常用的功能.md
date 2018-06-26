@@ -2,7 +2,7 @@
 title: arcgis api实现一些常用的功能
 date: 2018-05-14 10:06:48
 categories: GIS
-tags: [arcgis api]
+tags: [GIS]
 
 ---
 

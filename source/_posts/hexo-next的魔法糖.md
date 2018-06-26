@@ -1,8 +1,8 @@
 ---
 title: hexo-next的魔法糖
 date: 2018-03-07 19:52:11
-categories: hexo
-tags: [技术]  
+categories: blog
+tags: [hexo]  
 
 ---
 ___

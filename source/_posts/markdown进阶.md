@@ -1,8 +1,8 @@
 ---
 title: markdown进阶
 date: 2018-03-06 11:23:46  
-categories: markdown  
-tags: [markdown,文章]
+categories: blog
+tags: [markdown]
 
 ---
  [url]:https://ouyangresume.github.io/
