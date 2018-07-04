@@ -16,7 +16,8 @@
     <script src="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
     <link href="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.js"></script>
-
+    <script src="js/html2canvas.js"></script>
+    <script src="js/jsPdf.debug.js"></script>
 </head>
 
 <body>
@@ -27,7 +28,7 @@
         ============================ -->
             <div id="header" class="row">
                 <div class="col-sm-2">
-                    <img class="propic" src="img/oyb.jpg" alt="">
+                    <img class="propic" src="./img/oyb.jpg" alt="">
                 </div>
                 <!-- photo end-->
 
@@ -244,196 +245,242 @@
                 </div>
             </div>
             <!--right end-->
-            <div class="btn-group-vertical fixed-btn">
-                <button type="button" class="btn btn-default">
-                    <a href="#" title="回到顶部">
-                        <span class="social fa fa-2x fa-arrow-up" style="margin-right:0px"></span>
-                    </a>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <a href="https://ouyangresume.github.io/" title="回到首页">
-                        <span class="social fa fa-2x fa-home" style="margin-right:0px"></span>
-                    </a>
-                </button>
-            </div>
             <div class="col-sm-12" id="map">
                 <div id="closeMap" title="关闭地图">X</div>
             </div>
         </div>
         <!--container end-->
-        <footer class="text-center">
+        <!-- <footer class="text-center">
             <p>power by
                 <a href="http://www.birdgis.com/">birdgis</a>
             </p>
-        </footer>
+        </footer> -->
+        <div class="btn-group-vertical fixed-btn">
+            <button type="button" class="btn btn-default">
+                <a href="#" title="回到顶部">
+                    <span class="social fa fa-2x fa-arrow-up" style="margin-right:0px"></span>
+                </a>
+            </button>
+            <button type="button" class="btn btn-default">
+                <a href="https://ouyangresume.github.io/" title="回到首页">
+                    <span class="social fa fa-2x fa-home" style="margin-right:0px"></span>
+                </a>
+            </button>
+            <button type="button" class="btn btn-default" v-on:click="renderPdf">
+                <a href="#" title="导出成PDF">
+                    <span class="social fa fa-2x fa-cloud-download" style="margin-right:0px"></span>
+                </a>
+            </button>
+        </div>
     </div>
-    <!-- <div class="blackToFirst">
-        <div class="bts" title="回到顶部">
-            <a href="#"></a>
-        </div>
-        <div class="btf" title="回到首页">
-            <a href="http://www.birdgis.com"></a>
-        </div>
-    </div> -->
-    <script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
-    <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                personal: {
-                    styleObject: {
-                        "background-color": "#" + (~~(Math.random() * (1 << 24))).toString(16),
-                        height: "1px",
-                        border: "none",
-                    },
-                    name: "欧阳波",
-                    jobHutter: "软件开发工程师",
-                    introduce: "本人吃苦耐劳，工作认真，能很快适应新环境，处事冷静，学习能力较强，对自己要求严格，条理性强，善于整理，具有良好的团队精神和较强的组织能力，具有扎实的专业知识和较强的实务操作技能，能熟练地运用专业软件，熟练各类办公软件，拥有《全国信息化工程师》、《全国计算机二级证》等证书。" + "热爱GIS，愿意为GIS事业奋斗终身。自我的评价就是自学，自律能力强，追求的是学无止境，止于至善。"
-                },
-                educations: [{
-                    property: "university",
-                    name: "江西农业大学",
-                    position: "地理信息科学",
-                    time: "2013.9-2017.6",
-                    introduce: "在校期间学习了高等数学、数据结构、线性代数、AutoCAD、JAVA、C++、HTML、CSS、JavaScript、地理学、地图学、计算机科学与技术、遥感技术、数据库技术、地理信息系统原理、测量学、地理信息系统设计与应用、地理信息系统二次开发等等,对ArcGIS,WebGIS的二次开发,对GIS软件操作比较熟悉,无论是MapGIS,QGIS还是ArcGIS。自学Python和数据库的相关操作,还有数据可视化。毕业设计做的《江西省新干县最短路径分析信息系统》,是基于arcgis api for javascript，ArcGISServer，MYSQL，JAVA,Echart等等技术开发的系统。"
-                },
-                {
-                    property: "internship",
-                    name: "广州奥格智能有限公司",
-                    position: "软件测试工程师",
-                    time: "2016.10-2017.4",
-                    introduce: "这是实习期，在该公司做的是测试工作，测试的是赣州崇义不动产项目登记的软件平台。期间对数据库语言进一步熟悉还认识到对业务的了解也是软件开发中很重要的一部分。"
-                }
-                ],
-                jobExp: [{
-                    name: "firstJob",
-                    position: "webgis开发工程师",
-                    company: "武汉智图科技有限责任公司",
-                    time: "2017.6-2017.10",
-                    describe: "湖北省精准扶贫地理信息公共服务平台的研发工作。负责在线地图模块的专题图和专题监测的开发。"+
-                    "具体实现技术：Git版本控制，前端使用的bootstrap写的静态的页面，后台是ssm框架。"+
-                    "读取oracle中的贫困户数据转成json格式结合echarts生成热力图，迁徙图等一系列专题图。利用GeometryService重写实现性能相对较好的测量功能(博客中有代码哦) "
-                },
-                {
-                    name: "firstJob",
-                    position: "软件开发工程师",
-                    company: "武汉新烽光电股份有限公司",
-                    time: "2017.10-至今",
-                    describe: "负责西宁海绵城市信息平台和潜江智慧河长信息平台有关于地图的研发工作。"+
-                    "核心在于硬件设备（液位计，流量计,SS）获取数据的准确度。根据测绘院提供数据分析得到区域地块，河流,设备信息在地图上展示交互。其中值得一提有河长巡查河流动态轨迹的展示和村级河长点信息过多时采取聚类的方式得到解决。 "
-                }],
-                awards: [{
-                    name: "三等奖学金",
-                    time: "2014-2017",
-                    describe: "多次获得该等奖学金"
-                },
-                {
-                    name: "二等奖学金",
-                    time: "2015/6",
-                    describe: "曾获得过一次该奖学金"
-                },
-                {
-                    name: "运动会长跑第四",
-                    time: "2014/11",
-                    describe: "在大学的运动会上的长跑项目获得了第四名。"
-                }
-                ],
-                works: [{
-                    name: "Vue-GIS",
-                    url: "https://github.com/OuYangResume/Vue-Gis",
-                    describe: "从VUE出发一步一步靠近gis"
-                },
-                {
-                    name: "小小的诗不敢递给她",
-                    url: "https://ouyangresume.github.io",
-                    describe: "记录学习,生活状态， 我的一切"
-                },
-                ],
-                skills: [
-                    {
-                        name: "ArcGIS",
-                        class: "progress-bar-info",
-                        styleObject: {
-                            width: "70%"
-                        }
-                    }, {
-                        name: "Python",
-                        class: "progress-bar-success",
-                        styleObject: {
-                            width: "40%",
-                            color: 'blue',
-                        }
-                    },
-                    {
-                        name: "Vue",
-                        class: "progress-bar-primary",
-                        styleObject: {
-                            width: "55%"
-                        }
-                    },
-                    {
-                        name: "JavaScript",
-                        class: "progress-bar-warning",
-                        styleObject: {
-                            width: "70%"
-                        }
-                    },
-                    {
-                        name: "JAVA",
-                        class: "progress-bar-danger",
-                        styleObject: {
-                            width: "60%",
-                        }
-                    }
-                ]
-            }
-        })
-    </script>
-    <script>
 
-        function mapMain() {
-            var layer = L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-                maxZoom: 18,
-                id: 'mapbox.streets',
-                accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
-            });
-            var map = L.map("map", {
-                center: [30.477497, 114.402626], //设置中心地图是纬度。经度114.402626,30.477497
-                zoom: 10,
-                layers: [layer],
-                fullscreenControl: true,
-                fullscreenControlOptions: {
-                    position: 'topleft'
-                }
-            });
-            var homeMarker = L.AwesomeMarkers.icon({
-                prefix: 'fa',
-                icon: 'home',
-                markerColor: 'blue',
-                iconColor: 'white'
-            });
-            var redMarker = L.AwesomeMarkers.icon({
-                prefix: 'fa',
-                icon: 'phone',
-                markerColor: 'green',
-                iconColor: 'white'
-            });
-            L.marker([28.193484, 114.155064], { icon: homeMarker }).addTo(map).bindPopup("<b>这是我的家乡</b>");//立即打开弹窗;
-            L.marker([30.477497, 114.402626], { icon: redMarker }).addTo(map).bindPopup("<b>当前工作地址<br>联系我：13135667053</b>").openPopup();//立即打开弹窗;
-        }
-        var oShowMap = document.getElementById("showMap");
-        var oCloseMap = document.getElementById("closeMap");
-
-        var oMap = document.getElementById("map");
-        oShowMap.onclick = function () {
-            oMap.style.display = "block";
-            oMap.style.height = "300px";
-            mapMain();
-        };
-        oCloseMap.onclick = function () {
-            oMap.style.display = "none";
-        }
-    </script>
 </body>
+<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            personal: {
+                styleObject: {
+                    "background-color": "#" + (~~(Math.random() * (1 << 24))).toString(16),
+                    height: "1px",
+                    border: "none",
+                },
+                name: "欧阳波",
+                jobHutter: "软件开发工程师",
+                introduce: "本人吃苦耐劳，工作认真，能很快适应新环境，处事冷静，学习能力较强，对自己要求严格，条理性强，善于整理，具有良好的团队精神和较强的组织能力，具有扎实的专业知识和较强的实务操作技能，能熟练地运用专业软件，熟练各类办公软件，拥有《全国信息化工程师》、《全国计算机二级证》等证书。" + "热爱GIS，愿意为GIS事业奋斗终身。自我的评价就是自学，自律能力强，追求的是学无止境，止于至善。"
+            },
+            educations: [{
+                property: "university",
+                name: "江西农业大学",
+                position: "地理信息科学",
+                time: "2013.9-2017.6",
+                introduce: "在校期间学习了高等数学、数据结构、线性代数、AutoCAD、JAVA、C++、HTML、CSS、JavaScript、地理学、地图学、计算机科学与技术、遥感技术、数据库技术、地理信息系统原理、测量学、地理信息系统设计与应用、地理信息系统二次开发等等,对ArcGIS,WebGIS的二次开发,对GIS软件操作比较熟悉,无论是MapGIS,QGIS还是ArcGIS。自学Python和数据库的相关操作,还有数据可视化。毕业设计做的《江西省新干县最短路径分析信息系统》,是基于arcgis api for javascript，ArcGISServer，MYSQL，JAVA,Echart等等技术开发的系统。"
+            },
+            {
+                property: "internship",
+                name: "广州奥格智能有限公司",
+                position: "软件测试工程师",
+                time: "2016.10-2017.4",
+                introduce: "这是实习期，在该公司做的是测试工作，测试的是赣州崇义不动产项目登记的软件平台。期间对数据库语言进一步熟悉还认识到对业务的了解也是软件开发中很重要的一部分。"
+            }
+            ],
+            jobExp: [{
+                name: "firstJob",
+                position: "webgis开发工程师",
+                company: "武汉智图科技有限责任公司",
+                time: "2017.6-2017.10",
+                describe: "湖北省精准扶贫地理信息公共服务平台的研发工作。负责在线地图模块的专题图和专题监测的开发。" +
+                    "具体实现技术：Git版本控制，前端使用的bootstrap写的静态的页面，后台是ssm框架。" +
+                    "读取oracle中的贫困户数据转成json格式结合echarts生成热力图，迁徙图等一系列专题图。利用GeometryService重写实现性能相对较好的测量功能(博客中有代码哦) "
+            },
+            {
+                name: "firstJob",
+                position: "软件开发工程师",
+                company: "武汉新烽光电股份有限公司",
+                time: "2017.10-至今",
+                describe: "负责西宁海绵城市信息平台和潜江智慧河长信息平台有关于地图的研发工作。" +
+                    "核心在于硬件设备（液位计，流量计,SS）获取数据的准确度。根据测绘院提供数据分析得到区域地块，河流,设备信息在地图上展示交互。其中值得一提有河长巡查河流动态轨迹的展示和村级河长点信息过多时采取聚类的方式得到解决。 "
+            }],
+            awards: [{
+                name: "三等奖学金",
+                time: "2014-2017",
+                describe: "多次获得该等奖学金"
+            },
+            {
+                name: "二等奖学金",
+                time: "2015/6",
+                describe: "曾获得过一次该奖学金"
+            },
+            {
+                name: "运动会长跑第四",
+                time: "2014/11",
+                describe: "在大学的运动会上的长跑项目获得了第四名。"
+            }
+            ],
+            works: [{
+                name: "Vue-GIS",
+                url: "https://github.com/OuYangResume/Vue-Gis",
+                describe: "从VUE出发一步一步靠近gis"
+            },
+            {
+                name: "小小的诗不敢递给她",
+                url: "https://ouyangresume.github.io",
+                describe: "记录学习,生活状态， 我的一切"
+            },
+            ],
+            skills: [
+                {
+                    name: "ArcGIS",
+                    class: "progress-bar-info",
+                    styleObject: {
+                        width: "70%"
+                    }
+                }, {
+                    name: "Python",
+                    class: "progress-bar-success",
+                    styleObject: {
+                        width: "40%",
+                        color: 'blue',
+                    }
+                },
+                {
+                    name: "Vue",
+                    class: "progress-bar-primary",
+                    styleObject: {
+                        width: "55%"
+                    }
+                },
+                {
+                    name: "JavaScript",
+                    class: "progress-bar-warning",
+                    styleObject: {
+                        width: "70%"
+                    }
+                },
+                {
+                    name: "JAVA",
+                    class: "progress-bar-danger",
+                    styleObject: {
+                        width: "60%",
+                    }
+                }
+            ]
+        },
+        methods: {
+            // 导出PDF
+            renderPdf: function () {
+                html2canvas(document.getElementsByClassName("container"), {
+                    onrendered: function (canvas) {
+
+                        var contentWidth = canvas.width;
+                        var contentHeight = canvas.height;
+
+                        //一页pdf显示html页面生成的canvas高度;
+                        var pageHeight = contentWidth / 595.28 * 841.89;
+                        //未生成pdf的html页面高度
+                        var leftHeight = contentHeight;
+                        //pdf页面偏移
+                        var position = 0;
+                        //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                        var imgWidth = 595.28;
+                        var imgHeight = 595.28 / contentWidth * contentHeight;
+                        //返回图片URL，参数：图片格式和清晰度(0-1)
+                        var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                        //方向默认竖直，尺寸ponits，格式a4【595.28,841.89]
+                        var pdf = new jsPDF('', 'pt', 'oouyang');
+                        //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                        //当内容未超过pdf一页显示的范围，无需分页
+                        // if (leftHeight < pageHeight) {
+                        //     pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                        // } else {
+                        //     while (leftHeight > 0) {
+                        //         pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                        //         leftHeight -= pageHeight;
+                        //         position -= 841.89;
+                        //         //避免添加空白页
+                        //         if (leftHeight > 0) {
+                        //             pdf.addPage();
+                        //         }
+                        //     }
+                        // }
+
+                        //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                        pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 900);
+                        pdf.save('oouyang.pdf');
+
+                        // document.body.appendChild(canvas);
+                    }
+                })
+            }
+        }
+    })
+</script>
+<script>
+    // 地图相关
+    function mapMain() {
+        var layer = L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
+        });
+        var map = L.map("map", {
+            center: [30.477497, 114.402626], //设置中心地图是纬度。经度114.402626,30.477497
+            zoom: 10,
+            layers: [layer],
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            }
+        });
+        var homeMarker = L.AwesomeMarkers.icon({
+            prefix: 'fa',
+            icon: 'home',
+            markerColor: 'blue',
+            iconColor: 'white'
+        });
+        var redMarker = L.AwesomeMarkers.icon({
+            prefix: 'fa',
+            icon: 'phone',
+            markerColor: 'green',
+            iconColor: 'white'
+        });
+        L.marker([28.193484, 114.155064], { icon: homeMarker }).addTo(map).bindPopup("<b>这是我的家乡</b>");//立即打开弹窗;
+        L.marker([30.477497, 114.402626], { icon: redMarker }).addTo(map).bindPopup("<b>当前工作地址<br>联系我：13135667053</b>").openPopup();//立即打开弹窗;
+    }
+    var oShowMap = document.getElementById("showMap");
+    var oCloseMap = document.getElementById("closeMap");
+
+    var oMap = document.getElementById("map");
+    oShowMap.onclick = function () {
+        oMap.style.display = "block";
+        oMap.style.height = "300px";
+        mapMain();
+    };
+    oCloseMap.onclick = function () {
+        oMap.style.display = "none";
+    }
+
+</script>
 
 </html>
