@@ -183,5 +183,84 @@ server{
 `nginx -s reload`
 然后[访问测试去吧](http://39.108.100.163:8081)
 
+### nuxt项目部署流程
+
+#### 搭建nginx+node+npm+pm2环境
+先在ubuntu上安装node环境。
+`curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -`
+`sudo apt-get install -y nodejs`
+查看node和npm版本
+`nodejs -v`
+`npm -version`
+#### nuxt项目打包上传
+查看packpage.json
+``` json
+"scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  }
+```
+执行`npm run build` 生成.nuxt渲染文件。`npm start`本地是否正常运行。
+将项目中的.nuxt、static、nuxt.config.js、package.json四个文件上传到仓库。
+#### pm2运行项目
+安装pm2：`npm instll pm2 -g`。
+pm2常用命令
+``` text
+启动：
+pm2 start app.js
+pm2 start app.js --name my-api       #my-api为PM2进程名称
+pm2 start app.js -i 0                #根据CPU核数启动进程个数
+pm2 start app.js --watch             #实时监控app.js的方式启动，当app.js文件有变动时，pm2会自动reload
+查看进程:
+pm2 list
+pm2 show 0 或者 # pm2 info 0         #查看进程详细信息，0为PM2进程id 
+停止进程：
+pm2 stop all                         #停止PM2列表中所有的进程
+pm2 stop 0                           #停止PM2列表中进程为0的进程
+重启：
+pm2 restart all                      #重启PM2列表中所有的进程
+pm2 restart 0                        #重启PM2列表中进程为0的进程
+删除PM2进程：
+pm2 delete 0                         #删除PM2列表中进程为0的进程
+pm2 delete all                       #删除PM2列表中所有的进程
+```
+在ubuntu上把仓库中文件clone下来。
+安装依赖:`npm install`。启动：`npm start`
+<div  align="center"><img src="vue项目部署到nginx服务器/nuxt.png" width = "500" height = "400" alt="nginx" align=center />
+</div>
+pm2启动:`pm2 start npm --name "my-nuxt" -- run start`
+#### ningx将pm2中运行的项目转发出去。
+在nginx的配置目录下新建一个nuxt.conf文件
+``` .conf
+upstream nodenuxt {
+    server 127.0.0.1:8089; #nuxt项目 监听端口
+    keepalive 64;
+}
+
+server {
+    listen 8090; #你需要访问的端口
+    server_name 39.108.100.163;
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;  
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Nginx-Proxy true;
+        proxy_cache_bypass $http_upgrade;
+        proxy_pass http://nodenuxt; #反向代理
+    }
+}
+```
+重启nginx：`nginx -s reload`
+[http://39.108.100.163:8090](http://39.108.100.163:8090)
+这个项目目前还在开发中。后期会可能会正式上线。
+
+
+
+
 
 
