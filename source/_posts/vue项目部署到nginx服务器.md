@@ -207,7 +207,7 @@ server{
 执行`npm run build` 生成.nuxt渲染文件。`npm start`本地是否正常运行。
 将项目中的.nuxt、static、nuxt.config.js、package.json四个文件上传到仓库。
 #### pm2运行项目
-安装pm2：`npm instll pm2 -g`。
+安装pm2：`npm install pm2 -g`。
 pm2常用命令
 ``` text
 启动：
