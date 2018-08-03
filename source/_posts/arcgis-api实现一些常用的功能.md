@@ -451,7 +451,7 @@ define([
           }
         }
         //如果聚类点的个数大于0
-        if (singles.length > this._maxSingles || singles.length > 0) {
+        if (singles.length > this._maxSingles || singles.length > 1) {
           // alert("Sorry, that cluster contains more than " + this._maxSingles + " points. Zoom in for more detail.");
           var level = this._map.getLevel() + 2 >= 17 ? 17 : this._map.getLevel() + 2;
           this._map.setZoom(level);
@@ -678,4 +678,4 @@ define([
   });
 
 ```
-在github上放有具体应用。
+在[github](https://github.com/OuYangResume/mapdemo)上放有具体应用。
