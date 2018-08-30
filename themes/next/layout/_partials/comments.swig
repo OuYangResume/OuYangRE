@@ -1,5 +1,5 @@
 {% if page.comments %}
-	
+
   {% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %}
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="{{ page.path }}"
@@ -16,7 +16,6 @@
            data-colorscheme="{{ theme.facebook_comments_plugin.scheme }}">
       </div>
     </div>
-	
 
   {% elseif theme.vkontakte_api.enable and theme.vkontakte_api.comments %}
     <div class="comments" id="comments">
@@ -63,12 +62,12 @@
       {% endif %}
     </div>
 
-	{% elseif theme.valine.appid and theme.valine.appkey %}
+  {% elseif theme.valine.appid and theme.valine.appkey %}
     <div class="comments" id="comments">
     </div>
 	
-	{% elseif theme.gitalk.enable %}
-	<div id="gitalk-container"></div>
-	
+  {% elseif theme.gitalk.enable %}
+     <div id="gitalk-container"></div>	
   {% endif %}
 
+{% endif %}

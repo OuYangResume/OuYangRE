@@ -94,8 +94,9 @@ index_with_subtitle: false
 menu:
   home: / || home
   关于: /about/ || user  
+  photo: /photo/ || photo
   #tags: /tags/ || tags
-  categories: /categories/ || th
+  #categories: /categories/ || th
   archives: /archives/ || archive
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
@@ -111,6 +112,7 @@ menu_icons:
   enable: true
   home: home
   about: user
+  photo: photo
   #tags: tags
   categoties: th
   archives: archive
@@ -376,11 +378,11 @@ han: false
 
 gitalk:
   enable: true
-  githubID: ouyangresume 
-  repo: ouyangresume.github.io  
-  ClientID: d7f36d4bff6d831c801e
-  ClientSecret: 965774f9d89b02a96c300dfbc14b257855233cc9
-  adminUser: ouyangresume 
+  githubID: 15180191339@139.com 
+  repo: OuYangResume.github.io  
+  ClientID: 2ff25b674279ab698c56
+  ClientSecret: 25047dea5cb358710817df0afe239c6dae3e3292
+  adminUser: 15180191339@139.com 
   distractionFreeMode: true
 # Disqus
 disqus:
