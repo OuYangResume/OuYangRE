@@ -5,7 +5,7 @@
 # Site
 title: 小小的诗  #网站标题
 subtitle: 不敢递给她    #网站副标题
-description: 如果爱，请深爱。不爱请离开  #网站描述
+description: 你长那么好看,不如和我虚度光阴。 #网站描述如果爱，请深爱。不爱请离开
 author: OuYang 
 language: zh-Hans #主题文件名称
 timezone:
@@ -98,3 +98,8 @@ leancloud_visitors:
   enable: true
   app_id: nRhgx6rQY4BBWbmWGnc4ftDE-gzGzoHsz
   app_key: yciTpXUYAqqMCPXM3dzOvEaX   
+# 自动生成sitemap
+sitemap: 
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml
