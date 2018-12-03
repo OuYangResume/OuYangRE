@@ -128,8 +128,8 @@ menu_icons:
 
 # Schemes
 #scheme: Muse
-scheme: Mist
-#scheme: Pisces
+#scheme: Mist
+scheme: Pisces
 #scheme: Gemini
 
 
@@ -154,12 +154,14 @@ social:
   #Instagram: https://instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
   知乎: https://www.zhihu.com
+  CloudMusic: https://music.163.com/#/user/home?id=109226134 || music
 
 social_icons:
   enable: true
   icons_only: false
   transition: false
   GitHub: github
+  CloudMusic: music
 
 # Blog rolls
 links_icon: link
@@ -212,7 +214,7 @@ sidebar:
   b2t: false
 
   # Scroll percent label in b2t button.
-  scrollpercent: false
+  scrollpercent: ture
 
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: false
@@ -377,13 +379,13 @@ han: false
 #duoshuo_shortname:
 
 gitalk:
-  enable: true
-  githubID: 15180191339@139.com 
-  repo: OuYangResume.github.io  
-  ClientID: 2ff25b674279ab698c56
-  ClientSecret: 25047dea5cb358710817df0afe239c6dae3e3292
-  adminUser: 15180191339@139.com 
-  distractionFreeMode: true
+    enable: true
+    github_user: 15180191339@139.com # owner
+    github_repo: OuYangResume.github.io # repo
+    client_id: 2ff25b674279ab698c56 # clientID
+    client_secret: 25047dea5cb358710817df0afe239c6dae3e3292 # clientSecret     
+    admin: 15180191339@139.com # Github repository collaborators. (Ensure having write access to this repository)
+    distractionFreeMode: true # Facebook-like distraction free mode
 # Disqus
 disqus:
   enable: false

@@ -7,6 +7,11 @@
       </div>
     </div>
 
+    {% elseif theme.gitalk.enable %}
+    <div class="comments" id="comments">
+      <div id="gitalk-container"></div>
+    </div>
+
   {% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %}
     <div class="comments" id="comments">
       <div class="fb-comments"
@@ -66,8 +71,6 @@
     <div class="comments" id="comments">
     </div>
 	
-  {% elseif theme.gitalk.enable %}
-     <div id="gitalk-container"></div>	
   {% endif %}
 
 {% endif %}
