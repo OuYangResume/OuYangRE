@@ -5,7 +5,7 @@ categories: NodeJS
 tags: [GIS,npm]
 
 ---
-maptalks插件库里面也有一个[VectorLayer](https://github.com/maptalks/maptalks.routeplayer).但是我们后台路径数据没有提供里面的time属性。所以自己写了一个实现类型功能的插件。为方便使用，所以发布到npm中。
+maptalks插件库里面也有一个[VectorLayer](https://github.com/maptalks/maptalks.routeplayer).但是我们后台路径数据没有提供里面的time属性。所以自己写了一个实现类型功能的插件。为方便使用，发布到npm中。
 <!-- more -->
 ### 编写功能
 `npm init` 一路到底。编写`index.js`也就是插件的功能代码，
