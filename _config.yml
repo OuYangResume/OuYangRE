@@ -7,7 +7,7 @@ title: 小小的诗  #网站标题
 subtitle: 不敢递给她    #网站副标题
 description: 你长那么好看,不如和我虚度光阴。 #网站描述如果爱，请深爱。不爱请离开
 author: OuYang 
-language: zh-Hans #主题文件名称
+language: zh-CN #主题文件名称
 timezone:
 
 # URL  #绑定域名

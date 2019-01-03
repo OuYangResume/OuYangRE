@@ -1,7 +1,6 @@
 .use-motion .sidebar .motion-element { opacity: 1; }
 
 .sidebar {
-  margin-left: -100%;
   right: auto;
   bottom: auto;
 
@@ -14,7 +13,7 @@
 .sidebar-inner {
 //padding: 20px 10px 0;
   box-sizing: border-box;
-  width: 240px;
+  width: $sidebar-desktop;
   color: $text-color;
   background: white;
   box-shadow: $box-shadow;
@@ -41,7 +40,8 @@
   clearfix();
 }
 
-.sidebar a {
+.sidebar a,
+.sidebar span.exturl {
   color: $black-light;
 
   &:hover { color: $black-deep; }
@@ -52,8 +52,8 @@
 }
 
 .links-of-author-item {
-  a:before { display: none; }
-  a {
+  a:before, span.exturl:before { display: none; }
+  a, span.exturl {
     border-bottom: none;
     text-decoration: underline;
   }
@@ -83,11 +83,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  span.exturl {
+    font-size: 13px;
+  }
 }
 .links-of-author-item {
   sidebar-inline-links-item();
 
-  a {
+  a, span.exturl {
     display: block;
     text-decoration: none;
 
