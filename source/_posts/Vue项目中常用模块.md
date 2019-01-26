@@ -79,4 +79,58 @@ Mock.mock(rurl,template)
 重点就是写数据模板。当拦截到匹配 rurl 的 Ajax 请求时，将根据数据模板 template 生成模拟数据，并作为响应数据返回。
 通过axios请求设置的那个rurl。userData可以获取到10条随机数据。
 
+### 代理服务器
+#### express和http-proxy-middleware创建代理服务器
+起因：发布wmts服务不管通过怎么样的方式去调用都出现跨域的问题。
+跨域的原因都是浏览器的同源策略，域名、协议、端口相同。
+解决方案：创建代理服务器，服务器不存在跨域问题，所以可以由服务器请求所要域的资源再返回给客户端。
+
+``` javascript
+const express = require('express')
+var proxy = require('http-proxy-middleware');
+const app = express()
+
+
+// proxy middleware options
+var options = {
+	//此处地址是公司的wmts，需要vpn访问。
+    target: 'http://172.17.0.179/ArcGIS/rest/services/FTKSJ/NANSHAN_CGCS2000/MapServer', // target host
+    changeOrigin: true, // needed for virtual hosted sites
+    ws: true, // proxy websockets
+    pathRewrite: {
+        //   '^/api/old-path': '/api/new-path', // rewrite path
+        //   '^/api/remove/path': '/path', // remove base path
+        "^/api": ""
+    }
+}
+// create the proxy (without context)
+var exampleProxy = proxy(options)
+
+app.use('/api', exampleProxy);
+const port = 8081;
+//开启监听
+app.listen(port, () => console.log('Example app listening on port' + port + ' !'))
+
+```
+访问 `localhost:8081/api`就相当于访问了`target`指向的地址。
+上面这个🌰也只是用到`http-proxy-middleware`的一些皮毛。更多高级功能去npm&&github中查看。
+#### vue项目设置代理
+用vue-cli搭建的项目内置集成了`http-proxy-middleware`,所以找到config📁下的index.js中的proxyTable属性添加。
+
+``` javascript
+proxyTable: {
+      /**
+       * 设置武汉地图服务的代理，避免跨域。--oouyang
+       */
+      '/api': {
+        target: 'http://172.17.0.179/ArcGIS/rest/services/FTKSJ/NANSHAN_CGCS2000/MapServer',
+        changeOrigin: false,
+        pathRewrite: {
+          "^/api": ""
+        }
+      }
+    },
+```
+
+
 ### 封装Vue的公共方法
