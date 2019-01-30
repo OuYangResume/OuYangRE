@@ -169,6 +169,10 @@ index.html  README.md  static
 root@iZi2m69ympwtuqZ:/etc/nginx/conf.d# vi vueapp.conf
 具体内容
 ``` json
+
+upstream arcgis_server {                                                         
+        server demo-dx.geostar.com.cn:6234;                                              
+    }
 server{
         listen 8081; #监听端口
         server_name 39.109.100.163;#监听地址
@@ -176,6 +180,11 @@ server{
                 index index.html; #默认页面
                 root /var/www/dist;#根目录，也就是github拉下来文件的位置
         }
+        # 配置一个代理
+        location /arcgis/ {
+            proxy_pass http://arcgis_server;
+        }
+
 } 
 ```
 我也就是配置最最简单的。更详细配置[查看官网](http://nginx.org/en/)
