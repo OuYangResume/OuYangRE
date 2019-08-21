@@ -1,5 +1,5 @@
 ---
-title: VR全景功能实现
+title: VR全景功能
 date: 2019-08-20 20:37:14
 categories: Three.js
 tags: [Three.js,webpack]
@@ -88,7 +88,7 @@ Three.js 为我们提供了非常多的Geometry，例如SphereGeometry（球体�
 #### 相机
 ##### 坐标系
 
-<div  align="center"><img src="VR/zbx.png" width = "400" height = "300" alt="图片名称" align=center />
+<div  align="center"><img src="VR全景功能/zbx.png" width = "400" height = "300" alt="图片名称" align=center />
 </div>
 
 我们可以在场景中添加一个坐标系，清楚的看到元素处于什么位置.
@@ -102,7 +102,7 @@ scene.add(new THREE.AxisHelper(1000));
     _camera = new PerspectiveCamera(fov, aspect, near, far);
 ```
 最常用的摄像机类型，模拟人眼的视觉，近大远小（透视），如果是需要模拟现实，基本都是用这个相机。Fov表示的是视角，Fov越大，表示眼睛睁得越大，离得越远，看得更多。aspect代表水平方向和竖直方向可观测距离的比值。near、far和上面的相同，分别对应相机可观测的最远和最近距离。
-<div  align="center"><img src="VR/camera.png" width = "400" height = "300" alt="图片名称" align=center />
+<div  align="center"><img src="VR全景功能/camera.png" width = "400" height = "300" alt="图片名称" align=center />
 </div>
 
 ##### OrthographicCamera（正交投影相机）
@@ -110,7 +110,7 @@ scene.add(new THREE.AxisHelper(1000));
 _camera = new OrthographicCamera(left, right, top, bottom, near, far);
 ```
 只有在这个矩形可视区域内才是可见的物体无论物体距离相机距离远或者近，在最终渲染的图片中物体的大小都保持不变。对于渲染2D场景或者UI元素是非常有用的。
-<div  align="center"><img src="VR/camera1.png" width = "400" height = "300" alt="图片名称" align=center />
+<div  align="center"><img src="VR全景功能/camera1.png" width = "400" height = "300" alt="图片名称" align=center />
 </div>
 
 #####  position、lookAt
