@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的简历</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet/1.3.1/leaflet.js"></script>
+    <link href="https://cdn.bootcss.com/ionicons/4.0.0-18/collection/icon/icon.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link href="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/leaflet.fullscreen/1.4.4/Control.FullScreen.js"></script>
+    <script src="js/html2canvas.js"></script>
+    <script src="js/jsPdf.debug.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <!-- ===========================
+        HEADER
+        ============================ -->
+            <div id="header" class="row">
+                <div class="col-sm-2">
+                    <img class="propic" src="./img/oyb.jpg" alt="">
+                </div>
+                <!-- photo end-->
+
+                <div class="col-sm-10">
+                    <div class="cv-title">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <h1>{{personal.name}}</h1>
+                            </div>
+                        </div>
+                        <h2>求职意向:{{personal.jobHutter}}</h2>
+                    </div>
+                    <!-- Title end-->
+
+                    <!-- ===========================
+                基本情况
+                ============================ -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="https://ouyangresume.github.io" title="个人网站">
+                                        <span class="social fa fa-home"></span>博客</a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="social fa fa-phone" title="手机号码"></span>+86 13135667053</a>
+                                </li>
+                                <li>
+                                    <a href="#map" title="家庭住址" id="showMap">
+                                        <span class="social fa fa-map-marker"></span>查看地图</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- social 1st col end-->
+
+                        <div class="col-sm-4">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="" title="QQ号码">
+                                        <span class="social fa fa-qq"></span>812634676</a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/OuYangResume" title="Github">
+                                        <span class="social fa fa-github"></span>OuYangResume</a>
+                                </li>
+                                <!-- <li><a href=""><span class="social fa fa-linkedin"></span>Linkedin</a>
+                            </li> -->
+                            </ul>
+                        </div>
+                        <!-- social 2nd col end-->
+
+                        <div class="col-sm-4">
+                            <ul class="list-unstyled">
+                                <li class="weixin" onmouseover="this.className = 'weixin on';" onmouseout="this.className = 'weixin';">
+                                    <a href="javascript:void(0)" title="微信">
+                                        <span class="social fa fa-wechat"></span>Go</a>
+                                    <div class="weixin_nr">
+                                        微信扫一扫
+                                        <div class="arrow"></div>
+                                        <img src="img/weixin.jpg" width="130" height="130" />
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="" title="邮箱地址">
+                                        <span class="social fa fa-envelope-o"></span>oouyang@yandex.com</a>
+                                </li>
+                                <!-- <li><a href=""><span class="social fa fa-instagram"></span>Instagram</a>
+                            </li> -->
+                            </ul>
+                        </div>
+                        <!-- social 3rd col end-->
+                    </div>
+                    <!-- header social end-->
+                </div>
+                <!-- header right end-->
+            </div>
+            <!-- header end-->
+
+            <hr class="firsthr">
+
+            <!-- ===========================
+        左边部分
+        ============================ -->
+            <div class="col-md-8 mainleft">
+                <div id="statement" class="row mobmid">
+                    <div class="col-sm-1">
+                        <span class="secicon fa fa-user"></span>
+                    </div>
+                    <!--icon end-->
+
+                    <div class="col-sm-11">
+                        <h3>个人介绍</h3>
+                        <p>{{personal.introduce}}</p>
+
+                    </div>
+                    <!--info end-->
+                </div>
+                <!--personal statement end-->
+                <hr>
+
+                <div id="education" class="row mobmid">
+                    <div class="col-sm-1">
+                        <span class="secicon fa fa-graduation-cap"></span>
+                    </div>
+                    <!--icon end-->
+
+                    <div class="col-sm-11">
+                        <h3>教育经历</h3>
+                        <div v-for="education in educations">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4>{{education.name}}</h4>
+                                    <p class="sub">
+                                        <a href="">{{education.property=="university"?"专业:"+education.position:"职位:"+education.position}}</a>
+                                    </p>
+                                    <p>{{education.introduce}}</p>
+                                </div>
+                                <div class="year col-md-3">
+                                    <p>{{education.time}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- ===========================
+            工作经历
+            ============================ -->
+                <div id="job" class="row mobmid">
+                    <div class="col-sm-1">
+                        <span class="secicon fa fa-briefcase"></span>
+                    </div>
+                    <!--icon end-->
+
+                    <div class="col-sm-11">
+                        <h3>工作经历</h3>
+                        <div v-for="job in jobExp">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4>{{job.company}}</h4>
+                                    <p class="sub">
+                                        <a href="">职位:{{job.position}}</a>
+                                    </p>
+                                    <p>{{job.describe}}</p>
+                                </div>
+                                <div class="year col-md-3">
+                                    <p>{{job.time}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mainright">
+                <div class="row">
+                    <div class="col-sm-1 col-md-2 mobmid">
+                        <span class="secicon fa fa-magic"></span>
+                    </div>
+                    <!--icon end-->
+
+                    <div class="col-sm-11 col-md-10">
+                        <h3 class="mobmid">技能</h3>
+                        <div v-for="skill in skills">
+                            <p>{{skill.name}}</p>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar" v-bind:class="skill.class" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                    :style="skill.styleObject">
+                                </div>
+                            </div>
+                            <!--skill end-->
+                        </div>
+                    </div>
+                    <!--info end-->
+                </div>
+                <!--tech skills end-->
+                <hr>
+                <div class="row mobmid">
+                    <div class="col-sm-1 col-md-2">
+                        <span class="secicon fa fa-trophy"></span>
+                    </div>
+                    <!--icon end-->
+                    <div class="col-sm-11 col-md-10 ">
+                        <h3>获奖情况</h3>
+                        <div class="award" v-for="award in awards">
+                            <h4>{{award.name}}</h4>
+                            <p class="sub">
+                                {{award.time}}
+                            </p>
+                            <p>{{award.describe}}</p>
+                        </div>
+                    </div>
+                    <!--awards end-->
+                </div>
+                <hr>
+                <div class="row mobmid">
+                    <div class="col-sm-1 col-md-2">
+                        <span class="secicon fa fa-heart"></span>
+                    </div>
+                    <!--icon end-->
+                    <div class="col-sm-11 col-md-10 ">
+                        <h3>个人作品</h3>
+                        <div class="award" v-for="work in works">
+                            <h4>{{work.name}}</h4>
+                            <p class="sub">
+                                <a :href="work.url">作品地址</a>
+                            </p>
+                            <p>{{work.describe}}</p>
+                        </div>
+                    </div>
+                    <!--awards end-->
+                </div>
+            </div>
+            <!--right end-->
+            <div class="col-sm-12" id="map">
+                <div id="closeMap" title="关闭地图">X</div>
+            </div>
+        </div>
+        <!--container end-->
+        <!-- <footer class="text-center">
+            <p>power by
+                <a href="http://www.birdgis.com/">birdgis</a>
+            </p>
+        </footer> -->
+        <div class="btn-group-vertical fixed-btn">
+            <button type="button" class="btn btn-default">
+                <a href="#" title="回到顶部">
+                    <span class="social fa fa-2x fa-arrow-up" style="margin-right:0px"></span>
+                </a>
+            </button>
+            <button type="button" class="btn btn-default">
+                <a href="https://ouyangresume.github.io/" title="回到首页">
+                    <span class="social fa fa-2x fa-home" style="margin-right:0px"></span>
+                </a>
+            </button>
+            <button type="button" class="btn btn-default" v-on:click="renderPdf">
+                <a href="#" title="导出成PDF">
+                    <span class="social fa fa-2x fa-cloud-download" style="margin-right:0px"></span>
+                </a>
+            </button>
+        </div>
+    </div>
+
+</body>
+<script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            personal: {
+                styleObject: {
+                    "background-color": "#" + (~~(Math.random() * (1 << 24))).toString(16),
+                    height: "1px",
+                    border: "none",
+                },
+                name: "欧阳波",
+                jobHutter: "软件开发工程师",
+                introduce: "本人吃苦耐劳，工作认真，能很快适应新环境，处事冷静，学习能力较强，对自己要求严格，条理性强，善于整理，具有良好的团队精神和较强的组织能力，具有扎实的专业知识和较强的实务操作技能，能熟练地运用专业软件，熟练各类办公软件，拥有《全国信息化工程师》、《全国计算机二级证》等证书。" + "自我的评价就是自学，自律能力强，追求的是学无止境，止于至善。"
+            },
+            educations: [{
+                property: "university",
+                name: "江西农业大学",
+                position: "地理信息科学",
+                time: "2013.9-2017.6",
+                introduce: "在校期间学习了高等数学、数据结构、线性代数、AutoCAD、JAVA、C++、HTML、CSS、JavaScript、地理学、地图学、计算机科学与技术、遥感技术、数据库技术、地理信息系统原理、测量学、地理信息系统设计与应用、地理信息系统二次开发等等,对ArcGIS,WebGIS的二次开发,对GIS软件操作比较熟悉,无论是MapGIS,QGIS还是ArcGIS。自学Python和数据库的相关操作,还有数据可视化。毕业设计做的《江西省新干县最短路径分析信息系统》,是基于arcgis api for javascript，ArcGISServer，MYSQL，JAVA,Echart等等技术开发的系统。"
+            },
+            {
+                property: "internship",
+                name: "广州奥格智能有限公司",
+                position: "实习生",
+                time: "2016.10-2017.4",
+                introduce: "这是实习期，在该公司做的是赣州崇义不动产项目登记的软件平台。期间对数据库语言进一步熟悉还认识到对业务的了解也是软件开发中很重要的一部分。"
+            }
+            ],
+            jobExp: [
+            {
+                name: "firstJob",
+                position: "软件开发工程师",
+                company: "武汉新烽光电股份有限公司",
+                time: "2017.6-2018.8",
+                describe: "负责西宁海绵城市信息平台和潜江智慧河长信息平台有关于地图的研发工作。负责在线地图模块的专题图和专题监测的开发。" +
+                    "具体实现技术：Git版本控制，前端使用的bootstrap写的静态的页面，后台是ssm框架。" +
+                    "读取oracle中的贫困户数据转成json格式结合echarts生成热力图，迁徙图等一系列专题图。利用GeometryService重写实现性能相对较好的测量功能(博客中有代码哦)。 "+
+                    "核心在于硬件设备（液位计，流量计,SS）获取数据的准确度。根据测绘院提供数据分析得到区域地块，河流,设备信息在地图上展示交互。其中值得一提有河长巡查河流动态轨迹的展示和村级河长点信息过多时采取聚类的方式得到解决。 "
+            }, {
+                name: "firstJob",
+                position: "前端开发工程师",
+                company: "武大吉奥信息技术有限公司",
+                time: "2018.8-至今",
+                describe: "南山区综合治理平台和块数据应用大屏展示系统：对人，房，法人，事件与空间信息关联。" +
+                    "具体实现技术：前端框架Vue，sass，mapbox-gl，webpack包管理工具。负责前端页面和地图公共组件，axios与后台交互。"+
+                    "在项目中开发的插件发布至npm中。" 
+            },
+            ],
+            awards: [{
+                name: "三等奖学金",
+                time: "2014-2017",
+                describe: "多次获得该等奖学金"
+            },
+            {
+                name: "二等奖学金",
+                time: "2015/6",
+                describe: "曾获得过一次该奖学金"
+            },
+            {
+                name: "运动会长跑第四",
+                time: "2014/11",
+                describe: "在大学的运动会上的长跑项目获得了第四名。"
+            }
+            ],
+            works: [{
+                name: "Vue-GIS",
+                url: "https://github.com/OuYangResume/Vue-Gis",
+                describe: "从VUE出发一步一步靠近gis"
+            },
+            {
+                name: "小小的诗不敢递给她",
+                url: "https://ouyangresume.github.io",
+                describe: "记录学习,生活状态， 我的一切"
+            },
+            ],
+            skills: [
+                {
+                    name: "ArcGIS",
+                    class: "progress-bar-info",
+                    styleObject: {
+                        width: "70%"
+                    }
+                }, {
+                    name: "JAVA",
+                    class: "progress-bar-success",
+                    styleObject: {
+                        width: "40%",
+                        color: 'blue',
+                    }
+                },
+                {
+                    name: "Vue",
+                    class: "progress-bar-primary",
+                    styleObject: {
+                        width: "80%"
+                    }
+                },
+                {
+                    name: "JavaScript",
+                    class: "progress-bar-warning",
+                    styleObject: {
+                        width: "70%"
+                    }
+                },
+                {
+                    name: "NodeJs",
+                    class: "progress-bar-danger",
+                    styleObject: {
+                        width: "60%",
+                    }
+                }
+            ]
+        },
+        methods: {
+            // 导出PDF
+            renderPdf: function () {
+                html2canvas(document.getElementsByClassName("container"), {
+                    onrendered: function (canvas) {
+
+                        var contentWidth = canvas.width;
+                        var contentHeight = canvas.height;
+
+                        //一页pdf显示html页面生成的canvas高度;
+                        var pageHeight = contentWidth / 595.28 * 841.89;
+                        //未生成pdf的html页面高度
+                        var leftHeight = contentHeight;
+                        //pdf页面偏移
+                        var position = 0;
+                        //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                        var imgWidth = 595.28;
+                        var imgHeight = 595.28 / contentWidth * contentHeight;
+                        //返回图片URL，参数：图片格式和清晰度(0-1)
+                        var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                        //方向默认竖直，尺寸ponits，格式a4【595.28,841.89]
+                        var pdf = new jsPDF('', 'pt', 'oouyang');
+                        //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                        //当内容未超过pdf一页显示的范围，无需分页
+                        // if (leftHeight < pageHeight) {
+                        //     pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                        // } else {
+                        //     while (leftHeight > 0) {
+                        //         pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                        //         leftHeight -= pageHeight;
+                        //         position -= 841.89;
+                        //         //避免添加空白页
+                        //         if (leftHeight > 0) {
+                        //             pdf.addPage();
+                        //         }
+                        //     }
+                        // }
+
+                        //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                        pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 900);
+                        pdf.save('oouyang.pdf');
+
+                        // document.body.appendChild(canvas);
+                    }
+                })
+            }
+        }
+    })
+</script>
+<script>
+    // 地图相关
+    function mapMain() {
+        var layer = L.tileLayer('https://api.mapbox.com/styles/v1/ouyangbo/cjcd5htfo39ue2soyntlcvpwr/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1Ijoib3V5YW5nYm8iLCJhIjoiY2pjMWg4aTlsMDI5aDJ3bno4cmNxMzF6NSJ9.WMvxZlMQXZp8nY6slMe1nA'
+        });
+        var map = L.map("map", {
+            center: [30.477497, 114.402626], //设置中心地图是纬度。经度114.402626,30.477497
+            zoom: 10,
+            layers: [layer],
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            }
+        });
+        var homeMarker = L.AwesomeMarkers.icon({
+            prefix: 'fa',
+            icon: 'home',
+            markerColor: 'blue',
+            iconColor: 'white'
+        });
+        var redMarker = L.AwesomeMarkers.icon({
+            prefix: 'fa',
+            icon: 'phone',
+            markerColor: 'green',
+            iconColor: 'white'
+        });
+        L.marker([28.193484, 114.155064], { icon: homeMarker }).addTo(map).bindPopup("<b>这是我的家乡</b>");//立即打开弹窗;
+        L.marker([30.477497, 114.402626], { icon: redMarker }).addTo(map).bindPopup("<b>当前工作地址<br>联系我：13135667053</b>").openPopup();//立即打开弹窗;
+    }
+    var oShowMap = document.getElementById("showMap");
+    var oCloseMap = document.getElementById("closeMap");
+
+    var oMap = document.getElementById("map");
+    oShowMap.onclick = function () {
+        oMap.style.display = "block";
+        oMap.style.height = "300px";
+        mapMain();
+    };
+    oCloseMap.onclick = function () {
+        oMap.style.display = "none";
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="深拷贝和浅拷贝浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制仅仅是指向被复制的内存地址，如果原地址中对象被改变了，那么浅复制出来的对象也会相应改变。 深复制 —-在计算机中开辟了一块新的内存地址用于存放复制的对象。浅拷贝实例">
+<meta name="keywords" content="技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端知识图谱">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/前端知识图谱/index.html">
+<meta property="og:site_name" content="小小的诗">
+<meta property="og:description" content="深拷贝和浅拷贝浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制仅仅是指向被复制的内存地址，如果原地址中对象被改变了，那么浅复制出来的对象也会相应改变。 深复制 —-在计算机中开辟了一块新的内存地址用于存放复制的对象。浅拷贝实例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/04/11/前端知识图谱/响应式.png">
+<meta property="og:image" content="http://yoursite.com/2018/04/11/前端知识图谱/自适应.png">
+<meta property="og:image" content="http://yoursite.com/2018/04/11/前端知识图谱/prototype.png">
+<meta property="og:image" content="http://yoursite.com/2018/04/11/前端知识图谱/异步和同步.png">
+<meta property="og:image" content="http://yoursite.com/2018/04/11/前端知识图谱/宏任务和微任务.png">
+<meta property="og:updated_time" content="2019-08-20T13:07:25.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端知识图谱">
+<meta name="twitter:description" content="深拷贝和浅拷贝浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制仅仅是指向被复制的内存地址，如果原地址中对象被改变了，那么浅复制出来的对象也会相应改变。 深复制 —-在计算机中开辟了一块新的内存地址用于存放复制的对象。浅拷贝实例">
+<meta name="twitter:image" content="http://yoursite.com/2018/04/11/前端知识图谱/响应式.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/前端知识图谱/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端知识图谱 | 小小的诗</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小小的诗</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">不敢递给她</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/前端知识图谱/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OuYang"/>
+      <meta itemprop="description" content="你长那么好看,不如和我虚度光阴。"/>
+      <meta itemprop="image" content="/images/girl.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小小的诗"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端知识图谱
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-11 10:17:55" itemprop="dateCreated datePublished" datetime="2018-04-11T10:17:55+08:00">2018-04-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-20 21:07:25" itemprop="dateModified" datetime="2019-08-20T21:07:25+08:00">2019-08-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/11/前端知识图谱/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/04/11/前端知识图谱/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h4><p>浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制仅仅是指向被复制的内存地址，如果原地址中对象被改变了，那么浅复制出来的对象也会相应改变。</p>
+<p>深复制 —-在计算机中开辟了一块新的内存地址用于存放复制的对象。<br>浅拷贝实例<br><a id="more"></a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此递归方法不包含数组对象</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">a</span>:<span class="number">1</span>, <span class="attr">arr</span>: [<span class="number">2</span>,<span class="number">3</span>] &#125;;</span><br><span class="line"><span class="keyword">var</span> shallowObj = shallowCopy(obj);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shallowCopy</span>(<span class="params">src</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> newobj = &#123;&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> src) &#123;</span><br><span class="line">    <span class="keyword">if</span> (src.hasOwnProperty(prop)) &#123;</span><br><span class="line">      newobj[prop] = src[prop];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newobj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>导致的结果就是：<br>shallowObj.arr[1] = 5;<br>console.log(obj.arr[1]);   //  5<br>深拷贝实例<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; </span><br><span class="line">    a:<span class="number">1</span>, </span><br><span class="line">    arr: [<span class="number">1</span>,<span class="number">2</span>]，</span><br><span class="line">    nation : <span class="string">'中国'</span>,</span><br><span class="line">    birthplaces:[<span class="string">'北京'</span>,<span class="string">'上海'</span>,<span class="string">'广州'</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123;<span class="attr">name</span>:<span class="string">'杨'</span>&#125;;</span><br><span class="line">obj2 = deepCopy(obj,obj2);</span><br><span class="line"><span class="built_in">console</span>.log(obj2);</span><br><span class="line"><span class="comment">//深复制，要想达到深复制就需要用递归</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepCopy</span>(<span class="params">o,c</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> c = c || &#123;&#125;；</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> o)&#123;</span><br><span class="line">   <span class="keyword">if</span>(<span class="keyword">typeof</span> o[i] === <span class="string">'object'</span>)&#123;</span><br><span class="line">          <span class="comment">//要考虑深复制问题了</span></span><br><span class="line">          <span class="keyword">if</span>(o[i].constructor === <span class="built_in">Array</span>)&#123;</span><br><span class="line">            <span class="comment">//这是数组</span></span><br><span class="line">            c[i] =[]；</span><br><span class="line">          &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//这是对象</span></span><br><span class="line">            c[i] = &#123;&#125;；</span><br><span class="line">          &#125;</span><br><span class="line">          deepCopy(o[i],c[i])；</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          c[i] = o[i]；</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> c</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="线程与进程"><a href="#线程与进程" class="headerlink" title="线程与进程"></a>线程与进程</h4><p><code>进程</code>：一个程序是静态的，通常是存放在外存中的。而当程序被调入内存中运行后，就成了进程。<br><code>线程</code>：一个进程内部可能包含了很多顺序执行流，每个顺序执行流就是一个线程。<code>多线程</code>就是有多条顺序执行流“同时”[并发]执行，且它们之间互不干扰。<br>两者的区别：一个程序至少有一个进程,一个进程至少有一个线程。多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。来实现进程的调度和管理以及资源分配。</p>
+<h4 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h4><p>阻塞和非阻塞这两个概念与程序（线程）等待消息通知(无所谓同步或者异步)时的状态有关。也就是说阻塞与非阻塞主要是程序（线程）等待消息通知时的状态角度来说的。<br><code>阻塞</code>调用是指调用结果返回之前，当前线程会被挂起，一直处于等待消息通知，不能够执行其他业务。函数只有在得到结果之后才会返回。<br><code>非阻塞</code>指在不能立刻得到结果之前，该函数不会阻塞当前线程，而会立刻返回。</p>
+<h4 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h4><p><code>同步</code>:所谓同步就是一个任务的完成需要依赖另外一个任务时，只有等待被依赖的任务完成后，依赖的任务才能算完成，这是一种可靠的任务序列。要么成功都成功，失败都失败，两个任务的状态可以保持一致。<br><code>异步</code>: 异步是不需要等待被依赖的任务完成，只是通知被依赖的任务要完成什么工作，依赖的任务也立即执行，只要自己完成了整个任务就算完成了。至于被依赖的任务最终是否真正完成，依赖它的任务无法确定，所以它是不可靠的任务序列。<br><code>消息通知</code>: 异步的概念和同步相对。当一个同步调用发出后，调用者要一直等待返回消息（结果）通知后，才能进行后续的执行；当一个异步过程调用发出后，调用者不能立刻得到返回消息（结果）。实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。</p>
+<h4 id="http"><a href="#http" class="headerlink" title="http"></a>http</h4><h5 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h5><p>http请求包含有请求头，请求行，请求正文。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">axios(&#123;</span><br><span class="line">  method: <span class="string">'post'</span>,</span><br><span class="line">  url: <span class="string">'/user/12345'</span>,</span><br><span class="line">  headers:&#123;</span><br><span class="line">    <span class="string">'Content-Type'</span>:<span class="string">'application/x-www-form-urlencoded'</span>  </span><br><span class="line">  &#125;,</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Fred'</span>,</span><br><span class="line">    lastName: <span class="string">'Flintstone'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>method和url就是这个请求的请求行（这里是请求行部分信息，其实请求行还包括http协议的版本等信息）。headers中的属性就是请求头，里面的属性，全部包含在请求的header里面，是服务端获取客户端版本，缓存等信息的一个途径。data对应的就是请求正文，也就是平常所说的参数。</p>
+<h5 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h5><p>在请求发出去，并且响应已经回来的时候，就时候信息可分为响应行，响应头，响应正文。<br><code>响应行</code>:返回请求的http协议及版本，状态码，请求状态等描述信息。<br><code>响应头</code>:响应头和请求头格式一致，返回版本，缓存等信息。<br><code>响应正文</code>:也就是日常开发需要用到的数据。</p>
+<h5 id="常见的HTTP相应状态码"><a href="#常见的HTTP相应状态码" class="headerlink" title="常见的HTTP相应状态码"></a>常见的HTTP相应状态码</h5><p>200：请求成功<br>400：参数错误<br>403：拒绝或者禁止访问（无权限访问）<br>404：地址不存在<br>405：客户端请求中的方法被禁止（一般是请求方式错误）<br>500：服务器报错<br>502：请求超时，无效网关<br>503：服务器超载或者维护，无法响应</p>
+<h5 id="https"><a href="#https" class="headerlink" title="https"></a>https</h5><p>HTTPS=数据加密+网站认证+完整性验证+HTTP</p>
+<h4 id="响应式和自适应"><a href="#响应式和自适应" class="headerlink" title="响应式和自适应"></a>响应式和自适应</h4><p>响应式：一个网页，根据屏幕的宽度的改变而展示不同的效果，代码基本是两套以上。在所有屏幕上都展示很好的效果，但是设计，开发成本高。</p>
+<div align="center"><img src="/2018/04/11/前端知识图谱/响应式.png" width="500" height="400" alt="nginx" align="center"><br></div><br>自适应：一个网页，根据屏幕宽度的改变而改变。代码只有一套。在个别的屏幕上，排版这个比较丑，但是设计，开发成本低。<br><div align="center"><img src="/2018/04/11/前端知识图谱/自适应.png" width="500" height="400" alt="nginx" align="center"><br></div>
+
+<h4 id="盒子模型"><a href="#盒子模型" class="headerlink" title="盒子模型"></a>盒子模型</h4><p>1.IE5盒子<br>width = 内容 + border + padding<br>盒子占据的宽度 = margin<em>2+width<br>2.W3C盒子<br>width = 内容<br>盒子占据的宽度 = margin</em>2+border<em>2+padding</em>2+width<br>3.设置浏览器去遵循w3c标准<br>只需要在网页的顶部加上DOCTYPE声明即可<br>另外注意 !important 的使用<br>  p{<br>   color:red !important;<br>   color:blue;<br>   }<br>当不加!important;的时候，后者覆盖前者，当加上之后说明第一个,样式优先级更高，采用前者，但是Ie6不支持!important; </p>
+<h4 id="块级元素和内联元素"><a href="#块级元素和内联元素" class="headerlink" title="块级元素和内联元素"></a>块级元素和内联元素</h4><p>在标准文档流里面，块级元素具有以下特点：</p>
+<p>①总是在新行上开始，占据一整行；<br>②高度，行高以及外边距和内边距都可控制；<br>③宽带始终是与浏览器宽度一样，与内容无关；<br>④它可以容纳内联元素和其他块元素。</p>
+<p>行内元素的特点：</p>
+<p>①和其他元素都在一行上；<br>②高，行高及外边距和内边距部分可改变；<br>③宽度只与内容有关；<br>④行内元素只能容纳文本或者其他行内元素。<br>不可以设置宽高，其宽度随着内容增加，高度随字体大小而改变，内联元素可以设置外边界，但是外边界不对上下起作用，只能对左右起作用，也可以设置内边界，但是内边界在ie6中不对上下起作用，只能对左右起作用<br>display:block  – 显示为块级元素<br>display:inline  – 显示为内联元素<br>dipslay:inline-block – 显示为内联块元素，表现为同行显示并可修改宽高内外边距等属性.</p>
+<h4 id="模块化编程"><a href="#模块化编程" class="headerlink" title="模块化编程"></a>模块化编程</h4><p>①AMD（异步模块定义） requirejs<br>异步加载，浏览器不会失去响应<br>它指定的回调函数，只有前面的模块都加载完成后，才会运行，解决了依赖性问题<br>②CMD（通用模块定义） seajs<br>模块定义方式和模块加载时机处理不同<br>③区别：AMD依赖前置，在定义模块的时候就要声明其依赖的模块；CMD就近依赖，只有在用到哪个模块的时候再去require；</p>
+<h4 id="一个页面从URL到加载显示完成，都发生了什么？"><a href="#一个页面从URL到加载显示完成，都发生了什么？" class="headerlink" title="一个页面从URL到加载显示完成，都发生了什么？"></a>一个页面从URL到加载显示完成，都发生了什么？</h4><p>1、首先，在浏览器地址栏中输入url<br>2、浏览器先查看浏览器缓存-系统缓存-路由器缓存，如果缓存中有，会直接在屏幕中显示页面内容。若没有，则跳到第三步操作。<br>3、在发送http请求前，需要域名解析(DNS解析)，解析获取相应的IP地址。<br>4、浏览器向服务器发起tcp连接，与浏览器建立tcp三次握手。<br>5、握手成功后，浏览器向服务器发送http请求，请求数据包。<br>6、服务器处理收到的请求，将数据返回至浏览器<br>7、浏览器收到HTTP响应<br>8、读取页面内容，浏览器渲染，解析html源码<br>9、生成Dom树、解析css样式、js交互<br>10、客户端和服务器交互<br>11、ajax查询</p>
+<h4 id="前端安全"><a href="#前端安全" class="headerlink" title="前端安全"></a>前端安全</h4><p>XSS：跨站脚本攻击，注入攻击的一种。攻击者利用应用程序的动态展示功能，在HTML页面中嵌入恶意代码。当用户浏览该页时，这些嵌入在html的恶意代码就会被执行，用户浏览器被攻击者控制。<br>CSRF:是跨站请求伪造。XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。其实就是攻击者盗用了你的身份，以你的名义发送恶意请求。</p>
+<h4 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h4><p>Web 前端一种非常流行的开发模式，利用 MVVM 可以使我们的代码更专注于处理业务逻辑而不是去关心 DOM 操作。</p>
+<h4 id="Vue组件data为什么必须是函数"><a href="#Vue组件data为什么必须是函数" class="headerlink" title="Vue组件data为什么必须是函数"></a>Vue组件data为什么必须是函数</h4><p>如果不用function return 每个组件的data都是内存的同一个地址，那一个数据改变其他也改变了，这当然就不是我们想要的。<br>用function return 其实就相当于申明了新的变量，相互独立，自然就不会有这样的问题。</p>
+<h4 id="javascript有哪几种数据类型"><a href="#javascript有哪几种数据类型" class="headerlink" title="javascript有哪几种数据类型"></a>javascript有哪几种数据类型</h4><p>六种基本数据类型<br>undefined<br>null<br>string<br>boolean<br>number<br>symbol(ES6)<br>一种引用类型<br>Object</p>
+<h4 id="事件冒泡、事件捕捉、事件委托"><a href="#事件冒泡、事件捕捉、事件委托" class="headerlink" title="事件冒泡、事件捕捉、事件委托"></a>事件冒泡、事件捕捉、事件委托</h4><p><code>事件捕获</code>:从document到触发事件的那个节点，即自上而下的去触发事件。<br><code>事件冒泡</code>:刚好相反，是从触发事件的那个节点一直到document，是自下而上的去触发事件。<br>绑定事件方法（addEventListener）的第三个参数，就是控制事件触发顺序是否为事件捕获。true,事件捕获；false,事件冒泡。默认false,即事件冒泡,所以当你对一个dom节点触发事件时，若外层的节点也设置了相应的事件函数，就会使外层的节点也触发自己的事件函数。<br><code>事件委托</code>:当有多个类似的元素需要绑定事件时，一个一个去绑定即浪费时间，又不利于性能，这时候就可以用到事件委托，给他们的一个共同父级元素添加一个事件函数去处理他们所有的事件<br>阻止事件委托和冒泡：在事件函数中执行event.stopPropagation()</p>
+<h4 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h4><p>构造函数创建一个对象：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person();</span><br><span class="line">person.name = <span class="string">'Kevin'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(person.name) <span class="comment">// Kevin</span></span><br></pre></td></tr></table></figure></p>
+<p><code>prototype</code>:每个函数都有一个 prototype 属性。prototype显式原型属性（只有函数有prototype,对象是没有的。）<br><code>__proto__</code> :这是每一个JavaScript对象(除了 null )都具有的一个属性，叫<strong>proto</strong>隐式原型属性，这个属性会指向该对象的原型。<br><code>constructor</code>:每个原型都有一个 constructor 属性指向关联的构造函数。<br>Person 就是一个构造函数，我们使用 new 创建了一个实例对象 person。<br>这里new关键字起到了以下几个作用：<br> var obj  = {}; obj.<strong>proto</strong> = Person.prototype; Person.call(obj);<br> 1.创建了一个空对象obj。<br> 2.将这个空对象的隐式原型<strong>proto</strong>指向构造函数的显示原型prototype；如例，是将空对象的<strong>proto</strong>成员指向了Person函数对象prototype成员对象；从而形成了所谓的原型链：下图中的蓝色线。<br> 3.将构造函数的this指向实例（即空对象），并调用Person函数；</p>
+<div align="center"><img src="/2018/04/11/前端知识图谱/prototype.png" width="500" height="400" alt="原型链" align="center"><br></div>
+
+<h4 id="call、aplly、bind之间的区别"><a href="#call、aplly、bind之间的区别" class="headerlink" title="call、aplly、bind之间的区别"></a>call、aplly、bind之间的区别</h4><p>相同点：1.都是用来改变函数的this对象的指向的。<br>2.第一个参数都是this要指向的对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xw=&#123;</span><br><span class="line">    name: <span class="string">"小王"</span>,</span><br><span class="line">    gender: <span class="string">"男"</span>,</span><br><span class="line">    age: <span class="number">24</span>,</span><br><span class="line">    say: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name+<span class="string">" , "</span>+<span class="keyword">this</span>.gender+<span class="string">" ,今年"</span>+<span class="keyword">this</span>.age);</span><br><span class="line">    &#125;,</span><br><span class="line">	say1: <span class="function"><span class="keyword">function</span>(<span class="params">school,grade</span>)</span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name+<span class="string">" , "</span>+<span class="keyword">this</span>.gender+<span class="string">" ,今年"</span>+<span class="keyword">this</span>.age+<span class="string">" ,在"</span>+school+<span class="string">"上"</span>+grade);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> xh=&#123;</span><br><span class="line">    name: <span class="string">"小红"</span>,</span><br><span class="line">    gender: <span class="string">"女"</span>,</span><br><span class="line">    age: <span class="number">18</span></span><br><span class="line">&#125;</span><br><span class="line">xw.say();</span><br></pre></td></tr></table></figure></p>
+<p><code>xw.say1.call(xh,&quot;实验小学&quot;,&quot;六年级&quot;);</code><br><code>xw.say.apply(xh,[&quot;实验小学&quot;,&quot;六年级&quot;]);</code><br><code>xw.say.bind(xh,&quot;实验小学&quot;,&quot;六年级&quot;)();</code><br>三者的区别应该可以从上面三者调用方式可以看出来了。</p>
+<h4 id="sessionStorage、localStorage和cookie"><a href="#sessionStorage、localStorage和cookie" class="headerlink" title="sessionStorage、localStorage和cookie"></a>sessionStorage、localStorage和cookie</h4><p>共同点：都是保存在浏览器端、且同源的。<br>不同点：cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递，而sessionStorage和localStorage不会自动把数据发送给服务器，仅在本地保存。<br>存储大小限制也不同，cookie数据不能超过4K。<br>数据有效期不同，sessionStorage：仅在当前浏览器窗口关闭之前有效；localStorage：始终有效，窗口或浏览器关闭也一直保存，因此用作持久数据；cookie：只在设置的cookie过期时间之前有效，即使窗口关闭或浏览器关闭。<br>作用域不同，sessionStorage不在不同的浏览器窗口中共享，即使是同一个页面；localstorage在所有同源窗口中都是共享的；cookie也是在所有同源窗口中都是共享的。</p>
+<h4 id="html5离线储存怎么使用，工作原理能不能解释一下？"><a href="#html5离线储存怎么使用，工作原理能不能解释一下？" class="headerlink" title="html5离线储存怎么使用，工作原理能不能解释一下？"></a>html5离线储存怎么使用，工作原理能不能解释一下？</h4><p>HTML5的离线存储是基于一个新建的.appcache文件的，通过这个文件上的解析清单离线存储资源，这些资源就会像cookie一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示。</p>
+<h4 id="javascript中实现继承"><a href="#javascript中实现继承" class="headerlink" title="javascript中实现继承"></a>javascript中实现继承</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  父类 </span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Persion</span>(<span class="params">name,age</span>)</span>&#123; </span><br><span class="line">        	<span class="keyword">this</span>.name = name; </span><br><span class="line">        	<span class="keyword">this</span>.age = age; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 父类的原型对象属性继承 </span></span><br><span class="line">        Persion.prototype.id = <span class="number">10</span>;</span><br><span class="line">        <span class="comment">// 子类 </span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">Boy</span>(<span class="params">name,age,sex</span>)</span>&#123; </span><br><span class="line">        	<span class="comment">//call apply 借用构造函数的方式继承</span></span><br><span class="line">        	Persion.call(<span class="keyword">this</span>,name,age);</span><br><span class="line">        	<span class="keyword">this</span>.sex = sex;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 原型继承实现  参数为空 代表 父类的实例和父类的原型对象的关系了</span></span><br><span class="line">	 Boy.prototype = <span class="keyword">new</span> Persion();</span><br><span class="line">         <span class="keyword">var</span> b = <span class="keyword">new</span> Boy(<span class="string">'c5'</span>,<span class="number">27</span>,<span class="string">'男'</span>); </span><br><span class="line">         alert(b.name)<span class="comment">// c5 </span></span><br><span class="line">         alert(b.id)<span class="comment">//10</span></span><br></pre></td></tr></table></figure>
+<h4 id="javascript的执行机制"><a href="#javascript的执行机制" class="headerlink" title="javascript的执行机制"></a>javascript的执行机制</h4><p>首先javascript是一门单线程语言。按照语句出现的顺序执行的.</p>
+<p><div align="center"><img src="/2018/04/11/前端知识图谱/异步和同步.png" width="500" height="400" alt="异步和同步" align="center"><br></div><br>同步和异步任务分别进入不同的执行”场所”，同步的进入主线程，异步的进入Event Table并注册函数。当指定的事情完成时，Event Table会将这个函数移入Event Queue。主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行。上述过程会不断重复，也就是常说的Event Loop(事件循环)。</p>
+<p>js异步又细分为：<br>macro-task(宏任务)：包括整体代码script，setTimeout，setInterval<br>micro-task(微任务)：Promise.then()，process.nextTick</p>
+<p><div align="center"><img src="/2018/04/11/前端知识图谱/宏任务和微任务.png" width="500" height="400" alt="异步和同步" align="center"><br></div><br>事件循环的顺序，决定js代码的执行顺序。进入整体代码(宏任务)后，开始第一次循环。接着执行所有的微任务。然后再次从宏任务开始，找到其中一个任务队列执行完毕，再执行所有的微任务。<br>就是遇到宏任务，先执行宏任务，将宏任务放入eventqueue，然后在执行微任务，将微任务放入eventqueue，这两个queue不是一个queue。当你往外拿的时候先从微任务里拿这个回调函数，然后再从宏任务的queue上拿宏任务的回调函数。</p>
+<h4 id="for-in-和for-of的区别"><a href="#for-in-和for-of的区别" class="headerlink" title="for in 和for of的区别"></a>for in 和for of的区别</h4><p>for in更适合遍历对象。<br>for in遍历的是数组的索引（即键名），而for of遍历的是数组元素值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span>  arrs = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4.5</span>];</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> x <span class="keyword">in</span> arrs)&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(x)  <span class="comment">// 输出结果的0,1,2,3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> x <span class="keyword">of</span> arrs)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(x); <span class="comment">//输出结果是1，2，3，4.5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>for..of适用遍历数/数组对象/字符串/map/set等拥有迭代器对象的集合.但是不能遍历对象,因为没有迭代器对象.与forEach()不同的是，它可以正确响应break、continue和return语句。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赞赏是最好的鼓励！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="OuYang 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="OuYang 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/程序员应该知道的一些东西/" rel="next" title="程序员应该知道的一些东西">
+                <i class="fa fa-chevron-left"></i> 程序员应该知道的一些东西
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/12/利用mybatis-generator自动生成代码/" rel="prev" title="利用mybatis-generator自动生成代码">
+                利用mybatis-generator自动生成代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/girl.jpg"
+                alt="OuYang"/>
+            
+              <p class="site-author-name" itemprop="name">OuYang</p>
+              <p class="site-description motion-element" itemprop="description">你长那么好看,不如和我虚度光阴。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/OuYangResume" title="GitHub &rarr; https://github.com/OuYangResume" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://music.163.com/#/user/home?id=109226134" title="CloudMusic &rarr; https://music.163.com/#/user/home?id=109226134" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>CloudMusic</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#深拷贝和浅拷贝"><span class="nav-number">1.</span> <span class="nav-text">深拷贝和浅拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程与进程"><span class="nav-number">2.</span> <span class="nav-text">线程与进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞与非阻塞"><span class="nav-number">3.</span> <span class="nav-text">阻塞与非阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步与异步"><span class="nav-number">4.</span> <span class="nav-text">同步与异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#http"><span class="nav-number">5.</span> <span class="nav-text">http</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#请求"><span class="nav-number">5.1.</span> <span class="nav-text">请求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#响应"><span class="nav-number">5.2.</span> <span class="nav-text">响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见的HTTP相应状态码"><span class="nav-number">5.3.</span> <span class="nav-text">常见的HTTP相应状态码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#https"><span class="nav-number">5.4.</span> <span class="nav-text">https</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应式和自适应"><span class="nav-number">6.</span> <span class="nav-text">响应式和自适应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#盒子模型"><span class="nav-number">7.</span> <span class="nav-text">盒子模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#块级元素和内联元素"><span class="nav-number">8.</span> <span class="nav-text">块级元素和内联元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块化编程"><span class="nav-number">9.</span> <span class="nav-text">模块化编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个页面从URL到加载显示完成，都发生了什么？"><span class="nav-number">10.</span> <span class="nav-text">一个页面从URL到加载显示完成，都发生了什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前端安全"><span class="nav-number">11.</span> <span class="nav-text">前端安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MVVM"><span class="nav-number">12.</span> <span class="nav-text">MVVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vue组件data为什么必须是函数"><span class="nav-number">13.</span> <span class="nav-text">Vue组件data为什么必须是函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#javascript有哪几种数据类型"><span class="nav-number">14.</span> <span class="nav-text">javascript有哪几种数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件冒泡、事件捕捉、事件委托"><span class="nav-number">15.</span> <span class="nav-text">事件冒泡、事件捕捉、事件委托</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原型链"><span class="nav-number">16.</span> <span class="nav-text">原型链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call、aplly、bind之间的区别"><span class="nav-number">17.</span> <span class="nav-text">call、aplly、bind之间的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sessionStorage、localStorage和cookie"><span class="nav-number">18.</span> <span class="nav-text">sessionStorage、localStorage和cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#html5离线储存怎么使用，工作原理能不能解释一下？"><span class="nav-number">19.</span> <span class="nav-text">html5离线储存怎么使用，工作原理能不能解释一下？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#javascript中实现继承"><span class="nav-number">20.</span> <span class="nav-text">javascript中实现继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#javascript的执行机制"><span class="nav-number">21.</span> <span class="nav-text">javascript的执行机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for-in-和for-of的区别"><span class="nav-number">22.</span> <span class="nav-text">for in 和for of的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+    <div id="music163player">
+   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=504365123&auto=1&height=66"></iframe>
+</div>
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="user" itemprop="copyrightHolder">OuYang</span>
+
+  
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>-->
+
+
+
+  <!--<span class="post-meta-divider">|</span>-->
+
+
+
+  <!--<div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v</div>-->
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <script>
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item) > -1;
+    });
+    new Valine({
+      el: '#comments' ,
+      verify: false,
+      notify: false,
+      appId: 'e8GfUvKYeXWnCRikTi5VW194-gzGzoHsz',
+      appKey: '58Ad3rvSa1eBL0WHQ51BndB5',
+      placeholder: 'Just go go',
+      avatar: 'mm',
+      meta:guest,
+      pageSize: '10' || 10,
+      visitor: false
+    });
+  </script>
+
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+      <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

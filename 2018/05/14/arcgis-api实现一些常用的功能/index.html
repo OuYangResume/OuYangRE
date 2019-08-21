@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="GeometryService实现测量功能几何服务（GeometryService）可以用这个类实现测量直线的距离，形状的缓冲区分析，判断两个形状之间的关系（相交，相离等等），两个形状求交，对形状的裁剪的图形操作。">
+<meta name="keywords" content="GIS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arcgis api实现一些常用的功能">
+<meta property="og:url" content="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/index.html">
+<meta property="og:site_name" content="小小的诗">
+<meta property="og:description" content="GeometryService实现测量功能几何服务（GeometryService）可以用这个类实现测量直线的距离，形状的缓冲区分析，判断两个形状之间的关系（相交，相离等等），两个形状求交，对形状的裁剪的图形操作。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/line.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/area.png">
+<meta property="og:updated_time" content="2019-08-20T13:07:25.404Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="arcgis api实现一些常用的功能">
+<meta name="twitter:description" content="GeometryService实现测量功能几何服务（GeometryService）可以用这个类实现测量直线的距离，形状的缓冲区分析，判断两个形状之间的关系（相交，相离等等），两个形状求交，对形状的裁剪的图形操作。">
+<meta name="twitter:image" content="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/line.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>arcgis api实现一些常用的功能 | 小小的诗</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小小的诗</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">不敢递给她</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/arcgis-api实现一些常用的功能/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="OuYang"/>
+      <meta itemprop="description" content="你长那么好看,不如和我虚度光阴。"/>
+      <meta itemprop="image" content="/images/girl.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小小的诗"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">arcgis api实现一些常用的功能
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-05-14 10:06:48" itemprop="dateCreated datePublished" datetime="2018-05-14T10:06:48+08:00">2018-05-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-20 21:07:25" itemprop="dateModified" datetime="2019-08-20T21:07:25+08:00">2019-08-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/GIS/" itemprop="url" rel="index"><span itemprop="name">GIS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/14/arcgis-api实现一些常用的功能/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/05/14/arcgis-api实现一些常用的功能/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="GeometryService实现测量功能"><a href="#GeometryService实现测量功能" class="headerlink" title="GeometryService实现测量功能"></a>GeometryService实现测量功能</h3><p>几何服务（GeometryService）可以用这个类实现测量直线的距离，形状的缓冲区分析，判断两个形状之间的关系（相交，相离等等），两个形状求交，对形状的裁剪的图形操作。<br><a id="more"></a></p>
+<h4 id="测量功能的具体代码"><a href="#测量功能的具体代码" class="headerlink" title="测量功能的具体代码"></a>测量功能的具体代码</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/dijit/themes/tundra/tundra.css"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/esri/css/esri.css"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/init.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"map"</span> <span class="attr">style</span>=<span class="string">"height: 700px;width: 100%"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"JSarea"</span>&gt;</span>测量面积<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"JSline"</span>&gt;</span>测量距离<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"JSclear"</span>&gt;</span>清除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="built_in">require</span>([ <span class="string">"esri/map"</span>,<span class="string">"extLayers/gaodeLayer"</span>,<span class="string">"esri/layers/GraphicsLayer"</span></span></span><br><span class="line"><span class="javascript">    ],<span class="function"><span class="keyword">function</span> (<span class="params">Map,gaodeLayer,GraphicsLayer</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> map=<span class="keyword">new</span> <span class="built_in">Map</span>(<span class="string">"map"</span>,&#123;</span></span><br><span class="line"><span class="javascript">            logo:<span class="literal">false</span>,</span></span><br><span class="line"><span class="undefined">            center: [101.778112, 36.617042],</span></span><br><span class="line"><span class="undefined">            zoom:13</span></span><br><span class="line"><span class="undefined">        &#125;);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> gaodelayer=<span class="keyword">new</span> gaodeLayer();</span></span><br><span class="line"><span class="undefined">        map.addLayer(gaodelayer);</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> disFun =<span class="literal">false</span>;<span class="comment">//距离测量</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> areaFun = <span class="literal">false</span>;<span class="comment">//面积测量</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> inputPoints = [];<span class="comment">//存储生成点的集合</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> totleDistance = <span class="number">0.0</span>;<span class="comment">//总距离</span></span></span><br><span class="line"><span class="javascript">            <span class="built_in">require</span>([<span class="string">"esri/toolbars/draw"</span>,</span></span><br><span class="line"><span class="javascript">                <span class="string">"esri/symbols/SimpleLineSymbol"</span>,<span class="string">"esri/symbols/SimpleFillSymbol"</span>,</span></span><br><span class="line"><span class="javascript">                <span class="string">"esri/Color"</span>,<span class="string">"esri/layers/GraphicsLayer"</span>,<span class="string">"esri/graphic"</span>,</span></span><br><span class="line"><span class="javascript">                <span class="string">"esri/symbols/Font"</span>, <span class="string">"esri/symbols/TextSymbol"</span>, <span class="string">"esri/symbols/SimpleMarkerSymbol"</span>,</span></span><br><span class="line"><span class="javascript">                <span class="string">"esri/tasks/LengthsParameters"</span>, <span class="string">"esri/tasks/GeometryService"</span>,<span class="string">"esri/geometry/Polyline"</span>,</span></span><br><span class="line"><span class="javascript">                <span class="string">"esri/tasks/AreasAndLengthsParameters"</span>,<span class="string">"esri/geometry/Point"</span>],</span></span><br><span class="line"><span class="javascript">                    <span class="function"><span class="keyword">function</span> (<span class="params">Draw,SimpleLineSymbol,SimpleFillSymbol,Color,GraphicsLayer,</span></span></span></span><br><span class="line"><span class="undefined">                              Graphic,Font,TextSymbol,SimpleMarkerSymbol,LengthsParameters,GeometryService,</span></span><br><span class="line"><span class="undefined">                              Polyline,AreasAndLengthsParameters,Point) &#123;</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">var</span>  measureLayer=<span class="keyword">new</span> GraphicsLayer();</span></span><br><span class="line"><span class="undefined">                        map.addLayer(measureLayer);</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">var</span> toolbar = <span class="keyword">new</span> Draw(map);</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">var</span> startFont = <span class="keyword">new</span> Font(<span class="string">'12px'</span>).setWeight(Font.WEIGHT_BOLD);<span class="comment">//定义文字样式</span></span></span><br><span class="line"><span class="javascript">                        <span class="comment">//定义标记点样式</span></span></span><br><span class="line"><span class="javascript">                        <span class="keyword">var</span> makerSymbol=<span class="keyword">new</span> SimpleMarkerSymbol(&#123;</span></span><br><span class="line"><span class="javascript">                            <span class="string">"color"</span>: [<span class="number">27</span>,<span class="number">188</span>,<span class="number">155</span>,<span class="number">255</span>],</span></span><br><span class="line"><span class="javascript">                            <span class="string">"size"</span>: <span class="number">7</span>,</span></span><br><span class="line"><span class="javascript">                            <span class="string">"type"</span>: <span class="string">"esriSMS"</span>,</span></span><br><span class="line"><span class="javascript">                            <span class="string">"style"</span>: <span class="string">"esriSMSCircle"</span>,</span></span><br><span class="line"><span class="javascript">                            <span class="string">"outline"</span>: &#123;</span></span><br><span class="line"><span class="javascript">                                <span class="string">"color"</span>: [<span class="number">52</span>,<span class="number">73</span>,<span class="number">94</span>,<span class="number">255</span>],</span></span><br><span class="line"><span class="javascript">                                <span class="string">"width"</span>: <span class="number">2</span>,</span></span><br><span class="line"><span class="javascript">                                <span class="string">"type"</span>: <span class="string">"esriSLS"</span>,</span></span><br><span class="line"><span class="javascript">                                <span class="string">"style"</span>: <span class="string">"esriSLSSolid"</span></span></span><br><span class="line"><span class="undefined">                            &#125;</span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="javascript">                        <span class="keyword">var</span> geometryService =<span class="keyword">new</span> GeometryService(<span class="string">"http://120.77.215.143:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer"</span>);</span></span><br><span class="line"><span class="javascript">                        $(<span class="string">"#JSarea"</span>).on(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                            areaFun=<span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">                            disFun=<span class="literal">false</span>;</span></span><br><span class="line"><span class="javascript">                            toolbar.activate(Draw.POLYGON);<span class="comment">//画面</span></span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="javascript">                        $(<span class="string">"#JSline"</span>).on(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                            disFun=<span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">                            areaFun=<span class="literal">false</span>;</span></span><br><span class="line"><span class="javascript">                            toolbar.activate(Draw.POLYLINE);<span class="comment">//绘制折线</span></span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="javascript">                        $(<span class="string">"#JSclear"</span>).on(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="undefined">                            clearAction();</span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="javascript">                        map.on(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                           <span class="comment">// console.log(evt);</span></span></span><br><span class="line"><span class="javascript">                            <span class="keyword">if</span>(disFun)&#123;</span></span><br><span class="line"><span class="undefined">                                inputPoints.push(evt.mapPoint);</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">var</span>  textSymbol;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">if</span>(inputPoints.length ===<span class="number">1</span>)&#123;</span></span><br><span class="line"><span class="javascript">                                    textSymbol = <span class="keyword">new</span> TextSymbol(<span class="string">"起点"</span>,startFont,<span class="keyword">new</span> Color([<span class="number">204</span>,<span class="number">102</span>,<span class="number">51</span>]));</span></span><br><span class="line"><span class="undefined">                                    textSymbol.setOffset(0,-20);</span></span><br><span class="line"><span class="javascript">                                    measureLayer.add(<span class="keyword">new</span> Graphic(evt.mapPoint,textSymbol));</span></span><br><span class="line"><span class="undefined">                                &#125;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">if</span>(inputPoints.length&gt;=<span class="number">2</span>)&#123;</span></span><br><span class="line"><span class="javascript">                                    <span class="comment">//    设置距离测量的参数</span></span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">var</span>  lengthParams = <span class="keyword">new</span> LengthsParameters();</span></span><br><span class="line"><span class="javascript">                                    lengthParams.calculationType = <span class="string">'preserveShape'</span>;</span></span><br><span class="line"><span class="javascript">                                    lengthParams.lengthUnit = GeometryService.UNIT_METER;<span class="comment">//单位米</span></span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">var</span> p1 = inputPoints[inputPoints.length<span class="number">-2</span>];</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">var</span> p2 = inputPoints[inputPoints.length<span class="number">-1</span>];</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">if</span>(p1.x ===p2.x &amp;&amp;p1.y===p2.y)&#123;</span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">return</span>;</span></span><br><span class="line"><span class="undefined">                                    &#125;</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">var</span> polyline = <span class="keyword">new</span> Polyline(map.spatialReference);</span></span><br><span class="line"><span class="undefined">                                    polyline.addPath([p1,p2]);</span></span><br><span class="line"><span class="undefined">                                    lengthParams.polylines=[polyline];</span></span><br><span class="line"><span class="javascript">                                    <span class="comment">// 根据参数，动态的计算长度</span></span></span><br><span class="line"><span class="javascript">                                    geometryService.lengths(lengthParams,<span class="function"><span class="keyword">function</span> (<span class="params">dis</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                                        <span class="built_in">console</span>.log(dis);</span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">var</span> _distance = dis.lengths[<span class="number">0</span>];</span></span><br><span class="line"><span class="javascript">                                        totleDistance+=<span class="built_in">parseFloat</span>(_distance);<span class="comment">//计算总长度</span></span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">var</span> beetwentDistances = totleDistance.toFixed(<span class="number">2</span>)+<span class="string">"米"</span>;</span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">var</span> tdistance = <span class="keyword">new</span> TextSymbol(beetwentDistances,startFont,<span class="keyword">new</span> Color([<span class="number">204</span>,<span class="number">102</span>,<span class="number">51</span>]));</span></span><br><span class="line"><span class="undefined">                                        tdistance.setOffset(40,-3);</span></span><br><span class="line"><span class="javascript">                                        measureLayer.add(<span class="keyword">new</span> Graphic(p2,tdistance));</span></span><br><span class="line"><span class="undefined">                                    &#125;);</span></span><br><span class="line"><span class="undefined">                                &#125;</span></span><br><span class="line"><span class="javascript">                                measureLayer.add(<span class="keyword">new</span> Graphic(evt.mapPoint,makerSymbol));<span class="comment">//添加样式点</span></span></span><br><span class="line"><span class="javascript">                            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(areaFun)&#123;</span></span><br><span class="line"><span class="javascript">                                measureLayer.add(<span class="keyword">new</span> Graphic(evt.mapPoint,makerSymbol));</span></span><br><span class="line"><span class="undefined">                            &#125;</span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="javascript">                        <span class="comment">//触发完成的事件</span></span></span><br><span class="line"><span class="javascript">                        toolbar.on(<span class="string">"draw-end"</span>,<span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                           <span class="comment">// console.log(evt);</span></span></span><br><span class="line"><span class="javascript">                            <span class="keyword">if</span>(disFun||areaFun)&#123;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">var</span> geometry=evt.geometry;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">var</span> symbol = <span class="literal">null</span>;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">switch</span>(geometry.type)&#123;</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">case</span> <span class="string">"polyline"</span>:</span></span><br><span class="line"><span class="javascript">                                        symbol  = <span class="keyword">new</span> SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,</span></span><br><span class="line"><span class="javascript">                                                <span class="keyword">new</span> Color([<span class="number">27</span>,<span class="number">188</span>,<span class="number">155</span>,<span class="number">1</span>]),<span class="number">2</span>);</span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">break</span>;</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">case</span> <span class="string">"polygon"</span>:</span></span><br><span class="line"><span class="javascript">                                        symbol = <span class="keyword">new</span> SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,</span></span><br><span class="line"><span class="javascript">                                                <span class="keyword">new</span> SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,<span class="keyword">new</span> Color([<span class="number">27</span>,<span class="number">188</span>,<span class="number">155</span>,<span class="number">1</span>]),<span class="number">2</span>),</span></span><br><span class="line"><span class="javascript">                                                <span class="keyword">new</span> Color([<span class="number">255</span>,<span class="number">255</span>,<span class="number">0</span>,<span class="number">0.25</span>]));</span></span><br><span class="line"><span class="javascript">                                        <span class="keyword">break</span>;</span></span><br><span class="line"><span class="undefined">                                &#125;</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">var</span> graphic=<span class="keyword">new</span> Graphic(geometry,symbol);</span></span><br><span class="line"><span class="undefined">                                measureLayer.add(graphic);</span></span><br><span class="line"><span class="javascript">                                <span class="keyword">if</span>(disFun)&#123;</span></span><br><span class="line"><span class="javascript">                                    inputPoints.splice(<span class="number">0</span>,inputPoints.length);<span class="comment">//删除数组中的所有元素</span></span></span><br><span class="line"><span class="javascript">                                    totleDistance =<span class="number">0.0</span>;<span class="comment">//清空距离值</span></span></span><br><span class="line"><span class="javascript">                                    disFun = <span class="literal">false</span>;</span></span><br><span class="line"><span class="javascript">                                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(areaFun)&#123;</span></span><br><span class="line"><span class="javascript">                                    <span class="keyword">var</span> areasAndLengthParams = <span class="keyword">new</span> AreasAndLengthsParameters(); <span class="comment">//计算面积和周长的参数</span></span></span><br><span class="line"><span class="javascript">                                    areasAndLengthParams.lengthUnit = GeometryService.UNIT_METER;<span class="comment">//设置距离单位</span></span></span><br><span class="line"><span class="javascript">                                    areasAndLengthParams.areaUnit=geometryService.UNIT_SQUARE_METERS; <span class="comment">//平方米</span></span></span><br><span class="line"><span class="javascript">                                    areasAndLengthParams.calculationType=<span class="string">"preserveShape"</span>;</span></span><br><span class="line"><span class="javascript">                                    geometryService.simplify([geometry],<span class="function"><span class="keyword">function</span> (<span class="params">simplifiedGeometries</span>) </span>&#123;</span></span><br><span class="line"><span class="undefined">                                        areasAndLengthParams.polygons=simplifiedGeometries;</span></span><br><span class="line"><span class="javascript">                                        geometryService.areasAndLengths(areasAndLengthParams,<span class="function"><span class="keyword">function</span> (<span class="params">result</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                                           <span class="comment">// console.log(result);</span></span></span><br><span class="line"><span class="javascript">                                            <span class="keyword">var</span> font =<span class="keyword">new</span> Font(<span class="string">"14px"</span>,Font.STYLE_NORMAL,Font.VARIANT_NORMAL,Font.WEIGHT_BOLDER);</span></span><br><span class="line"><span class="javascript">                                            <span class="keyword">var</span> areaResult = <span class="keyword">new</span> TextSymbol(<span class="built_in">parseFloat</span>(result.areas[<span class="number">0</span>]).toFixed(<span class="number">2</span>) + <span class="string">"平方米"</span>,font,<span class="keyword">new</span> Color([<span class="number">204</span>,<span class="number">102</span>,<span class="number">51</span>]));</span></span><br><span class="line"><span class="javascript">                                            <span class="keyword">var</span> spoint = <span class="keyword">new</span> Point(geometry.getExtent().getCenter().x,geometry.getExtent().getCenter().y,map.spatialReference);</span></span><br><span class="line"><span class="javascript">                                            measureLayer.add(<span class="keyword">new</span> Graphic(spoint,areaResult));<span class="comment">//在地图上显示测量的面积</span></span></span><br><span class="line"><span class="undefined">                                        &#125;)</span></span><br><span class="line"><span class="undefined">                                    &#125;);</span></span><br><span class="line"><span class="javascript">                                    areaFun=<span class="literal">false</span>;</span></span><br><span class="line"><span class="undefined">                                &#125;</span></span><br><span class="line"><span class="undefined">                            &#125;</span></span><br><span class="line"><span class="javascript">                            toolbar.deactivate();<span class="comment">//撤销地图绘制功能</span></span></span><br><span class="line"><span class="undefined">                        &#125;);</span></span><br><span class="line"><span class="javascript">                        <span class="comment">//清除功能</span></span></span><br><span class="line"><span class="javascript">                        <span class="function"><span class="keyword">function</span> <span class="title">clearAction</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                            disFun=<span class="literal">false</span>;</span></span><br><span class="line"><span class="javascript">                            inputPoints.splice(<span class="number">0</span>,inputPoints.length);<span class="comment">//删除数组中的所有元素</span></span></span><br><span class="line"><span class="javascript">                            totleDistance =<span class="number">0.0</span>;<span class="comment">//清空距离值</span></span></span><br><span class="line"><span class="javascript">                            areaFun=<span class="literal">false</span>;</span></span><br><span class="line"><span class="undefined">                            toolbar.deactivate();</span></span><br><span class="line"><span class="javascript">                            map.setMapCursor(<span class="string">"default"</span>);</span></span><br><span class="line"><span class="undefined">                            measureLayer.clear();</span></span><br><span class="line"><span class="undefined">                        &#125;</span></span><br><span class="line"><span class="undefined">            &#125;)</span></span><br><span class="line"><span class="undefined">    &#125;)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h4><div align="center"><img src="/2018/05/14/arcgis-api实现一些常用的功能/line.png" width="500" height="400" alt="测量距离" align="center"><br></div>
+
+<div align="center"><img src="/2018/05/14/arcgis-api实现一些常用的功能/area.png" width="500" height="400" alt="测量面积" align="center"><br></div>
+
+<h3 id="动态轨迹"><a href="#动态轨迹" class="headerlink" title="动态轨迹"></a>动态轨迹</h3><p>原理也就是写一个定时器。一个点动态的沿着线从起点到线的终点。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">    &lt;title&gt;动态轨迹demo&lt;<span class="regexp">/title&gt;</span></span><br><span class="line"><span class="regexp">    &lt;link rel="stylesheet" type="text/</span>css<span class="string">" href="</span>http:<span class="comment">//120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/dijit/themes/tundra/tundra.css"/&gt;</span></span><br><span class="line">    &lt;link rel=<span class="string">"stylesheet"</span> type=<span class="string">"text/css"</span> href=<span class="string">"http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/esri/css/esri.css"</span>/&gt;</span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"http://120.77.215.143:6012/arcgis_js_api/library/3.21/3.21/init.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">    &lt;script src=<span class="string">"https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">&lt;body&gt;</span></span><br><span class="line"><span class="regexp">&lt;div id="map" style="height: 700px;width: 100%;"&gt;&lt;/</span>div&gt;</span><br><span class="line">&lt;input type=<span class="string">"button"</span> id=<span class="string">"openTool"</span>   value=<span class="string">"开启"</span> /&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">    require(["esri/map", "extLayers/gaodeLayer","extLayers/TDTLayer",</span></span><br><span class="line"><span class="regexp">        "esri/geometry/Polyline","esri/symbols/SimpleLineSymbol","esri/graphic","esri/layers/GraphicsLayer",</span></span><br><span class="line"><span class="regexp">        "esri/geometry/Point","esri/symbols/PictureMarkerSymbol","esri/SpatialReference"</span></span><br><span class="line"><span class="regexp">    ],function (Map,gaodeLayer,TDTLayer,Polyline,SimpleLineSymbol,Graphic,GraphicsLayer,Point,PictureMarkerSymbol,SpatialReference) &#123;</span></span><br><span class="line"><span class="regexp">        var map=new Map("map",&#123;</span></span><br><span class="line"><span class="regexp">            center:[112.6,30.5],</span></span><br><span class="line"><span class="regexp">            zoom:6,</span></span><br><span class="line"><span class="regexp">            slider:true,</span></span><br><span class="line"><span class="regexp">            nav:false,</span></span><br><span class="line"><span class="regexp">            logo:false</span></span><br><span class="line"><span class="regexp">        &#125;);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        var gaodelayer=new gaodeLayer();</span></span><br><span class="line"><span class="regexp">        map.addLayer(gaodelayer);</span></span><br><span class="line"><span class="regexp">        var graphicsLayer1=new GraphicsLayer();/</span><span class="regexp">/线图层</span></span><br><span class="line"><span class="regexp">        map.addLayer(graphicsLayer1);</span></span><br><span class="line"><span class="regexp">        var graphicsLayer=new GraphicsLayer();/</span><span class="regexp">/动态点图层</span></span><br><span class="line"><span class="regexp">        map.addLayer(graphicsLayer);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        var path=&#123;"point":[[113.68,34.53], [115.58,34.55], [113.57,30.58],[115.53,30.6]]&#125;;</span></span><br><span class="line"><span class="regexp">        var polyline = new Polyline(new SpatialReference(&#123;wkid:4326&#125;));</span></span><br><span class="line"><span class="regexp">        polyline.addPath(path.point);</span></span><br><span class="line"><span class="regexp">        var sys=new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH,new esri.Color([0,255,0]),3);</span></span><br><span class="line"><span class="regexp">        var g=new Graphic(polyline,sys);</span></span><br><span class="line"><span class="regexp">        graphicsLayer1.add(g);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        var point=new Point(path.point[0],new SpatialReference(&#123;wkid:4326&#125;));</span></span><br><span class="line"><span class="regexp">        var picBaseUrl = "https:/</span><span class="regexp">/static.arcgis.com/im</span>ages/Symbols/Shapes/<span class="string">";</span></span><br><span class="line"><span class="string">        var blue = new PictureMarkerSymbol(picBaseUrl + "</span>BluePin1LargeB.png<span class="string">", 30, 30).setOffset(0, 15);</span></span><br><span class="line"><span class="string">        var graphic=new Graphic(point,blue);</span></span><br><span class="line"><span class="string">        graphicsLayer.add(graphic);</span></span><br><span class="line"><span class="string">        //根据坐标点进行移动</span></span><br><span class="line"><span class="string">        var points,moving;</span></span><br><span class="line"><span class="string">        var startNum,endNum;</span></span><br><span class="line"><span class="string">        document.getElementById("</span>openTool<span class="string">").onclick=function()&#123;</span></span><br><span class="line"><span class="string">            if(typeof(moving)!="</span><span class="literal">undefined</span><span class="string">")&#123;</span></span><br><span class="line"><span class="string">                clearInterval(moving); //清除移动</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            points = path.point;</span></span><br><span class="line"><span class="string">            graphic.geometry.x = points[0][0];</span></span><br><span class="line"><span class="string">            graphic.geometry.y = points[0][1];</span></span><br><span class="line"><span class="string">            graphicsLayer.redraw();</span></span><br><span class="line"><span class="string">            move(0,1);</span></span><br><span class="line"><span class="string">        &#125;;</span></span><br><span class="line"><span class="string">        function move(start,end) &#123;</span></span><br><span class="line"><span class="string">            var x1=points[start][0];</span></span><br><span class="line"><span class="string">            var y1=points[start][1];</span></span><br><span class="line"><span class="string">            var x2=points[end][0];</span></span><br><span class="line"><span class="string">            var y2=points[end][1];</span></span><br><span class="line"><span class="string">            var p=(y2-y1)/(x2-x1);//斜率</span></span><br><span class="line"><span class="string">            var v=0.01; //距离</span></span><br><span class="line"><span class="string">            moving=setInterval(function () &#123;</span></span><br><span class="line"><span class="string">                startNum=start;</span></span><br><span class="line"><span class="string">                endNum=end;</span></span><br><span class="line"><span class="string">                //分别计算 x,y轴方向速度</span></span><br><span class="line"><span class="string">                if(Math.abs(p)==Number.POSITIVE_INFINITY)&#123;//p为无穷大</span></span><br><span class="line"><span class="string">                    graphic.geometry.y+=v;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                else &#123;</span></span><br><span class="line"><span class="string">                    if (x2&lt;x1)&#123;</span></span><br><span class="line"><span class="string">                        graphic.geometry.x-=(1/Math.sqrt(1+p*p))*v;</span></span><br><span class="line"><span class="string">                        graphic.geometry.y-=(p/Math.sqrt(1+p*p))*v;</span></span><br><span class="line"><span class="string">                    &#125;else &#123;</span></span><br><span class="line"><span class="string">                        graphic.geometry.x+=(1/Math.sqrt(1+p*p))*v;</span></span><br><span class="line"><span class="string">                        graphic.geometry.y+=(p/Math.sqrt(1+p*p))*v;</span></span><br><span class="line"><span class="string">                    &#125;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                graphicsLayer.redraw();</span></span><br><span class="line"><span class="string">                if (Math.abs(graphic.geometry.x - x2) &lt;=0.01 &amp;&amp; Math.abs(graphic.geometry.y - y2) &lt;=0.01) &#123;</span></span><br><span class="line"><span class="string">                    clearInterval(moving);</span></span><br><span class="line"><span class="string">                    startNum=start++;</span></span><br><span class="line"><span class="string">                    endNum=end++;</span></span><br><span class="line"><span class="string">                    if (end &lt; points.length)</span></span><br><span class="line"><span class="string">                        move(start, end);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;,50);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125;)</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="聚类功能"><a href="#聚类功能" class="headerlink" title="聚类功能"></a>聚类功能</h3><p>运用场景：从数据库中读取的点数据量很大或者小区域内点很密集影响展示的两种情况可以采取聚类的方式来得到解决。<br>从arcgis api官方提供的聚类方法源码中，还不符合我的需求。1.当地图缩放到一定等级之后就不需要聚类了。2.点击聚类点不需要弹窗只需要单机一个点时才弹窗。<br>所以修改了源码，并添加注释。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br></pre></td><td class="code"><pre><span class="line">define([</span><br><span class="line">  <span class="string">"dojo/_base/declare"</span>,</span><br><span class="line">  <span class="string">"dojo/_base/array"</span>,</span><br><span class="line">  <span class="string">"esri/Color"</span>,</span><br><span class="line">  <span class="string">"dojo/_base/connect"</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">"esri/SpatialReference"</span>,</span><br><span class="line">  <span class="string">"esri/geometry/Point"</span>,</span><br><span class="line">  <span class="string">"esri/graphic"</span>,</span><br><span class="line">  <span class="string">"esri/symbols/SimpleMarkerSymbol"</span>,</span><br><span class="line">  <span class="string">"esri/symbols/TextSymbol"</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">"esri/dijit/PopupTemplate"</span>,</span><br><span class="line">  <span class="string">"esri/layers/GraphicsLayer"</span></span><br><span class="line">], <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  declare, arrayUtils, Color, connect,</span></span></span><br><span class="line"><span class="function"><span class="params">  SpatialReference, Point, Graphic, SimpleMarkerSymbol, TextSymbol,</span></span></span><br><span class="line"><span class="function"><span class="params">  PopupTemplate, GraphicsLayer</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> declare([GraphicsLayer], &#123;</span><br><span class="line">      <span class="keyword">constructor</span>: function (options) &#123;</span><br><span class="line">        <span class="comment">// options:</span></span><br><span class="line">        <span class="comment">//   data:  Object[]</span></span><br><span class="line">        <span class="comment">//     Array of objects. Required. Object are required to have properties named x, y and attributes. The x and y coordinates have to be numbers that represent a points coordinates.</span></span><br><span class="line">        <span class="comment">//   distance:  Number?</span></span><br><span class="line">        <span class="comment">//     Optional. The max number of pixels between points to group points in the same cluster. Default value is 50.</span></span><br><span class="line">        <span class="comment">//   labelColor:  String?</span></span><br><span class="line">        <span class="comment">//     Optional. Hex string or array of rgba values used as the color for cluster labels. Default value is #fff (white).</span></span><br><span class="line">        <span class="comment">//   labelOffset:  String?</span></span><br><span class="line">        <span class="comment">//     Optional. Number of pixels to shift a cluster label vertically. Defaults to -5 to align labels with circle symbols. Does not work in IE.</span></span><br><span class="line">        <span class="comment">//   resolution:  Number</span></span><br><span class="line">        <span class="comment">//     Required. Width of a pixel in map coordinates. Example of how to calculate: </span></span><br><span class="line">        <span class="comment">//     map.extent.getWidth() / map.width</span></span><br><span class="line">        <span class="comment">//   showSingles:  Boolean?</span></span><br><span class="line">        <span class="comment">//     Optional. Whether or graphics should be displayed when a cluster graphic is clicked. Default is true.</span></span><br><span class="line">        <span class="comment">//   singleSymbol:  MarkerSymbol?</span></span><br><span class="line">        <span class="comment">//     Marker Symbol (picture or simple). Optional. Symbol to use for graphics that represent single points. Default is a small gray SimpleMarkerSymbol.</span></span><br><span class="line">        <span class="comment">//   singleTemplate:  PopupTemplate?</span></span><br><span class="line">        <span class="comment">//     PopupTemplate&lt;/a&gt;. Optional. Popup template used to format attributes for graphics that represent single points. Default shows all attributes as "attribute = value" (not recommended).</span></span><br><span class="line">        <span class="comment">//   maxSingles:  Number?</span></span><br><span class="line">        <span class="comment">//     Optional. Threshold for whether or not to show graphics for points in a cluster. Default is 1000.</span></span><br><span class="line">        <span class="comment">//   webmap:  Boolean?</span></span><br><span class="line">        <span class="comment">//     Optional. Whether or not the map is from an ArcGIS.com webmap. Default is false.</span></span><br><span class="line">        <span class="comment">//   spatialReference:  SpatialReference?</span></span><br><span class="line">        <span class="comment">//     Optional. Spatial reference for all graphics in the layer. This has to match the spatial reference of the map. Default is 102100. Omit this if the map uses basemaps in web mercator.</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>._clusterTolerance = options.distance || <span class="number">50</span>;</span><br><span class="line">        <span class="keyword">this</span>._clusterData = options.data || [];</span><br><span class="line">        <span class="keyword">this</span>._clusters = [];</span><br><span class="line">        <span class="keyword">this</span>._clusterLabelColor = options.labelColor || <span class="string">"#000"</span>;</span><br><span class="line">        <span class="comment">// labelOffset can be zero so handle it differently</span></span><br><span class="line">        <span class="keyword">this</span>._clusterLabelOffset = (options.hasOwnProperty(<span class="string">"labelOffset"</span>)) ? options.labelOffset : <span class="number">-5</span>;</span><br><span class="line">        <span class="comment">// graphics that represent a single point</span></span><br><span class="line">        <span class="keyword">this</span>._singles = []; <span class="comment">// populated when a graphic is clicked</span></span><br><span class="line">        <span class="keyword">this</span>._showSingles = options.hasOwnProperty(<span class="string">"showSingles"</span>) ? options.showSingles : <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// symbol for single graphics</span></span><br><span class="line">        <span class="keyword">var</span> SMS = SimpleMarkerSymbol;</span><br><span class="line">        <span class="keyword">this</span>._singleSym = options.singleSymbol || <span class="keyword">new</span> SMS(<span class="string">"circle"</span>, <span class="number">6</span>, <span class="literal">null</span>, <span class="keyword">new</span> Color(<span class="string">"#888"</span>));</span><br><span class="line">        <span class="keyword">this</span>._singleTemplate = options.singleTemplate || <span class="keyword">new</span> PopupTemplate(&#123; <span class="string">"title"</span>: <span class="string">""</span>, <span class="string">"description"</span>: <span class="string">"&#123;*&#125;"</span> &#125;);</span><br><span class="line">        <span class="keyword">this</span>._maxSingles = options.maxSingles || <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>._webmap = options.hasOwnProperty(<span class="string">"webmap"</span>) ? options.webmap : <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>._sr = options.spatialReference || <span class="keyword">new</span> SpatialReference(&#123; <span class="string">"wkid"</span>: <span class="number">102100</span> &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>._zoomEnd = <span class="literal">null</span>;</span><br><span class="line">        <span class="comment">//新增属性</span></span><br><span class="line">        <span class="keyword">this</span>._maxZoom = options.maxZoom || <span class="number">12</span>;</span><br><span class="line">        <span class="keyword">this</span>._map = <span class="literal">null</span>;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// override esri/layers/GraphicsLayer methods 重写setMap方法</span></span><br><span class="line">      _setMap: <span class="function"><span class="keyword">function</span> (<span class="params">map, surface</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// calculate and set the initial resolution 计算和设置初始分辨率</span></span><br><span class="line">        <span class="keyword">this</span>._clusterResolution = map.extent.getWidth() / map.width; <span class="comment">// probably a bad default...</span></span><br><span class="line">        <span class="keyword">this</span>._map = map;<span class="comment">//将map设置为全局变量</span></span><br><span class="line">        <span class="keyword">this</span>._clusterGraphics();<span class="comment">//聚类</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// connect to onZoomEnd so data is re-clustered when zoom level changes当缩放级别改变时数据会重新聚集。</span></span><br><span class="line">        <span class="keyword">this</span>._zoomEnd = connect.connect(map, <span class="string">"onZoomEnd"</span>, <span class="keyword">this</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">// update resolution</span></span><br><span class="line">          <span class="keyword">this</span>._clusterResolution = <span class="keyword">this</span>._map.extent.getWidth() / <span class="keyword">this</span>._map.width;</span><br><span class="line">          <span class="keyword">this</span>.clear();<span class="comment">//清除</span></span><br><span class="line">          <span class="keyword">this</span>._clusterGraphics(); <span class="comment">//重新聚类</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// GraphicsLayer will add its own listener here</span></span><br><span class="line">        <span class="keyword">var</span> div = <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line">        <span class="keyword">return</span> div;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      _unsetMap: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line">        connect.disconnect(<span class="keyword">this</span>._zoomEnd);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// public ClusterLayer methods</span></span><br><span class="line">      add: <span class="function"><span class="keyword">function</span> (<span class="params">p</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Summary:  The argument is a data point to be added to an existing cluster. If the data point falls within an existing cluster, it is added to that cluster and the cluster's label is updated. If the new point does not fall within an existing cluster, a new cluster is created.</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// if passed a graphic, use the GraphicsLayer's add method</span></span><br><span class="line">        <span class="keyword">if</span> (p.declaredClass) &#123;</span><br><span class="line">          <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// add the new data to _clusterData so that it's included in clusters</span></span><br><span class="line">        <span class="comment">// when the map level changes</span></span><br><span class="line">        <span class="keyword">this</span>._clusterData.push(p);</span><br><span class="line">        <span class="keyword">var</span> clustered = <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// look for an existing cluster for the new point</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>._clusters.length; i++) &#123;</span><br><span class="line">          <span class="keyword">var</span> c = <span class="keyword">this</span>._clusters[i];</span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">this</span>._clusterTest(p, c)) &#123;</span><br><span class="line">            <span class="comment">// add the point to an existing cluster</span></span><br><span class="line">            <span class="keyword">this</span>._clusterAddPoint(p, c);</span><br><span class="line">            <span class="comment">// update the cluster's geometry</span></span><br><span class="line">            <span class="keyword">this</span>._updateClusterGeometry(c);</span><br><span class="line">            <span class="comment">// update the label</span></span><br><span class="line">            <span class="keyword">this</span>._updateLabel(c);</span><br><span class="line">            clustered = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!clustered) &#123;</span><br><span class="line">          <span class="keyword">this</span>._clusterCreate(p);</span><br><span class="line">          p.attributes.clusterCount = <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">this</span>._showCluster(p);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      clear: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Summary:  Remove all clusters and data points.</span></span><br><span class="line">        <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line">        <span class="keyword">this</span>._clusters.length = <span class="number">0</span>;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      clearSingles: <span class="function"><span class="keyword">function</span> (<span class="params">singles</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Summary:  Remove graphics that represent individual data points.</span></span><br><span class="line">        <span class="keyword">var</span> s = singles || <span class="keyword">this</span>._singles;</span><br><span class="line">        arrayUtils.forEach(s, <span class="function"><span class="keyword">function</span> (<span class="params">g</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.remove(g);</span><br><span class="line">        &#125;, <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>._singles.length = <span class="number">0</span>;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      onClick: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// remove any previously showing single features</span></span><br><span class="line">        <span class="keyword">this</span>.clearSingles(<span class="keyword">this</span>._singles);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// find single graphics that make up the cluster that was clicked</span></span><br><span class="line">        <span class="comment">// would be nice to use filter but performance tanks with large arrays in IE</span></span><br><span class="line">        <span class="keyword">var</span> singles = [];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, il = <span class="keyword">this</span>._clusterData.length; i &lt; il; i++) &#123;</span><br><span class="line">          <span class="keyword">if</span> (e.graphic.attributes.clusterId == <span class="keyword">this</span>._clusterData[i].attributes.clusterId) &#123;</span><br><span class="line">            singles.push(<span class="keyword">this</span>._clusterData[i]);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果聚类点的个数大于0</span></span><br><span class="line">        <span class="keyword">if</span> (singles.length &gt; <span class="keyword">this</span>._maxSingles || singles.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// alert("Sorry, that cluster contains more than " + this._maxSingles + " points. Zoom in for more detail.");</span></span><br><span class="line">          <span class="keyword">var</span> level = <span class="keyword">this</span>._map.getLevel() + <span class="number">2</span> &gt;= <span class="number">17</span> ? <span class="number">17</span> : <span class="keyword">this</span>._map.getLevel() + <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">this</span>._map.setZoom(level);</span><br><span class="line">          <span class="keyword">this</span>._map.centerAt(e.graphic.geometry);</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// stop the click from bubbling to the map</span></span><br><span class="line">          e.stopPropagation(); <span class="comment">//阻止map的冒泡事件</span></span><br><span class="line">          <span class="keyword">this</span>._map.infoWindow.show(e.graphic.geometry);</span><br><span class="line">          <span class="keyword">this</span>._addSingles(singles);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// internal methods 内部方法</span></span><br><span class="line">      _clusterGraphics: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// first time through, loop through the points 遍历所有数据</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>, jl = <span class="keyword">this</span>._clusterData.length; j &lt; jl; j++) &#123;</span><br><span class="line">          <span class="comment">// see if the current feature should be added to a cluster</span></span><br><span class="line">          <span class="keyword">var</span> point = <span class="keyword">this</span>._clusterData[j];</span><br><span class="line">          <span class="comment">//状态</span></span><br><span class="line">          <span class="keyword">var</span> clustered = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">//遍历聚类数据</span></span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>._clusters.length; i++) &#123;</span><br><span class="line">            <span class="keyword">var</span> c = <span class="keyword">this</span>._clusters[i];</span><br><span class="line">            <span class="comment">//如果为true,就push到同一个数组中</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>._clusterTest(point, c)) &#123;</span><br><span class="line">              <span class="keyword">this</span>._clusterAddPoint(point, c);</span><br><span class="line">              clustered = <span class="literal">true</span>;</span><br><span class="line">              <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (!clustered) &#123;</span><br><span class="line">            <span class="comment">//如果不为真，将点push到要聚类的数组中</span></span><br><span class="line">            <span class="keyword">this</span>._clusterCreate(point);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>._showAllClusters();</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">//判断点是否需要聚类</span></span><br><span class="line">      _clusterTest: <span class="function"><span class="keyword">function</span> (<span class="params">p, cluster</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//计算距离</span></span><br><span class="line">        <span class="keyword">var</span> distance = (</span><br><span class="line">          <span class="built_in">Math</span>.sqrt(</span><br><span class="line">            <span class="built_in">Math</span>.pow((cluster.x - p.x), <span class="number">2</span>) + <span class="built_in">Math</span>.pow((cluster.y - p.y), <span class="number">2</span>)</span><br><span class="line">          ) / <span class="keyword">this</span>._clusterResolution</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">var</span> _flag = (distance &lt;= <span class="keyword">this</span>._clusterTolerance);</span><br><span class="line">        <span class="keyword">var</span> _level = <span class="keyword">this</span>._map.getZoom();</span><br><span class="line">        <span class="keyword">if</span> (_level &gt;= <span class="keyword">this</span>._maxZoom) _flag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> _flag;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// points passed to clusterAddPoint should be included </span></span><br><span class="line">      <span class="comment">// in an existing cluster</span></span><br><span class="line">      <span class="comment">// also give the point an attribute called clusterId </span></span><br><span class="line">      <span class="comment">// that corresponds to its cluster</span></span><br><span class="line">      <span class="comment">//将point加到cluster数组中</span></span><br><span class="line">      _clusterAddPoint: <span class="function"><span class="keyword">function</span> (<span class="params">p, cluster</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// average in the new point to the cluster geometry</span></span><br><span class="line">        <span class="keyword">var</span> count, x, y;</span><br><span class="line">        count = cluster.attributes.clusterCount;</span><br><span class="line">        <span class="comment">//重新计算cluster对象的x,y,总数</span></span><br><span class="line">        x = (p.x + (cluster.x * count)) / (count + <span class="number">1</span>);</span><br><span class="line">        y = (p.y + (cluster.y * count)) / (count + <span class="number">1</span>);</span><br><span class="line">        cluster.x = x;</span><br><span class="line">        cluster.y = y;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// build an extent that includes all points in a cluster</span></span><br><span class="line">        <span class="comment">// extents are for debug/testing only...not used by the layer</span></span><br><span class="line">        <span class="comment">//修改cluster的四至</span></span><br><span class="line">        <span class="keyword">if</span> (p.x &lt; cluster.attributes.extent[<span class="number">0</span>]) &#123;</span><br><span class="line">          cluster.attributes.extent[<span class="number">0</span>] = p.x;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p.x &gt; cluster.attributes.extent[<span class="number">2</span>]) &#123;</span><br><span class="line">          cluster.attributes.extent[<span class="number">2</span>] = p.x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p.y &lt; cluster.attributes.extent[<span class="number">1</span>]) &#123;</span><br><span class="line">          cluster.attributes.extent[<span class="number">1</span>] = p.y;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p.y &gt; cluster.attributes.extent[<span class="number">3</span>]) &#123;</span><br><span class="line">          cluster.attributes.extent[<span class="number">3</span>] = p.y;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// increment the count 增加++</span></span><br><span class="line">        cluster.attributes.clusterCount++;</span><br><span class="line">        <span class="comment">// 判断对象是否含有指定的属性的</span></span><br><span class="line">        <span class="keyword">if</span> (!p.hasOwnProperty(<span class="string">"attributes"</span>)) &#123;</span><br><span class="line">          p.attributes = &#123;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// give the graphic a cluster id 将p的clusterId设置为cluster的id</span></span><br><span class="line">        p.attributes.clusterId = cluster.attributes.clusterId;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// point passed to clusterCreate isn't within the </span></span><br><span class="line">      <span class="comment">// clustering distance specified for the layer so</span></span><br><span class="line">      <span class="comment">// create a new cluster for it</span></span><br><span class="line">      <span class="comment">//创建cluster对象</span></span><br><span class="line">      _clusterCreate: <span class="function"><span class="keyword">function</span> (<span class="params">p</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> clusterId = <span class="keyword">this</span>._clusters.length + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// p.attributes might be undefined 如果没有定义attributes</span></span><br><span class="line">        <span class="keyword">if</span> (!p.attributes) &#123;</span><br><span class="line">          p.attributes = &#123;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        p.attributes.clusterId = clusterId;</span><br><span class="line">        <span class="comment">// 创建cluster对象</span></span><br><span class="line">        <span class="keyword">var</span> cluster = &#123;</span><br><span class="line">          <span class="string">"x"</span>: p.x,</span><br><span class="line">          <span class="string">"y"</span>: p.y,</span><br><span class="line">          <span class="string">"attributes"</span>: &#123;</span><br><span class="line">            <span class="string">"clusterCount"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">"clusterId"</span>: clusterId,</span><br><span class="line">            <span class="string">"extent"</span>: [p.x, p.y, p.x, p.y]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">this</span>._clusters.push(cluster);<span class="comment">//push到聚类数组中</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">//显示聚类数组</span></span><br><span class="line">      _showAllClusters: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, il = <span class="keyword">this</span>._clusters.length; i &lt; il; i++) &#123;</span><br><span class="line">          <span class="keyword">var</span> c = <span class="keyword">this</span>._clusters[i];</span><br><span class="line">          <span class="keyword">this</span>._showCluster(c);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      _showCluster: <span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> point = <span class="keyword">new</span> Point(c.x, c.y, <span class="keyword">this</span>._sr);</span><br><span class="line">        <span class="keyword">this</span>.add(</span><br><span class="line">          <span class="keyword">new</span> Graphic(</span><br><span class="line">            point,</span><br><span class="line">            <span class="literal">null</span>,</span><br><span class="line">            c.attributes</span><br><span class="line">          )</span><br><span class="line">        );</span><br><span class="line">        <span class="comment">// code below is used to not label clusters with a single point</span></span><br><span class="line">        <span class="comment">//如果聚类数组中的cluster对象的clusterCount为1，就不需要加label</span></span><br><span class="line">        <span class="keyword">if</span> (c.attributes.clusterCount == <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// show number of points in the cluster</span></span><br><span class="line">        <span class="comment">//显示聚类点数</span></span><br><span class="line">        <span class="keyword">var</span> label = <span class="keyword">new</span> TextSymbol(c.attributes.clusterCount.toString())</span><br><span class="line">          .setColor(<span class="keyword">new</span> Color(<span class="keyword">this</span>._clusterLabelColor))</span><br><span class="line">          .setOffset(<span class="number">0</span>, <span class="keyword">this</span>._clusterLabelOffset);</span><br><span class="line">        <span class="keyword">this</span>.add(</span><br><span class="line">          <span class="keyword">new</span> Graphic(</span><br><span class="line">            point,</span><br><span class="line">            label,</span><br><span class="line">            c.attributes</span><br><span class="line">          )</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      _addSingles: <span class="function"><span class="keyword">function</span> (<span class="params">singles</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// add single graphics to the map</span></span><br><span class="line">        arrayUtils.forEach(singles, <span class="function"><span class="keyword">function</span> (<span class="params">p</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">var</span> g = <span class="keyword">new</span> Graphic(</span><br><span class="line">            <span class="keyword">new</span> Point(p.x, p.y, <span class="keyword">this</span>._sr),</span><br><span class="line">            <span class="keyword">this</span>._singleSym,</span><br><span class="line">            p.attributes,</span><br><span class="line">            <span class="keyword">this</span>._singleTemplate</span><br><span class="line">          );</span><br><span class="line">          <span class="keyword">this</span>._singles.push(g);</span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">this</span>._showSingles) &#123;</span><br><span class="line">            <span class="keyword">this</span>.add(g);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;, <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>._map.infoWindow.setFeatures(<span class="keyword">this</span>._singles);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">//add方法中修改cluster的x,y</span></span><br><span class="line">      _updateClusterGeometry: <span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// find the cluster graphic 根据clusterId在聚类数组中找到这个cluster</span></span><br><span class="line">        <span class="keyword">var</span> cg = arrayUtils.filter(<span class="keyword">this</span>.graphics, <span class="function"><span class="keyword">function</span> (<span class="params">g</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> !g.symbol &amp;&amp;</span><br><span class="line">            g.attributes.clusterId == c.attributes.clusterId;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//修改这个cluster的x,y</span></span><br><span class="line">        <span class="keyword">if</span> (cg.length == <span class="number">1</span>) &#123;</span><br><span class="line">          cg[<span class="number">0</span>].geometry.update(c.x, c.y);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"在聚类数组中没有找到这个对象: "</span>, cg);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">//add方法中修改cluster的样式</span></span><br><span class="line">      _updateLabel: <span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// find the existing label</span></span><br><span class="line">        <span class="keyword">var</span> label = arrayUtils.filter(<span class="keyword">this</span>.graphics, <span class="function"><span class="keyword">function</span> (<span class="params">g</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> g.symbol &amp;&amp;</span><br><span class="line">            g.symbol.declaredClass == <span class="string">"esri.symbol.TextSymbol"</span> &amp;&amp;</span><br><span class="line">            g.attributes.clusterId == c.attributes.clusterId;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">if</span> (label.length == <span class="number">1</span>) &#123;</span><br><span class="line">          <span class="comment">// console.log("update label...found: ", label);</span></span><br><span class="line">          <span class="keyword">this</span>.remove(label[<span class="number">0</span>]);</span><br><span class="line">          <span class="keyword">var</span> newLabel = <span class="keyword">new</span> TextSymbol(c.attributes.clusterCount)</span><br><span class="line">            .setColor(<span class="keyword">new</span> Color(<span class="keyword">this</span>._clusterLabelColor))</span><br><span class="line">            .setOffset(<span class="number">0</span>, <span class="keyword">this</span>._clusterLabelOffset);</span><br><span class="line">          <span class="keyword">this</span>.add(</span><br><span class="line">            <span class="keyword">new</span> Graphic(</span><br><span class="line">              <span class="keyword">new</span> Point(c.x, c.y, <span class="keyword">this</span>._sr),</span><br><span class="line">              newLabel,</span><br><span class="line">              c.attributes</span><br><span class="line">            )</span><br><span class="line">          );</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"在聚类数组中没有找到这个对象: "</span>, label);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="comment">// debug only...never called by the layer</span></span><br><span class="line">      _clusterMeta: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// print total number of features</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Total:  "</span>, <span class="keyword">this</span>._clusterData.length);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// add up counts and print it</span></span><br><span class="line">        <span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line">        arrayUtils.forEach(<span class="keyword">this</span>._clusters, <span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123;</span><br><span class="line">          count += c.attributes.clusterCount;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"In clusters:  "</span>, count);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>在<a href="https://github.com/OuYangResume/mapdemo" target="_blank" rel="noopener">github</a>上放有具体应用。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赞赏是最好的鼓励！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt="OuYang 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="OuYang 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GIS/" rel="tag"># GIS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/利用mybatis-generator自动生成代码/" rel="next" title="利用mybatis-generator自动生成代码">
+                <i class="fa fa-chevron-left"></i> 利用mybatis-generator自动生成代码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/14/科学上网/" rel="prev" title="科学上网">
+                科学上网 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/girl.jpg"
+                alt="OuYang"/>
+            
+              <p class="site-author-name" itemprop="name">OuYang</p>
+              <p class="site-description motion-element" itemprop="description">你长那么好看,不如和我虚度光阴。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/OuYangResume" title="GitHub &rarr; https://github.com/OuYangResume" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://music.163.com/#/user/home?id=109226134" title="CloudMusic &rarr; https://music.163.com/#/user/home?id=109226134" rel="noopener" target="_blank"><i class="fa fa-fw fa-music"></i>CloudMusic</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#GeometryService实现测量功能"><span class="nav-number">1.</span> <span class="nav-text">GeometryService实现测量功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测量功能的具体代码"><span class="nav-number">1.1.</span> <span class="nav-text">测量功能的具体代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果图"><span class="nav-number">1.2.</span> <span class="nav-text">效果图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态轨迹"><span class="nav-number">2.</span> <span class="nav-text">动态轨迹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚类功能"><span class="nav-number">3.</span> <span class="nav-text">聚类功能</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+    <div id="music163player">
+   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=504365123&auto=1&height=66"></iframe>
+</div>
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="user" itemprop="copyrightHolder">OuYang</span>
+
+  
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+  <!--<div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>-->
+
+
+
+  <!--<span class="post-meta-divider">|</span>-->
+
+
+
+  <!--<div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v</div>-->
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <script>
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item) > -1;
+    });
+    new Valine({
+      el: '#comments' ,
+      verify: false,
+      notify: false,
+      appId: 'e8GfUvKYeXWnCRikTi5VW194-gzGzoHsz',
+      appKey: '58Ad3rvSa1eBL0WHQ51BndB5',
+      placeholder: 'Just go go',
+      avatar: 'mm',
+      meta:guest,
+      pageSize: '10' || 10,
+      visitor: false
+    });
+  </script>
+
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+      <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
