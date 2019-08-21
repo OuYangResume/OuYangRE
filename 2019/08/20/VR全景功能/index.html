@@ -106,26 +106,26 @@
   <meta name="description" content="项目需要将华为全景相机拍摄出的照片展示在pc端，类似于微博常见的VR效果。实现效果的核心就是THREE.js。本文就介绍用webpack4搭建一个开发demo的环境，并简易介绍three.js.">
 <meta name="keywords" content="Three.js,webpack">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VR全景功能实现">
-<meta property="og:url" content="http://yoursite.com/2019/08/20/VR全景功能实现/index.html">
+<meta property="og:title" content="VR全景功能">
+<meta property="og:url" content="http://yoursite.com/2019/08/20/VR全景功能/index.html">
 <meta property="og:site_name" content="小小的诗">
 <meta property="og:description" content="项目需要将华为全景相机拍摄出的照片展示在pc端，类似于微博常见的VR效果。实现效果的核心就是THREE.js。本文就介绍用webpack4搭建一个开发demo的环境，并简易介绍three.js.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能实现/VR/zbx.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能实现/VR/camera.png">
-<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能实现/VR/camera1.png">
-<meta property="og:updated_time" content="2019-08-21T03:04:03.885Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能/zbx.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能/camera.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/VR全景功能/camera1.png">
+<meta property="og:updated_time" content="2019-08-21T03:36:21.802Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="VR全景功能实现">
+<meta name="twitter:title" content="VR全景功能">
 <meta name="twitter:description" content="项目需要将华为全景相机拍摄出的照片展示在pc端，类似于微博常见的VR效果。实现效果的核心就是THREE.js。本文就介绍用webpack4搭建一个开发demo的环境，并简易介绍three.js.">
-<meta name="twitter:image" content="http://yoursite.com/2019/08/20/VR全景功能实现/VR/zbx.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/20/VR全景功能/zbx.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/20/VR全景功能实现/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/08/20/VR全景功能/"/>
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>VR全景功能实现 | 小小的诗</title>
+  <title>VR全景功能 | 小小的诗</title>
   
 
 
@@ -352,7 +352,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/VR全景功能实现/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/VR全景功能/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="OuYang"/>
@@ -369,7 +369,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">VR全景功能实现
+          <h1 class="post-title" itemprop="name headline">VR全景功能
 
               
             
@@ -412,7 +412,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 11:04:03" itemprop="dateModified" datetime="2019-08-21T11:04:03+08:00">2019-08-21</time>
+                <time title="修改时间：2019-08-21 11:36:21" itemprop="dateModified" datetime="2019-08-21T11:36:21+08:00">2019-08-21</time>
               
             
           </span>
@@ -444,8 +444,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/20/VR全景功能实现/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/20/VR全景功能实现/" itemprop="commentCount"></span>
+                <a href="/2019/08/20/VR全景功能/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/08/20/VR全景功能/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -494,16 +494,16 @@
 <p>拿电影来类比的话，场景对应于整个布景空间，相机是拍摄镜头，渲染器用来把拍摄好的场景转换成胶卷。</p>
 <h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><p>场景允许你设置哪些对象被three.js渲染以及渲染在哪里。在场景中放置对象、灯光和相机。<br>很简单，直接创建一个Scene的实例即可。<code>_scene = new Scene()</code></p>
 <h4 id="元素（包含光线）"><a href="#元素（包含光线）" class="headerlink" title="元素（包含光线）"></a>元素（包含光线）</h4><p>Three.js 为我们提供了非常多的Geometry，例如SphereGeometry（球体）、TetrahedronGeometry（四面体）、TorusGeometry（圆环体）等等。<br>在Three.js中，材质（Material）决定了几何图形具体是以什么形式展现的。它包括了一个几何体如何形状以外的其他属性，例如色彩、纹理、透明度等等，Material和Geometry是相辅相成的，必须结合使用。</p>
-<h4 id="相机"><a href="#相机" class="headerlink" title="相机"></a>相机</h4><h5 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h5><div align="center"><img src="/2019/08/20/VR全景功能实现/VR/zbx.png" width="400" height="300" alt="图片名称" align="center"><br></div>
+<h4 id="相机"><a href="#相机" class="headerlink" title="相机"></a>相机</h4><h5 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h5><div align="center"><img src="/2019/08/20/VR全景功能/zbx.png" width="400" height="300" alt="图片名称" align="center"><br></div>
 
 <p>我们可以在场景中添加一个坐标系，清楚的看到元素处于什么位置.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//坐标系插件</span></span><br><span class="line">scene.add(<span class="keyword">new</span> THREE.AxisHelper(<span class="number">1000</span>));</span><br></pre></td></tr></table></figure></p>
 <h5 id="PerspectiveCamera（透视相机）"><a href="#PerspectiveCamera（透视相机）" class="headerlink" title="PerspectiveCamera（透视相机）"></a>PerspectiveCamera（透视相机）</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_camera = <span class="keyword">new</span> PerspectiveCamera(fov, aspect, near, far);</span><br></pre></td></tr></table></figure>
 <p>最常用的摄像机类型，模拟人眼的视觉，近大远小（透视），如果是需要模拟现实，基本都是用这个相机。Fov表示的是视角，Fov越大，表示眼睛睁得越大，离得越远，看得更多。aspect代表水平方向和竖直方向可观测距离的比值。near、far和上面的相同，分别对应相机可观测的最远和最近距离。</p>
-<div align="center"><img src="/2019/08/20/VR全景功能实现/VR/camera.png" width="400" height="300" alt="图片名称" align="center"><br></div>
+<div align="center"><img src="/2019/08/20/VR全景功能/camera.png" width="400" height="300" alt="图片名称" align="center"><br></div>
 
 <h5 id="OrthographicCamera（正交投影相机）"><a href="#OrthographicCamera（正交投影相机）" class="headerlink" title="OrthographicCamera（正交投影相机）"></a>OrthographicCamera（正交投影相机）</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_camera = <span class="keyword">new</span> OrthographicCamera(left, right, top, bottom, near, far);</span><br></pre></td></tr></table></figure>
 <p>只有在这个矩形可视区域内才是可见的物体无论物体距离相机距离远或者近，在最终渲染的图片中物体的大小都保持不变。对于渲染2D场景或者UI元素是非常有用的。</p>
-<div align="center"><img src="/2019/08/20/VR全景功能实现/VR/camera1.png" width="400" height="300" alt="图片名称" align="center"><br></div>
+<div align="center"><img src="/2019/08/20/VR全景功能/camera1.png" width="400" height="300" alt="图片名称" align="center"><br></div>
 
 <h5 id="position、lookAt"><a href="#position、lookAt" class="headerlink" title="position、lookAt"></a>position、lookAt</h5><p>position属性指定了相机所处的位置。lookAt函数指定相机观察的方向。接收的参数都是一个类型为Vector3的对象。</p>
 <h4 id="渲染器"><a href="#渲染器" class="headerlink" title="渲染器"></a>渲染器</h4><p>Three.js也为我们提供了几种不同的渲染器，主要看WebGL渲染器(WebGLRenderer)。WebGL渲染器使用WebGL来绘制场景，其够利用GPU硬件加速从而提高渲染性能。Three.js绘制的元素添加到浏览器上，这个过程需要一个载体，这个载体就是Canvas，你可以通过_renderer.domElement获取到这个Canvas，并将它给定到真实DOM中。</p>
