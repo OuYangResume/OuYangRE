@@ -125,6 +125,8 @@
               {{ next_url(ccURL, ccImage, {class: 'cc-opacity'}) }}
              </div>
           {% endif %}
+          <div id="music163player">
+   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=504365123&auto=1&height=66"></iframe>
 
           {# Blogroll #}
           {% if theme.links %}
@@ -183,9 +185,7 @@
           {% endif %}
         </div>
       {% endif %}
-    <div id="music163player">
-   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=504365123&auto=1&height=66"></iframe>
-</div>
+    </div>
 
     </div>
   </aside>
